@@ -7,6 +7,11 @@ In order to improve team wide readablity and lower onboarding time we agreed to 
 The coding guidelines can be found [here](https://csharpcodingguidelines.com/).
 Feel free to download the .PDF for later references.
 
+## Testing
+
+We thorougly appreciate it when business logic is well covered by a test suite. This helps with extending functionality, refactoring existing code, and general readability.
+In order to promote productivity, we should use the [NUnit](https://nunit.org/) testing framework, in combination with the mocking framework [Moq](https://github.com/Moq) by default.
+
 ### Further reading resources
 
 * [Clean Code series](https://www.pearson.com/us/higher-education/series/Robert-C-Martin-Series/348084.html) by Robert C. Martin
