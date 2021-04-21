@@ -1,6 +1,6 @@
 # General
 
-In the Triple .NET team we use Git for source control management. How you we [[Git](https://git-scm.com/)] - whether it is via a GUI or the CLI - is up to us. Our commits however must stick to the guidelines:
+In the Triple .NET team we use Git for source control management. How you we [Git(<https://git-scm.com/>)] - whether it is via a GUI or the CLI - is up to us. Our commits however must stick to the guidelines:
 
 1. We must commit one change per commit
 2. We must adhere to the commit title and -description requirements
@@ -51,4 +51,4 @@ We should strive to make our commits concise and descriptive, allowing to unders
    </tbody>
 </table>
 
-Table 1 - Commit title keywords and their meaning
+Table 1 - *Commit title keywords and their meaning*
