@@ -7,6 +7,10 @@ In order to improve team wide readablity and lower onboarding time we agreed to 
 The coding guidelines can be found [here](https://csharpcodingguidelines.com/).
 Feel free to download the .PDF for later references.
 
+## IDE
+
+At Triple we are not tied to a single operating system, and so it happens that also among the .NET team there is cross-platform development. In addition to the free choice of IDE, there are quite a few flavors possible. However, in order to reduce startup and onboarding time, we should strive to facilitate cross-platform development as best as possible. This includes the generation of a README file, with instructions for environment specific setups. At the least, it should contain the instructions for the cross-platform editor  [Visual Studio Code](https://code.visualstudio.com/).
+
 ## Testing
 
 We thorougly appreciate it when business logic is well covered by a test suite. This helps with extending functionality, refactoring existing code, and general readability.
