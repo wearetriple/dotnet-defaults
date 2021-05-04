@@ -11,6 +11,8 @@ namespace WebApp
         {
             try
             {
+                Log.Logger.Information("Booting up");
+
                 CreateHostBuilder(args).Build().Run();
             }
             catch (Exception ex)
@@ -32,7 +34,7 @@ namespace WebApp
                         .ReadFrom.Configuration(context.Configuration)
                         .CreateLogger();
 
-                    logging.AddSerilog();
+                    logging.AddSerilog(Log.Logger);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
