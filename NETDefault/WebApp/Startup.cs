@@ -2,6 +2,8 @@
 using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -42,6 +44,7 @@ namespace WebApp
                 .AddCheck<CacheCheck>("boot");
 
             // see Health check and application warmup
+            // see Hosted service
             services
                 .AddHostedService<CacheRenewalService>();
         }
