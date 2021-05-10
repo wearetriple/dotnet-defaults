@@ -15,6 +15,7 @@ namespace FunctionAppNETCore31
         {
             var configuration = builder.GetContext().Configuration;
 
+            // see Logging with ILogger<> using Serilog to Seq
             var logLevelSwitch = new LoggingLevelSwitch(LogEventLevel.Warning);
             var url = configuration["Serilog:SeqUrl"];
             var key = configuration["Serilog:SeqKey"];
@@ -26,6 +27,7 @@ namespace FunctionAppNETCore31
 
             builder.Services.AddLogging(builder => builder.AddSerilog(Log.Logger));
 
+            // see Options pattern
             builder.Services.AddOptions<ExampleSettings>().Bind(configuration.GetSection("Example")).ValidateDataAnnotations();
         }
     }

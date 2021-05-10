@@ -2,6 +2,7 @@
 
 namespace WebApp.Models
 {
+    // see Options pattern
     public class ExampleSettings
     {
         [Required]

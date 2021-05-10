@@ -2,6 +2,7 @@
 
 namespace FunctionAppNET50.Models
 {
+    // see Options pattern
     public class ExampleSettings
     {
         [Required]

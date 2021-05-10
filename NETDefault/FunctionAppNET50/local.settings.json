@@ -4,6 +4,7 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
 
+    // see Logging with ILogger<> using Serilog to Seq
     "Serilog:LevelSwitches:$controlSwitch": "Warning",
     "Serilog:MinimumLevel:ControlledBy": "$controlSwitch",
     "Serilog:WriteTo:0:Name": "Console",

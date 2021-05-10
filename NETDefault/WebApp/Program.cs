@@ -15,6 +15,7 @@ namespace WebApp
             }
             catch (Exception ex)
             {
+                // see Logging with ILogger<> using Serilog to Seq
                 Log.Logger.Fatal(ex, "Fatal exception.");
                 Log.CloseAndFlush();
 
@@ -26,6 +27,7 @@ namespace WebApp
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging((context, logging) =>
                 {
+                    // see Logging with ILogger<> using Serilog to Seq
                     Log.Logger = new LoggerConfiguration()
                         .ReadFrom.Configuration(context.Configuration)
                         .CreateLogger();

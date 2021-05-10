@@ -17,6 +17,7 @@ namespace FunctionAppNET50
             }
             catch (Exception ex)
             {
+                // see Logging with ILogger<> using Serilog to Seq
                 Log.Logger.Fatal(ex, "Fatal exception.");
                 Log.CloseAndFlush();
 
@@ -33,6 +34,7 @@ namespace FunctionAppNET50
                 })
                 .ConfigureLogging((context, logging) =>
                 {
+                    // see Logging with ILogger<> using Serilog to Seq
                     Log.Logger = new LoggerConfiguration()
                         .ReadFrom.Configuration(context.Configuration)
                         .CreateLogger();
@@ -41,6 +43,7 @@ namespace FunctionAppNET50
                 })
                 .ConfigureServices((context, services) =>
                 {
+                    // see Options pattern
                     services.AddOptions<ExampleSettings>().Bind(context.Configuration.GetSection("Example")).ValidateDataAnnotations();
                 });
     }
