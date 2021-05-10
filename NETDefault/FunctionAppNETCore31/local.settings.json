@@ -4,6 +4,9 @@
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet",
 
+    // see Options pattern
+    "Example:Example": "validvalid",
+
     // see Logging with ILogger<> using Serilog to Seq
     "Serilog:SeqUrl": "https://seq.endpoint",
     "Serilog:SeqKey": "xxx"
