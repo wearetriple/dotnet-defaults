@@ -1,6 +1,6 @@
 # General
 
-In the Triple .NET team we use [Git](https://git-scm.com) for source control management. How we Git - whether it is via a GUI or the CLI - is up to us. However, our commits must stick to the guidelines:
+In the Triple .NET team we use [Git](https://git-scm.com) for source control management. How we Git - whether it is via a GUI or the CLI - is up to personal preference. However, our commits must stick to the guidelines:
 
 1. We must commit one change per commit
 2. We must adhere to the commit title and -description requirements
