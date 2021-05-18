@@ -12,10 +12,10 @@ Feel free to download the .PDF for later references.
 
 At Triple we are not tied to a single operating system, and so it happens that also among the .NET team there is cross-platform development. In addition to the free choice of IDE, there are quite a few flavors possible. However, in order to reduce onboarding time, we should strive to facilitate cross-platform development as best as possible. Be sure to add a README file with instructions for project initialization. If your OS/IDE is not described yet, you should add the instructions.
 
-## Testing
+## Unit Testing
 
 We thorougly appreciate it when business logic is well covered by a test suite. This helps with extending functionality, refactoring existing code, and general readability.
-In order to promote productivity, we should use the [NUnit](https://nunit.org/) testing framework, in combination with the mocking framework [Moq](https://github.com/Moq) by default.
+In order to promote productivity, we *should* use the [NUnit](https://nunit.org/) testing framework, in combination with the mocking framework [Moq](https://github.com/Moq) by default.
 
 ### Further reading resources
 
