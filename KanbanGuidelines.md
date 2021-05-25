@@ -26,7 +26,7 @@ The team objective is to move work items on the board to the _Done_ lane as fast
 - You *should* only have a single work item assigned.
 _Strive for focus and avoid multitasking._
 - You *should* take the top work item from the To Do column when starting a new item.
-_Work items in To Do *should* be prioritized in descending order._
+_Work items in To Do *should* be prioritized in descending order (see 'PO/PL tips 'n tricks below')._
 - After finishing a work item from any lane, drag it to a new lane, and change it to 'Unassigned'.
 _A team member *should* follow up._
 - After finishing the task of a work item in a column, look for new tasks on the board from right to left.
