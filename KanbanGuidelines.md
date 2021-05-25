@@ -15,7 +15,7 @@ We work with the following columns on the board:
 4. Test _(Optional)_
 5. Done
 
-(image to be added)
+![Figure 1 - Example of a default Kanban Board](Images/KanbanExample.png)
 
 _Figure 1 - Kanban board example with all columns and work items_
 
