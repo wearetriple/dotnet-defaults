@@ -40,7 +40,7 @@ _Break down complex parts, or indicate remaining tasks on the work item._
 
 ## Product Owner/Leader tips 'n tricks
 
-Where developers are busy moving work items on the kanban board from left to right, the product owner is usually busy in the backlog shaping new work items, tracking progress of the board (and the current work items in progress), and looking ahead to plan upcoming work activities.
+While developers are busy moving work items on the kanban board from left to right, the product owner is usually busy in the backlog shaping new work items, tracking progress of the board (and the current work items in progress), and looking ahead to plan upcoming work activities.
 
 The backlog is where new work items *should* get created and can get refined with the development team. Here we check together whether we deem the work sufficiently broken into parts (or work items) so that we can honestly estimate its complexity or required time _(see Ch. 3 - Planning from the resource below)_.
 
