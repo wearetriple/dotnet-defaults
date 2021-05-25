@@ -34,7 +34,7 @@ _Focus on getting work items to Done a.s.a.p. instead of starting items._
 - You *must* assign tickets to yourself when you start working on it.
 - When moving work items one or more columns back, it is *recommended* to explain your move in the comments of this item.
 - After reviewing, you *must* inform the writer of the code about your findings.
-_Provide the opportunity to learn._
+_Provide the opportunity to learn, and pass on the assignment of the work item._
 - You *may* create sub-items from the original work item when deemed necessary.
 _Break down complex parts, or indicate remaining tasks on the work item._
 
