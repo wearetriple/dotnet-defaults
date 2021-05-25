@@ -23,7 +23,7 @@ _Figure 1 - Kanban board example with all columns and work items_
 
 The team objective is to move work items on the board to the _Done_ lane as fast and best as we can. Note that this implies focus on incremental progress of the application we are building.
 
-- You *should* only have work item on your name.
+- You *should* only have a single work item assigned.
 _Strive for focus and avoid multitasking._
 - You *should* take the top work item from the To Do column when starting a new item.
 _Work items in To Do *should* be prioritized in descending order._
