@@ -27,12 +27,12 @@ The team objective is to move work items on the board to the _Done_ lane as fast
 _Strive for focus and avoid multitasking._
 - You *should* take the top work item from the To Do column when starting a new item.
 _Work items in To Do *should* be prioritized in descending order (see 'PO/PL tips 'n tricks below')._
-- After finishing a work item from any lane, drag it to a new lane, and change it to 'Unassigned'.
-_A team member *should* follow up._
-- After finishing the task of a work item in a column, look for new tasks on the board from right to left.
-_Focus on getting work items to Done a.s.a.p. instead of starting items._
+- When a team member should follow up on your work item, you *should* update the assignment to 'Unassigned'.
+- After finishing the task of a work item in a column, look for new tasks (unassigned work items) on the board from right to left.
+_Focus on getting work items to Done a.s.a.p. instead of starting new items._
 - You *must* assign tickets to yourself when you start working on it.
-- When moving work items one or more columns back, it is *recommended* to explain your move in the comments of this item.
+- It is *recommended* to add clarifications in the comments of the work item when that would help the person following up on it.
+_Especially when moving items backwards, or to the Test lane._
 - After reviewing, you *must* inform the writer of the code about your findings.
 _Provide the opportunity to learn, and pass on the assignment of the work item._
 - You *may* create sub-items from the original work item when deemed necessary.
