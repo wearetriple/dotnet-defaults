@@ -42,7 +42,7 @@ _Break down complex parts, or indicate remaining tasks on the work item._
 
 Where developers are busy moving work items on the kanban board from left to right, the product owner is usually busy in the backlog shaping new work items, tracking progress of the board (and the current work items in progress), and looking ahead to plan upcoming work activities.
 
-The backlog is where new work items *should* get created and can get refined with the development team. Here we check together whether we deem the work sufficiently broken into parts (or work items) so that we can honestly estimate its complexity or required time.
+The backlog is where new work items *should* get created and can get refined with the development team. Here we check together whether we deem the work sufficiently broken into parts (or work items) so that we can honestly estimate its complexity or required time _(see Ch. 3 - Planning from the resource below)_.
 
 The To Do column on the board *should* contain an appropriate amount of work for the development team to work on for a while. The work items in this lane *should* be organized by priority in descending order. This way, the development team *shall* start new work items with the highest value at that moment.
 
