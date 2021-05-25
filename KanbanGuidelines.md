@@ -2,7 +2,7 @@
 
 ## Kanban General
 
-A kanban board helps us *visualising work*, *limiting the amount of work in progress*, and *getting our work done*.
+A kanban board helps us *visualize work*, *limit the amount of work in progress*, and *get our work done*.
 The following guidelines will help us standardize our use with Kanban boards, so that we can switch projects efficiently without having to learn a new Kanban method this particular project employs.
 
 ## Board layout
