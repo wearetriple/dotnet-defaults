@@ -12,7 +12,7 @@ We work with the following columns on the board:
 1. To Do
 2. In Progress
 3. Review
-4. Test _(Optional)_
+4. Test _(Optional when the project has Quality Assurance)_
 5. Done
 
 ![Figure 1 - Example of a default Kanban Board](Images/KanbanExample.png)
