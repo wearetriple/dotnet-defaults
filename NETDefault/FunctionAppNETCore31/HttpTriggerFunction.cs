@@ -7,16 +7,20 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Options;
+using FunctionAppNETCore31.Models;
 
 namespace FunctionAppNETCore31
 {
     public class HttpTriggerFunction
     {
         private readonly ILogger<HttpTriggerFunction> _logger;
+        private readonly IOptions<ExampleSettings> _options;
 
-        public HttpTriggerFunction(ILogger<HttpTriggerFunction> logger)
+        public HttpTriggerFunction(ILogger<HttpTriggerFunction> logger, IOptions<ExampleSettings> options)
         {
             _logger = logger;
+            _options = options;
         }
 
         [FunctionName("HttpTriggerFunction")]
