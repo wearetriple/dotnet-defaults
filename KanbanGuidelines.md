@@ -7,7 +7,7 @@ The following guidelines will help us standardize our use with Kanban boards, so
 
 ## Board layout
 
-We work with the following columns on the board:
+By default, we work with the following columns on the board:
 
 1. To Do
 2. In Progress
@@ -25,11 +25,11 @@ The team objective is to move work items on the board to the _Done_ lane as fast
 
 - You *should* only have a single work item assigned.
 _Strive for focus and avoid multitasking._
-- You *should* take the top work item from the To Do column when starting a new item.
+- When starting a new task, you *should* search for an unassigned work item on the board from right to left.
+_Focus on getting work items to Done instead of starting new items._
+- When you pick a new work item from To DO, you *should* take the top work item.
 _Work items in To Do *should* be prioritized in descending order (see 'PO/PL tips 'n tricks below')._
 - When a team member should follow up on your work item, you *should* update the assignment to 'Unassigned'.
-- After finishing the task of a work item in a column, look for new tasks (unassigned work items) on the board from right to left.
-_Focus on getting work items to Done a.s.a.p. instead of starting new items._
 - You *must* assign tickets to yourself when you start working on it.
 - It is *recommended* to add clarifications in the comments of the work item when that would help the person following up on it.
 _Especially when moving items backwards, or to the Test lane._
