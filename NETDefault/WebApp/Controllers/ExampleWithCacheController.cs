@@ -8,15 +8,15 @@ namespace WebApp.Controllers
     /// <summary>
     /// see Health check and application warmup
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/example-with-cache")]
     [ApiController]
-    public class CacheDependentController : ControllerBase
+    public class ExampleWithCacheController : ControllerBase
     {
-        private readonly ILogger<CacheDependentController> _logger;
+        private readonly ILogger<ExampleWithCacheController> _logger;
         private readonly IMemoryCache _memoryCache;
 
-        public CacheDependentController(
-            ILogger<CacheDependentController> logger,
+        public ExampleWithCacheController(
+            ILogger<ExampleWithCacheController> logger,
             IMemoryCache memoryCache)
         {
             _logger = logger;
@@ -41,6 +41,9 @@ namespace WebApp.Controllers
         [HttpGet("check")]
         public async Task<ActionResult> CheckCacheAsync()
         {
+            // this endpoints waits until it a certain cache item is available in IMemoryCache
+            // because this endpoit waits, it is a good endpoint to use as initializationPage for application warmup
+            // be mindful to hide this controller from public use as long-running controller actions can degrade performance
             do
             {
                 _logger.LogInformation("Checking cache status..");
