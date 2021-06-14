@@ -28,7 +28,7 @@ namespace WebApp.Controllers
                 _logger.LogWarning(ex, "Client cancelled the request.");
 
                 // since the client is gone, do not do any additional work and return nothing
-                return null;
+                return NoContent();
             }
 
             return "OK";
