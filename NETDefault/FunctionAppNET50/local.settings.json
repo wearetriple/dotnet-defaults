@@ -1,0 +1,22 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+
+    // see Options pattern
+    "Example:Example": "validvalid",
+
+    // see Logging with ILogger<> using Serilog to Seq
+    "Serilog:LevelSwitches:$controlSwitch": "Warning",
+    "Serilog:MinimumLevel:ControlledBy": "$controlSwitch",
+    "Serilog:WriteTo:0:Name": "Console",
+    "Serilog:WriteTo:1:Name": "Seq",
+    "Serilog:WriteTo:1:Args:serverUrl": "https://seq.endpoint",
+    "Serilog:WriteTo:1:Args:apiKey": "xxx",
+    "Serilog:WriteTo:1:Args:controlLevelSwitch": "$controlSwitch",
+    "Serilog:Enrich:0": "FromLogContext",
+    "Serilog:Enrich:1": "WithMachineName",
+    "Serilog:Enrich:2": "WithThreadId"
+  }
+}
