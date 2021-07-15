@@ -1,14 +1,14 @@
 # Nullable reference types
 
-Nullable reference types were introduced in C# 8 in an effort to reduce the number of `NullReferenceException`s thrown by applications. The feature helps the developer spot possible `null` values and deal with them during development instead of during testing / production.
+[Nullable reference types](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#nullable-reference-types) were introduced in [C# 8](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8) in an effort to reduce the number of `NullReferenceException`s thrown by applications. The feature helps the developer spot possible `null` values and deal with them during development instead of during testing / production.
 
 Because this feature greatly improves the quality of code, this feature *must* be enabled for all projects (except .NET Framework projects, since the feature is not supported by classic .NET Framework).
 
-When a reference type property or variable is not-nullable, you as developer promise that: 
+When a reference type property or variable is not-nullable, you as developer promise that:
 
-- The value is *never* `null`. 
+- The value is *never* `null`.
 - The value is *always* safe to use without checking for `null` *ever*.
-- The heat death of the universe occurs earlier than that the value is `null`. 
+- The heat death of the universe occurs earlier than that the value is `null`.
 
 If you cannot promise that: mark it as nullable.
 
@@ -51,6 +51,10 @@ In this case `notNullItem` is not null, but the compiler still complains about a
 
 - Safest: Check for null again.
 - Safest: Change the logic to prevent `null`s from getting through, by using pattern matching for example: `var notNullItem = items.OfType<string>().Where(item => !string.IsNullOrEmpty(item)).First()`.
-- Unsafe: Use the fuckit operator: `notNullItem!.Length`.
+- Unsafe: Use the [fuckit operator](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-forgiving): `notNullItem!.Length`.
+- Unsafe: Use the [warning pragma](https://docs.microsoft.com/en-us/cpp/preprocessor/warning?view=msvc-160) to locally disable compiler warnings.
 
-Don't be that developer that gets caught with their pants down because an uncaught `NullReferenceException` gets thrown from a piece of code that contains the `!`-operator.
+## Takeaways
+
+- Don't be that developer that gets caught with their pants down because an uncaught `NullReferenceException` gets thrown from a piece of code that contains the `!`-operator.
+- Check your pull request *not* to contain any possible null referencing warnings!
