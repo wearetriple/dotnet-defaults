@@ -2,7 +2,7 @@
 Common boilerplate, practices, and guidelines for Triple .NET projects.
 
 # Required patterns
-- [Nullable reference types](Patterns/Nullable.md)
+- [Nullable reference types](Patterns/Nullables.md)
 - [Options pattern](Patterns/Options.md)
 - [Logging with `ILogger<>` using Serilog to Seq](Patterns/Serilog.md)
 - [Health check and application warmup](Patterns/HealthCheck+WarmUp.md)
