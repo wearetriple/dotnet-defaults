@@ -7,8 +7,6 @@ namespace WebApp
 {
     public class Program
     {
-        public static string Instance = Guid.NewGuid().ToString();
-
         public static void Main(string[] args)
         {
             try
@@ -34,7 +32,6 @@ namespace WebApp
                     // see Logging with ILogger<> using Serilog to Seq
                     Log.Logger = new LoggerConfiguration()
                         .ReadFrom.Configuration(context.Configuration)
-                        .Enrich.WithProperty("Instance", Instance)
                         .CreateLogger();
 
                     logging.AddSerilog(Log.Logger);
