@@ -26,3 +26,6 @@ In order to promote productivity, we *should* use the [NUnit](https://nunit.org/
   * Clean Agile: Back to Basics
 * [The Software Craftsman](https://www.pearson.com/us/higher-education/program/Mancuso-Software-Craftsman-The-Professionalism-Pragmatism-Pride/PGM96980.html): Professionalism, Pragmatism, Pride - Sandro Mancuso
 * [Steve Smith on how to upgrade your C# game](https://ardalis.com/how-to-become-master-writing-c-code/)
+* [ASP.NET Core best practices](https://github.com/davidfowl/AspNetCoreDiagnosticScenarios)
+* [General ASP.NET Core Guidance](https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AspNetCoreGuidance.md)
+* [Async Guidance](https://github.com/davidfowl/AspNetCoreDiagnosticScenarios/blob/master/AsyncGuidance.md)

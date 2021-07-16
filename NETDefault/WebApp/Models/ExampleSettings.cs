@@ -7,6 +7,6 @@ namespace WebApp.Models
     {
         [Required]
         [MinLength(10)]
-        public string Example { get; set; }
+        public string Example { get; set; } = default!;
     }
 }
