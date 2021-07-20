@@ -1,8 +1,8 @@
 # Readme
 
-Every project must have a README.md in its root, in order to help following developers getting started with the project. It must clearly describe what the project is, how to get it running locally, and what tool dependencies it has. If the project has some special requirements or quircks, the README.md must document those and how to deal with them.
+Every project *must* have a README.md in its root, in order to help following developers getting started with the project. It *must* clearly describe what the project is, how to get it running locally, and what tool dependencies it has. If the project has some special requirements or quircks, the README.md *must* document those and how to deal with them. A developer *should* be able to get started with the project without external help.
 
-If you encounter a project that has no README.md, your first task is to make one.
+If you encounter a project that has no README.md, you *must* start with this document.
 A good start would be the template below:
 
 ``` markdown
@@ -10,7 +10,7 @@ A good start would be the template below:
 
 ## Overview
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is.
+At the top of the file there should be a short introduction and/ or overview that explains what the project is.
 
 * Explanation of the application and its purpose. Answer the questions:
   * What is the motivation behind the creation of the project? This should explain why the project exists.
@@ -54,5 +54,10 @@ Use the below for Markdown formatting syntax:
 
 1. ordered item #1
 2. ordered item #2
+
+*italic text*
+**bold text**
+[links](https://www.urlgoeshere.nl)
+
 
 ```
