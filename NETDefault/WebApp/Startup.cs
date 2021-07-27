@@ -42,6 +42,7 @@ namespace WebApp
                 .AddCheck<CacheCheck>("boot");
 
             // see Health check and application warmup
+            // see Hosted service
             services
                 .AddHostedService<CacheRenewalService>();
         }

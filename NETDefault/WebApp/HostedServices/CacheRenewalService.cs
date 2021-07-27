@@ -9,6 +9,7 @@ namespace WebApp.HostedServices
 {
     // see Health check and application warmup
     // this CacheRenewalService emulates a slow application start-up by making the cache available 30 seconds after startup.
+    // see Hosted service
     public class CacheRenewalService : BackgroundService
     {
         private readonly ILogger<CacheRenewalService> _logger;
