@@ -7,7 +7,7 @@ Keeping the structure of each .NET project somewhat similar helps developers to 
 A .NET solution must follow the following guidelines:
 
 - The name of the solution is `{Customer}.{Project}.sln`.
-- Put simple, solution-wide used objects like enums, exceptions and simple classes in Core: `{Customer}.{Project}.Core.csproj`.
+- Put simple, solution-wide used objects like enums, exceptions and simple classes in Common: `{Customer}.{Project}.Common.csproj`. The common project does not depend on any other project.
 - Put everything that has to do with an external API of which the project is client of in a Gateway project: `{Customer}.{Project}.Gateway.{External API}.csproj`.
 - If the project exposes an API using ASP.NET Core Web Api, create a project for it called `{Customer}.{Project}.Api.csproj`.
 - If the project uses Azure Functions, create a project for those functions called `{Customer}.{Project}.Functions.csproj`.
