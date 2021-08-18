@@ -8,11 +8,11 @@ namespace Triple.DataAnnotations
     /// </summary>
     public class ValidateObjectAttribute : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             if (value == null)
             {
-                return ValidationResult.Success!;
+                return ValidationResult.Success;
             }
 
             var results = new List<ValidationResult>();
@@ -23,12 +23,12 @@ namespace Triple.DataAnnotations
             if (results.Count != 0)
             {
                 var compositeResults = new CompositeValidationResult($"Validation for {validationContext.DisplayName} failed!", validationContext.MemberName ?? "Unknown member");
-                results.ForEach(compositeResults.AddResult);
+                compositeResults.Results.AddRange(results);
 
                 return compositeResults;
             }
 
-            return ValidationResult.Success!;
+            return ValidationResult.Success;
         }
     }
 }

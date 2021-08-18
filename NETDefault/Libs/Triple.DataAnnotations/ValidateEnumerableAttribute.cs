@@ -9,11 +9,11 @@ namespace Triple.DataAnnotations
     /// </summary>
     public class ValidateEnumerableAttribute : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
+        protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
             if (value == null)
             {
-                return ValidationResult.Success!;
+                return ValidationResult.Success;
             }
 
             if (value is not IEnumerable enumerable)
@@ -33,11 +33,11 @@ namespace Triple.DataAnnotations
             var compositeResults = new CompositeValidationResult($"Validation for {validationContext.DisplayName} failed!", validationContext.MemberName ?? "Unknown member");
             if (results.Count != 0)
             {
-                results.ForEach(compositeResults.AddResult);
+                compositeResults.Results.AddRange(results);
                 return compositeResults;
             }
 
-            return ValidationResult.Success!;
+            return ValidationResult.Success;
         }
     }
 }
