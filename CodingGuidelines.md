@@ -17,6 +17,8 @@ At Triple we are not tied to a single operating system, and so it happens that a
 We thorougly appreciate it when business logic is well covered by a test suite. This helps with extending functionality, refactoring existing code, and general readability.
 In order to promote productivity, we *should* use the [NUnit](https://nunit.org/) testing framework, in combination with the mocking framework [Moq](https://github.com/Moq) by default.
 
+When writing Tests, you must structure the test files in such a wat that it mirrors the class under test. For example, when you are writing a test for 'Triple.Common.Services.TripleCoin.CoinService.cs', then the tests should be filed under 'Triple.Common.Tests.Services.TripleCoin.CoinServiceTests.cs'. This improves project navigation.
+
 ### Further reading resources
 
 * [Clean Code series](https://www.pearson.com/us/higher-education/series/Robert-C-Martin-Series/348084.html) by Robert C. Martin
