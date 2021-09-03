@@ -9,13 +9,13 @@ A .NET solution must follow the following guidelines:
 - The name of the solution is `{Customer}.{Project}.sln`.
 - Put simple, solution-wide used objects like enums, exceptions and simple classes in Common: `{Customer}.{Project}.Common.csproj`.
   - The common project does not depend on any other project.
-- Put everything that has to do with an external API of which the project is client of in a Gateway project: `{Customer}.{Project}.Gateway.{External API}.csproj`.
+- Put everything that has to do with an external API of which the project is client of in a Gateway project: `{Customer}.{Project}.Gateways.{External Api}.csproj`.
 - If the project exposes an API using ASP.NET Core Web Api, create a project for it called `{Customer}.{Project}.Api.csproj`.
 - If the project uses Azure Functions, create a project for those functions called `{Customer}.{Project}.Functions.csproj`.
-- Put all general business logic in `{Customer}.{Project}.Business.csproj`.
-  - If the project is probably going to contain a lot of business logic, split the business logic up into parts and give each part a separate project: `{Customer}.{Project}.Business.Users.csproj`, `{Customer}.{Project}.Business.Payment.csproj`. Common business stuff can still be put in `{Customer}.{Project}.Business.csproj`.
+- Put all general business logic in `{Customer}.{Project}.Business.csproj` or `{Customer}.{Project}.Services.csproj`.
+  - If the project is probably going to contain a lot of business logic, split the business logic up into parts and give each part a separate project: `{Customer}.{Project}.Users.csproj` or `{Customer}.{Project}.Services.Payment.csproj`. Common business stuff can still be put in the general business logic project.
 - If the project uses other (web) applications that do more than just an API, put them in a project that bests describes their functionality, like `{Customer}.{Project}.Cms.csproj`.
-- Put everything that has to do with the persistence layer in a separate project and use name that describes what it persists `{Customer}.{Project}.Data.csproj`.
+- Put everything that has to do with the persistence layer in a separate project and use a name that describes what it persists `{Customer}.{Project}.Data.csproj`.
   - If the persistence layer is not big it can all be put in the same project.
   - If parts of the persistence layer become big, they can be split of in to separate projects like `{Customer}.{Project}.Data.User.csproj`.
 - Unit tests only test a specific project, and should always be called `{ProjectToTest}.Tests.csproj`.
@@ -25,7 +25,7 @@ A .NET solution must follow the following guidelines:
 
 ### Singular or plural names
 
-Singular and plural names for projects can both be used. Project that contain gateways or applications usually are singular (`CMS`, `AdminDashboard`, `Gateway.Contentful`) and project that are libraries are usually plural (`Repositories`, `Services`).
+Singular and plural names for projects can both be used. Project that contain gateways or applications usually are singular (`CMS`, `AdminDashboard`, `Gateway.Contentful`) and project that are libraries are usually plural (`Repositories`, `Services`). Plural names for projects will prevent issues concerning namespace confusion; you cannot create the object `User` if the project name is `xx.User`. Keeping the names of projects plural will easily deal with those issues.
 
 ### Additional folders
 
@@ -79,15 +79,15 @@ The namespace of a file should always be comprised of its compound folder name, 
     - `Attributes`
     - `Constants`
     - `Extensions`
-  - Contoso.CalendarHub.Gateway.Adyen.csproj
+  - Contoso.CalendarHub.Gateways.Adyen.csproj
     - `Models`
-  - Contoso.CalendarHub.Gateway.GoogleCalendar.csproj
+  - Contoso.CalendarHub.Gateways.GoogleCalendar.csproj
     - `Models`
     - `Helpers`
-  - Contoso.CalendarHub.Gateway.GoogleCalendar.Tests.csproj
-  - Contoso.CalendarHub.Gateway.OutlookCalendar.csproj
+  - Contoso.CalendarHub.Gateways.GoogleCalendar.Tests.csproj
+  - Contoso.CalendarHub.Gateways.OutlookCalendar.csproj
     - `Models`
-  - Contoso.CalendarHub.Gateway.OutlookCalendar.Tests.csproj
+  - Contoso.CalendarHub.Gateways.OutlookCalendar.Tests.csproj
 
 ## Inter-project data exchange and isolation
 
