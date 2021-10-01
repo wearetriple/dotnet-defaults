@@ -6,6 +6,7 @@ In the Triple .NET team we use [Git](https://git-scm.com) for source control man
 2. We must adhere to the commit title and -description requirements
 3. We should not commit generated files
 4. We should not commit personal user settings
+5. We should start our pull requests with the ticket number
 
 ## Commit title and description
 
