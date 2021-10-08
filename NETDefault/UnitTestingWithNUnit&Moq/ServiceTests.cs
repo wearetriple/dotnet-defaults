@@ -44,7 +44,7 @@ namespace ServiceTests
             SetupGetHobbiesByUserId(userId);
 
             // Act
-            var result = _subject.GetDashboardByUserName(knownUsername);
+            _ = _subject.GetDashboardByUserName(knownUsername);
 
             // Assert
             _gateway.Verify(x => x.GetUserIdByUserName(knownUsername), Times.Once());
