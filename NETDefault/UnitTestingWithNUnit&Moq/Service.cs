@@ -24,6 +24,9 @@ namespace ServiceTests
 
                 var hobbies = _gateway.GetHobbiesByUserId(userId);
                 dashboard += FormatHobbiesToString(hobbies);
+
+                var notificationCount = _gateway.GetNotificationsByUserId(userId);
+                dashboard += FormatNotificationCountToString(notificationCount);
             }
             catch(Exception ex)
             {
@@ -47,6 +50,19 @@ namespace ServiceTests
             }
 
             return sb.ToString();
+        }
+
+        private static string FormatNotificationCountToString(int? count)
+        {
+            switch (count)
+            {
+                case null:
+                    return ", notification error";
+                case 1:
+                    return ", 1 notification";
+                default:
+                    return $"{count} notifications";
+            };
         }
     }
 }

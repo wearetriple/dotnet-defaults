@@ -41,5 +41,12 @@ namespace ServiceTests
                 .Setup(x => x.GetHobbiesByUserId(_userId))
                 .Returns(_hobbies);
         }
+
+        protected void SetupGetNotificationsByUserId(int? count)
+        {
+            _gateway
+                .Setup(x => x.GetNotificationsByUserId(_userId))
+                .Returns(count);
+        }
     }
 }

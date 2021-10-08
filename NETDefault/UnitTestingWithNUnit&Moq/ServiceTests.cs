@@ -70,5 +70,26 @@ namespace ServiceTests
             _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
             _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
         }
+
+        [TestCase(null, "notification error")]
+        [TestCase(0, "0 notifications")]
+        [TestCase(1, "1 notification")]
+        public void GetDashboard_WhenNotificationsFound_ItShouldBeReturned(int? count, string expectedNotificationString)
+        {
+            // Arrange
+            SetupGetUserIdByUserName(_knownUsername);
+            SetupGetHobbiesByUserId(_userId);
+            SetupGetNotificationsByUserId(count);
+
+            // Act
+            var result = (string)_subject.GetDashboardByUserName(_knownUsername);
+
+            // Assert
+            Assert.That(result.Contains(expectedNotificationString));
+
+            _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
+            _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
+            _gateway.Verify(x => x.GetNotificationsByUserId(_userId), Times.Once());
+        }
     }
 }
