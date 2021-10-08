@@ -2,7 +2,7 @@
 using Moq.AutoMock;
 using NUnit.Framework;
 
-namespace ServiceTests
+namespace UnitTestingExample
 {
     internal class ServiceTestsBase
     {

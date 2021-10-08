@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 
-namespace ServiceTests
+namespace UnitTestingExample
 {
     internal class Service
     {

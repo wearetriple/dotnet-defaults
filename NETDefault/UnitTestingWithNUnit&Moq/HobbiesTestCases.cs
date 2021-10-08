@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using NUnit.Framework;
 
-namespace ServiceTests
+namespace UnitTestingExample
 {
     public class HobbiesTestCases : IEnumerable
     {

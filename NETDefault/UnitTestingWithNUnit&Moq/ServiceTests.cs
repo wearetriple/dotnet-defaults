@@ -1,7 +1,7 @@
 using Moq;
 using NUnit.Framework;
 
-namespace ServiceTests
+namespace UnitTestingExample
 {
     internal class ServiceTests : ServiceTestsBase
     {

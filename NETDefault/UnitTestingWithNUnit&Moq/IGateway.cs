@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ServiceTests
+namespace UnitTestingExample
 {
     public interface IGateway
     {
