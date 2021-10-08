@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
 
 namespace ServiceTests
 {
@@ -22,7 +23,7 @@ namespace ServiceTests
                 dashboard += userId;
 
                 var hobbies = _gateway.GetHobbiesByUserId(userId);
-                AddHobbiesToDashboard(hobbies, ref dashboard);
+                dashboard += FormatHobbiesToString(hobbies);
             }
             catch(Exception ex)
             {
@@ -33,15 +34,19 @@ namespace ServiceTests
             return dashboard;
         }
 
-        private static void AddHobbiesToDashboard(string[] hobbies, ref string dashboard)
+        private static string FormatHobbiesToString(string[] hobbies)
         {
+            var sb = new StringBuilder();
+
             if (hobbies.Any())
             {
                 foreach (var hobby in hobbies)
                 {
-                    dashboard += $", {hobby}";
+                    sb.Append($", {hobby}");
                 }
             }
+
+            return sb.ToString();
         }
     }
 }
