@@ -11,7 +11,7 @@ namespace ServiceTests
             // Arrange
             SetupGetUserIdByUserName(unknownUsername);
 
-            //Assert
+            // Assert
             Assert.Throws<NotFoundException>(() => _subject.GetDashboardByUserName(unknownUsername));
 
             _gateway.Verify(x => x.GetUserIdByUserName(unknownUsername), Times.Once());
@@ -26,10 +26,10 @@ namespace ServiceTests
 
             var expected = userId.ToString();
 
-            //Act
+            // Act
             var result = _subject.GetDashboardByUserName(knownUsername);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, result);
 
             _gateway.Verify(x => x.GetUserIdByUserName(knownUsername), Times.Once());
@@ -43,10 +43,10 @@ namespace ServiceTests
             SetupGetUserIdByUserName(knownUsername);
             SetupGetHobbiesByUserId(userId);
 
-            //Act
+            // Act
             var result = _subject.GetDashboardByUserName(knownUsername);
 
-            //Assert
+            // Assert
             _gateway.Verify(x => x.GetUserIdByUserName(knownUsername), Times.Once());
             _gateway.Verify(x => x.GetHobbiesByUserId(userId), Times.Once());
             _gateway.VerifyNoOtherCalls();
@@ -61,10 +61,10 @@ namespace ServiceTests
 
             var expected = userId.ToString() + ", " + hobbies[0] + ", " + hobbies[1] + ", " + hobbies[2];
 
-            //Act
+            // Act
             var result = _subject.GetDashboardByUserName(knownUsername);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, result);
 
             _gateway.Verify(x => x.GetUserIdByUserName(knownUsername), Times.Once());
