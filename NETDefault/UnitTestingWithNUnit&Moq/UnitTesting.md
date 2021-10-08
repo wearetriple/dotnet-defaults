@@ -26,4 +26,4 @@ The actual concrete class we are testing. Actually not very interesting here, ot
 
 ## Takeaway
 
-This structure can be used to initialize your own test class and start writing tests to cover the acceptance criteria. Be sure to fully cover the class under test, for it reduces mistakes, and makes refactoring later easier. Also bear in mind that writing tests is easiest (and fastest!) when doing it by the Test Driven Development ([TDD](https://app.pluralsight.com/library/courses/csharp-test-driven-development/table-of-contents)) approach. 
+This structure can be used to initialize your own test class and start writing tests to cover the acceptance criteria. Be sure to fully cover the class under test, for it reduces mistakes, and makes refactoring later easier. Also bear in mind that writing tests is easiest (and fastest!) when doing it by the Test Driven Development ([TDD](https://www.agilealliance.org/glossary/tdd/)) approach.
