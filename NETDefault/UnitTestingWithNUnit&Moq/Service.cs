@@ -14,7 +14,7 @@ namespace ServiceTests
 
         public object GetDashboardByUserName(string userName)
         {
-            string dashboard = string.Empty;
+            var dashboard = string.Empty;
 
             try
             {
