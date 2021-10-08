@@ -12,7 +12,6 @@ namespace ServiceTests
         protected string _knownUsername = "known";
         protected string _unknownUsername = "unknown";
         protected int _userId = 2;
-        protected string[] _hobbies = new string[3] { "eat", "sleep", "repeat" };
 
         [SetUp]
         public void Setup()
@@ -35,11 +34,11 @@ namespace ServiceTests
                     .Returns(_userId);
         }
 
-        protected void SetupGetHobbiesByUserId(int id)
+        protected void SetupGetHobbiesByUserId(string[] hobbies)
         {
             _gateway
                 .Setup(x => x.GetHobbiesByUserId(_userId))
-                .Returns(_hobbies);
+                .Returns(hobbies);
         }
 
         protected void SetupGetNotificationsByUserId(int? count)

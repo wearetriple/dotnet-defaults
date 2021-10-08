@@ -13,7 +13,7 @@ namespace ServiceTests
             _gateway = gateway;
         }
 
-        public object GetDashboardByUserName(string userName)
+        public string GetDashboardByUserName(string userName)
         {
             var dashboard = string.Empty;
 
@@ -37,8 +37,18 @@ namespace ServiceTests
             return dashboard;
         }
 
-        private static string FormatHobbiesToString(string[] hobbies)
+        private static string FormatHobbiesToString(string[]? hobbies)
         {
+            if (hobbies is null)
+            {
+                return ", hobbies error";
+            }
+
+            if (hobbies.Length is 0)
+            {
+                return ", zero hobbies";
+            }
+
             var sb = new StringBuilder();
 
             if (hobbies.Any())

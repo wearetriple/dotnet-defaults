@@ -30,7 +30,7 @@ namespace ServiceTests
             var result = _subject.GetDashboardByUserName(_knownUsername);
 
             // Assert
-            Assert.AreEqual(expected, result);
+            Assert.That(result.Contains(expected));
 
             _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
             _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
@@ -41,7 +41,7 @@ namespace ServiceTests
         {
             // Arrange
             SetupGetUserIdByUserName(_knownUsername);
-            SetupGetHobbiesByUserId(_userId);
+            SetupGetHobbiesByUserId(new string[0] { });
 
             // Act
             _ = _subject.GetDashboardByUserName(_knownUsername);
@@ -49,23 +49,22 @@ namespace ServiceTests
             // Assert
             _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
             _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
+            _gateway.Verify(x => x.GetNotificationsByUserId(_userId), Times.Once());
             _gateway.VerifyNoOtherCalls();
         }
 
-        [Test]
-        public void GetDashboard_WhenHobbiesFound_ItShouldBeReturned()
+        [TestCaseSource(typeof(HobbiesTestCases))]
+        public void GetDashboard_WhenHobbiesFound_ItShouldBeReturned(string[]? hobbies, string expectedHobbiesAsString)
         {
             // Arrange
             SetupGetUserIdByUserName(_knownUsername);
-            SetupGetHobbiesByUserId(_userId);
-
-            var expected = _userId.ToString() + ", " + _hobbies[0] + ", " + _hobbies[1] + ", " + _hobbies[2];
+            SetupGetHobbiesByUserId(hobbies);
 
             // Act
             var result = _subject.GetDashboardByUserName(_knownUsername);
 
             // Assert
-            Assert.AreEqual(expected, result);
+            Assert.That(result.Contains(expectedHobbiesAsString));
 
             _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
             _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
@@ -78,7 +77,7 @@ namespace ServiceTests
         {
             // Arrange
             SetupGetUserIdByUserName(_knownUsername);
-            SetupGetHobbiesByUserId(_userId);
+            SetupGetHobbiesByUserId(new string[0] { });
             SetupGetNotificationsByUserId(count);
 
             // Act
