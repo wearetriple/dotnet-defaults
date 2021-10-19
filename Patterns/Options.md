@@ -2,6 +2,12 @@
 
 The [options pattern](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/options?view=aspnetcore-5.0) should be employed to configure services and expose environment variables. This pattern creates `IOptions<ConcreateClass>` in the DI container that contain the configuration. Using `Options.Create(new ConcreteClass { /* .. */ }` creates working `IOptions<ConcreteClass>` instances for use in unit tests.
 
+## When to use what
+
+- `IOptions<T>`: Available as singleton and does not change during lifetime of application.
+- `IOptionsSnapshot<T>`: Available as scoped service and fetches the latest configuration every time it is created. Useful when using configuration that can update independently from the application (KeyVault for example).
+- `IOptionsMonitor<T>`: Available as singleton and exposes an event that triggers once the configuration is updated. Can be useful when using configuration that can change frequently.
+
 ## Web Apps (.NET 5 & .NET Core 3.1)
 
 - Startup.cs: Add `services.AddOptions<ConcreteClass>()` to add `IOptions<ConcreteClass>` to the DI container. This `ConcreteClass` should be a simple POCO. 
