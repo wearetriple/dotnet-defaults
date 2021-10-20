@@ -4,11 +4,11 @@ using System.Text;
 
 namespace UnitTestingExample
 {
-    internal class Service
+    internal class UserService
     {
-        private IGateway _gateway;
+        private IUserGateway _gateway;
 
-        public Service(IGateway gateway)
+        public UserService(IUserGateway gateway)
         {
             _gateway = gateway;
         }
@@ -37,7 +37,7 @@ namespace UnitTestingExample
             return dashboard;
         }
 
-        private static string FormatHobbiesToString(string[]? hobbies)
+        private static string FormatHobbiesToString(string[] hobbies)
         {
             if (hobbies is null)
             {

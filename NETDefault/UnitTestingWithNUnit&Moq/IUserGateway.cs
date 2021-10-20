@@ -1,8 +1,6 @@
-﻿using System;
-
-namespace UnitTestingExample
+﻿namespace UnitTestingExample
 {
-    public interface IGateway
+    public interface IUserGateway
     {
         public int GetUserIdByUserName(string userName);
         public string[] GetHobbiesByUserId(int userId);

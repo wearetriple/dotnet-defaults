@@ -1,9 +1,9 @@
-using Moq;
+﻿using Moq;
 using NUnit.Framework;
 
 namespace UnitTestingExample
 {
-    internal class ServiceTests : ServiceTestsBase
+    internal class UserServiceTests : UserServiceTestsBase
     {
         [Test]
         public void GetDashboard_WhenCustomerNameNotFound_ItShouldThrow()
@@ -54,7 +54,7 @@ namespace UnitTestingExample
         }
 
         [TestCaseSource(typeof(HobbiesTestCases))]
-        public void GetDashboard_WhenHobbiesFound_ItShouldBeReturned(string[]? hobbies, string expectedHobbiesAsString)
+        public void GetDashboard_WhenHobbiesFound_ItShouldBeReturned(string[] hobbies, string expectedHobbiesAsString)
         {
             // Arrange
             SetupGetUserIdByUserName(_knownUsername);

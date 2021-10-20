@@ -4,10 +4,10 @@ using NUnit.Framework;
 
 namespace UnitTestingExample
 {
-    internal class ServiceTestsBase
+    internal class UserServiceTestsBase
     {
-        protected Service _subject;
-        protected Mock<IGateway> _gateway;
+        protected UserService _subject;
+        protected Mock<IUserGateway> _gateway;
 
         protected string _knownUsername = "known";
         protected string _unknownUsername = "unknown";
@@ -18,9 +18,9 @@ namespace UnitTestingExample
         {
             var autoMocker = new AutoMocker();
 
-            _gateway = autoMocker.GetMock<IGateway>();
+            _gateway = autoMocker.GetMock<IUserGateway>();
 
-            _subject = autoMocker.CreateInstance<Service>();
+            _subject = autoMocker.CreateInstance<UserService>();
         }
 
         protected void SetupGetUserIdByUserName(string username)
