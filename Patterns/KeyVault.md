@@ -4,11 +4,11 @@
 
 Each environment (Dev, Test, Acc and Prod) should have its own KeyVault. The KeyVaults of environments that are deployed automatically (Test, Acc and Prod) should be included in the deployment template of that environment, and services that require access to the KeyVault (App Services, VMs, etc) should access the KeyVault via their Managed Identity. The Managed Identity should be given a specific Access Policy in the KeyVault (usually LIST and GET) and that policy should be bound to the Principal Id of the Managed Identity.
 
-The development environment should also have its own KeyVault, which can be created manually in the Azure Portal. To give access to employees, an Access Policy should be created that is bound to the Id of the employee. An Access Policy for each of the employees that will work with the KeyVault is required; a user that is admin the Azure Directory will not automatically have access to the KeyVaults secrets.
+The development environment should also have its own KeyVault, which can be created manually in the Azure Portal. To give a user access to the KeyVault an Access Policy should be created for that specific user, with at least LIST and GET permissions. 
 
 ## How to implement KeyVault
 
-Since the KeyVault is another source of configuration, the setup of KeyVault as config provider must happen at the start of the application. A reference implementation is included in NETDefault/Libs/Triple.KeyVault. This will consists of a helper which must be invoked at configuration initialization, and a secret manager that supports prefixes.
+Since the KeyVault is another source of configuration, the setup of KeyVault as config provider must happen at the start of the application. A reference implementation is included in [NETDefault/Libs/Triple.KeyVault](https://github.com/wearetriple/dotnet-defaults/tree/keyvault/NETDefault/Libs/Triple.KeyVault). This consists of a helper which must be invoked at configuration initialization and a secret manager that supports prefixes.
 
 ### HostBuilder based applications
 

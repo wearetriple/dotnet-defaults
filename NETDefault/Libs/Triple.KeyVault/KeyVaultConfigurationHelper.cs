@@ -75,6 +75,8 @@ namespace Triple.KeyVault
                 }
                 catch
                 {
+                    // this exception is swallowed because there is no way of logging this exception, 
+                    // and crashing here will stop the startup of the application
                     return;
                 }
             }
