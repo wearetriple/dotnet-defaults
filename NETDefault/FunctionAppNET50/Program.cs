@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using FunctionAppNET50.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,7 @@ namespace FunctionAppNET50
                     // see Logging with ILogger<> using Serilog to Seq
                     Log.Logger = new LoggerConfiguration()
                         .ReadFrom.Configuration(context.Configuration)
+                        .Enrich.WithProperty("Project", Assembly.GetExecutingAssembly().GetName().Name)
                         .CreateLogger();
 
                     logging.AddSerilog(Log.Logger);

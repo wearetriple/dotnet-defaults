@@ -30,6 +30,10 @@ _logger.LogWarning(caughtException, "Saving invoice failed.");
 
 This will save and include the stack trace of that `caughtException` in Seq, making debugging that unexpected `NullReferenceException` much easier because it's location can be better determined.
 
+### Include project name
+
+When logging to Serilog, it is valuable to include the project name of the application in the configuration of Serilog. This will help in understanding where the log message came from, especially when it is a `Value cannot be null` coming out of nowhere. There are usually multiple projects that write to the same Api Key (API, CMS, Background service, etc), so it is not always clear where certain logging came from. To include the name of the project, use the `Enrich` fluent api of the `LoggerConfiguration`.
+
 ### Use useful log levels
 
 - `Fatal`: Application crashes.
