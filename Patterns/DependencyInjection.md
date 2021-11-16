@@ -44,13 +44,27 @@ When configuring the DI container, one can choose three different lifetimes of a
 
 - Don't inject everything as a Singleton because that will save allocations. .NET applications have a garbage collector that allocates quickly and web applications often do have hefty garbage collection runs. It's way more painful to downgrade a Singleton service to a Scoped service and find all the nasty bugs that causes than to just create a new object per request or per use.
 - Don't register a service as Scoped because it depends on a service that is Scoped. If it does not have internal state, register it as Transient.
-- Do register a service using its interface.
+- Register a service using its interface.
 
 ### Service factories
 
-When a service cannot be easily be constructed, because it depends on something that is only available at startup or it depends on a global static object, use the factory options that the container provides. This avoids having to create `IInterfaceXFactory` that generates a `IInterfaceX`, but still gives the option of executing some logic when the implementation of `IInterfaceX` is constructed.
+Some services cannot be constructed easily. This could be because it requires some data that cannot be resolved easily or requires data that cannot be registered in the DI container (like a `string`). The DI container can help with building these services as it allows for running a function every time the service is requested from the DI container. Because the depending service can just request `IHardToConstructService` and not care how the instance was constructed, this solution is invisible for the users of `IHardToConstructService`, so there is no need for a `IHardToConstructServiceFactory` which leaks the fact that `IHardToConstructService` is hard to construct.
 
 Example:
+
+```c#
+// in startup.cs
+services.AddTransient<IHardToConstructService>((serviceProvider) => 
+{
+    // do some custom logic before creating an instance of HardToBuild
+    var random = new Random();
+
+    // create a new instance of HardToBuild
+    return new HardToConstructService(random.NextDouble());
+});
+```
+
+The service factory can also be used to construct wrappers around global static object, like the Firebase SDK. By configuring the `IWrapperAroundGlobalStatic` as `Singleton` this will be the only instance within the application and the service factory will only be executed once. Users of `IWrapperAroundGlobalStatic` will just depend on the interface, and unit tests can simply mock `IWrapperAroundGlobalStatic` instead of having to override the global static object.
 
 ```c#
 // in startup.cs
@@ -62,15 +76,6 @@ services.AddSingleton<IWrapperAroundGlobalStatic>((serviceProvider) =>
 
     // all dependent services will use `IWrapperAroundGlobalStatic` and not even know its globally available
     return new WrapperAroundGlobalStatic(AnnoyingDependency.GlobalStatic.Instance);
-});
-```
-
-```c#
-// in startup.cs
-services.AddTransient<IHardToBuild>((serviceProvider) => 
-{
-    var random = new Random();
-    return new HardToBuild(random.NextDouble());
 });
 ```
 
@@ -121,3 +126,21 @@ If every implementation is the same, use the following instead:
 services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 ```
 
+### Registering `internal` services
+
+When building class libraries it is a good practice to shield library specific details away from other projects by marking some classes as `internal`. A service in `Contoso.Services` just needs `IRepository<SomeEntity>` from `Contoso.Repositories` and should not be able to touch `SomeEntityRepositoryImplementation`. But when registering that repository in the DI container `Contoso.API` a developer can no longer do `services.AddScoped<IRepository<SomeEntity>, SomeEntityRepositoryImplementation>()` as `Contoso.API` cannot access the internals of `Contoso.Repositories`. To solve this, every class library should have a `DependencyConfiguration.cs` file at the root of its project, containing something like this:
+
+```c#
+namespace Contoso.Repositories
+{
+    public static class DependencyConfiguration 
+    {
+        public static void Register(IServiceCollection services) 
+        {
+            services.AddScoped<IRepository<SomeEntity>, SomeEntityRepositoryImplementation>();
+        }
+    }
+}
+```
+
+Because this class is in the `Repositories` project, it can reference the internal `SomeEntityRepositoryImplementation`. `Contoso.API` can simply call `Repositories.DependencyConfiguration.Register(services)` and have all the appropriate services registered. Keep in mind that this approach is all or nothing, you either register all the services of a project, or none. If that is problematic, either split the project into multiple project as it has become too broad and contains a diffuse set of classes or split the `Register` method into multiple methods and call one or multiple of them in projects that use the library.
