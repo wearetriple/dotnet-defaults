@@ -33,6 +33,8 @@ The actual concrete class we are testing. Actually not very interesting here, ot
 
 This structure can be used to initialize your own test class and start writing tests to cover the acceptance criteria. Be sure to fully cover the class under test, for it reduces mistakes, and makes refactoring later easier.
 
+Keep in mind that the readability of the tests is more important than trying to avoid repeating code. Write small helper methods to avoid writing the same `_mock.Verify(x => x.SomeMethod(It.IsAny<Thing>()), Times.Once())` multiple times, but try to avoid writing logic in tests. Keep the test as simple as possible and create more tests, instead of more complicated tests.
+
 Further reading:
 [Unit Testing Best Practices](https://docs.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices)
 [Test Driven Development](https://www.agilealliance.org/glossary/tdd/)
