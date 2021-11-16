@@ -1,6 +1,8 @@
 # Dependency Injection
 
-Dependency Injection (DI) forms the basis of most of the applications build within Triple. It removes the burden of knowing how to construct and new-up dependencies and allows classes to simply ask for stuff and get it from the DI container.
+Dependency Injection (DI) forms the basis of most applications built within Triple. 
+It allows classes to specify what other objects they need (their dependencies) in their constructor signature, which will then be provided by the DI container.
+This moves the burden of knowing how to compose them out of the class itself. 
 
 ## Fundamentals
 
