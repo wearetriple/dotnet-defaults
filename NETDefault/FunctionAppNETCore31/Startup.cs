@@ -1,4 +1,5 @@
-﻿using FunctionAppNETCore31;
+﻿using System.Reflection;
+using FunctionAppNETCore31;
 using FunctionAppNETCore31.Models;
 using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +23,7 @@ namespace FunctionAppNETCore31
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.ControlledBy(logLevelSwitch)
+                        .Enrich.WithProperty("Project", Assembly.GetExecutingAssembly().GetName().Name)
                 .WriteTo.Seq(url, apiKey: key, controlLevelSwitch: logLevelSwitch)
                 .CreateLogger();
 

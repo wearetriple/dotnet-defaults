@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -31,6 +32,7 @@ namespace WebApp
                 {
                     // see Logging with ILogger<> using Serilog to Seq
                     Log.Logger = new LoggerConfiguration()
+                        .Enrich.WithProperty("Project", Assembly.GetExecutingAssembly().GetName().Name)
                         .ReadFrom.Configuration(context.Configuration)
                         .CreateLogger();
 
