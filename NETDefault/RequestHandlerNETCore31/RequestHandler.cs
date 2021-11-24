@@ -74,16 +74,26 @@ namespace RequestHandlerNETCore31
             catch (UnauthorizedAccessException ex)
             {
                 logger.LogWarning(ex, "{functionName}: Invalid credentials", functionMethodName, request.HttpContext.TraceIdentifier);
-                return new ObjectResult(null) { StatusCode = Status401Unauthorized };
+
+                return new StatusCodeResult(401);
+
+                // return new ObjectResult("Something to return") { StatusCode = Status401Unauthorized };
             }
-            catch (NotFoundException)
+            catch (NotFoundException ex)
             {
-                return new ObjectResult(null) { StatusCode = Status404NotFound };
+                logger.LogError(ex, "{functionName}: Not found", functionMethodName);
+
+                return new StatusCodeResult(404);
+
+                // return new ObjectResult("Something to return") { StatusCode = Status404NotFound };
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "{functionName}: Unhandled exception", functionMethodName);
-                return new ObjectResult(null) { StatusCode = Status500InternalServerError };
+
+                return new StatusCodeResult(500);
+
+                // return new ObjectResult("Something to return") { StatusCode = Status500InternalServerError };
             }
         }
     }
