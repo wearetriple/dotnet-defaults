@@ -48,7 +48,7 @@ When configuring the DI container, one can choose three different lifetimes of a
 
 ### Service factories
 
-Some services cannot be constructed easily. This could be because it requires some data that cannot be resolved easily or requires data that cannot be registered in the DI container (like a `string`). The DI container can help with building these services as it allows for running a function every time the service is requested from the DI container. Because the depending service can just request `IHardToConstructService` and not care how the instance was constructed, this solution is invisible for the users of `IHardToConstructService`, so there is no need for a `IHardToConstructServiceFactory` which leaks the fact that `IHardToConstructService` is hard to construct.
+Some services cannot be constructed easily. This could be because it requires some dynamic data or requires data that cannot be registered in the DI container (like a `string`). The DI container can help with building these services as it allows for running a factory function every time the service is requested from the DI container. Since the depending service can just request `IHardToConstructService` and not care how the instance was constructed, this solution is invisible for the users of `IHardToConstructService`, so there is no need for a `IHardToConstructServiceFactory` which leaks the fact that `IHardToConstructService` is hard to construct.
 
 Example:
 
@@ -56,11 +56,11 @@ Example:
 // in startup.cs
 services.AddTransient<IHardToConstructService>((serviceProvider) => 
 {
-    // do some custom logic before creating an instance of HardToBuild
-    var random = new Random();
+    // get a dynamic variable before creating an instance of HardToBuild
+    var seed = new Random().NextDouble();
 
-    // create a new instance of HardToBuild
-    return new HardToConstructService(random.NextDouble());
+    // create a new instance of HardToBuild with that dynamic variable
+    return new HardToConstructService(seed);
 });
 ```
 
@@ -128,7 +128,7 @@ services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 
 ### Registering `internal` services
 
-When building class libraries it is a good practice to shield library specific details away from other projects by marking some classes as `internal`. A service in `Contoso.Services` just needs `IRepository<SomeEntity>` from `Contoso.Repositories` and should not be able to touch `SomeEntityRepositoryImplementation`. But when registering that repository in the DI container `Contoso.API` a developer can no longer do `services.AddScoped<IRepository<SomeEntity>, SomeEntityRepositoryImplementation>()` as `Contoso.API` cannot access the internals of `Contoso.Repositories`. To solve this, every class library should have a `DependencyConfiguration.cs` file at the root of its project, containing something like this:
+When building class libraries it is a good practice to make library specific details invisible by marking some classes as `internal`. A service in `Contoso.Services` just needs `IRepository<SomeEntity>` from `Contoso.Repositories` and should not be able to see or touch `SomeEntityRepositoryImplementation`. But when registering that repository in the DI container `Contoso.API` a developer can no longer do `services.AddScoped<IRepository<SomeEntity>, SomeEntityRepositoryImplementation>()` as `Contoso.API` cannot access the internals of `Contoso.Repositories`. To solve this, every class library should have a `DependencyConfiguration.cs` file at the root of its project, containing something like this:
 
 ```c#
 namespace Contoso.Repositories
