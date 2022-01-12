@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using RequestHandlerNETCore31.HelperClasses;
-using static Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace RequestHandlerNETCore31
 {
@@ -76,24 +75,18 @@ namespace RequestHandlerNETCore31
                 logger.LogWarning(ex, "{functionName}: Invalid credentials", functionMethodName, request.HttpContext.TraceIdentifier);
 
                 return new StatusCodeResult(401);
-
-                // return new ObjectResult("Something to return") { StatusCode = Status401Unauthorized };
             }
             catch (NotFoundException ex)
             {
                 logger.LogError(ex, "{functionName}: Not found", functionMethodName);
 
                 return new StatusCodeResult(404);
-
-                // return new ObjectResult("Something to return") { StatusCode = Status404NotFound };
             }
             catch (Exception ex)
             {
                 logger.LogError(ex, "{functionName}: Unhandled exception", functionMethodName);
 
                 return new StatusCodeResult(500);
-
-                // return new ObjectResult("Something to return") { StatusCode = Status500InternalServerError };
             }
         }
     }
