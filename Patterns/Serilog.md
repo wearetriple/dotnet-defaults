@@ -58,6 +58,18 @@ It is useful to return unique identifiers like the TraceIdentifier when encounte
 
 When logging to Serilog, it is valuable to include the project name of the application in the configuration of Serilog. This will help in understanding where the log message came from, especially when it is a `Value cannot be null` coming out of nowhere. There are usually multiple projects that write to the same Api Key (API, CMS, Background service, etc), so it is not always clear where certain logging came from. To include the name of the project, use the `Enrich` fluent api of the `LoggerConfiguration`.
 
+### Use logging instead of debugging when developing locally
+
+It is very easy as .NET-developer to hit F5 (Start Debugging) and debug your application. The current tooling for .NET is of very high quality and it is easy to find issues in your code using debugging. But because of those debugging features it is even more easy to simply forget about adding log messages at the correct places.
+
+Because of this, try to finishing the last piece of a feature by not using any debugging features, and see if you can follow and debug the application using only logging. To aid in this, it could be useful to run a local SEQ instance using docker:
+
+```
+docker run --rm --name seq -d -e ACCEPT_EULA=Y -p 5341:80 datalust/seq:latest
+```
+
+This starts a SEQ instance under `http://localhost:5341` which you can use to post log messages to. Using a local instance makes it easy to follow your own log messages without having to ignore any other messages.
+
 ### Use useful log levels
 
 - `Fatal`: Application crashes.
