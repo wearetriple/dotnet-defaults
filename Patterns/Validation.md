@@ -15,6 +15,9 @@ public class Data
 
     [Required]
     public Data Parent { get; set; }
+
+    [Required, JsonConverter(typeof(DateConverter))]
+    public DateTime StartDate { get;. set; }
 }
 ```
 
@@ -45,3 +48,43 @@ public class Data
 ```
 
 The `[ValidateEnumerable]` and `[ValidateObject]` attributes instruct the validator to go into the enumerable or object. Error messages from the deeper properties are grouped under the error message of the `Children` and `Parent` properties. The implementation of these attributes can be found in NETDefault/Libs/Triple.DataAnnotations.
+
+### Validating dates
+
+Validating dates in a concise way can be achieved using specific JsonConverter classes. In the above example you can find the property `StartDate` of type `DateTime`. The `JsonConverter` makes use of the class `DateConverter`:
+
+```c#
+public class DateConverter : IsoDateTimeConverter
+{
+        public DateConverter()
+        {
+            DateTimeFormat = "yyyy-MM-dd";
+        }
+
+        public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
+        {
+            try
+            {
+                return base.ReadJson(reader, objectType, existingValue, serializer);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+}
+```
+
+### Validating strings using Regex
+
+Input validation with regex can be achieved by the use of attributes, inheriting from `RegularExpressionAttribute` Note that the regex pattern has been declared in the `base`
+
+```c#
+    public class StormtrooperIdAttribute : RegularExpressionAttribute
+    {
+        public StormtrooperIdAttribute() : base("^\\d{7}$")
+        {
+            ErrorMessage = "Invalid Stormtrooper Id: should consist of 7 numbers";
+        }
+    }
+```
