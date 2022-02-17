@@ -71,14 +71,10 @@ namespace RequestHandlerNETCore31
             }
             catch (UnauthorizedAccessException ex)
             {
-                logger.LogWarning(ex, "{functionName}: Invalid credentials", functionMethodName, request.HttpContext.TraceIdentifier);
-
                 return new StatusCodeResult(401);
             }
             catch (NotFoundException ex)
             {
-                logger.LogError(ex, "{functionName}: Not found", functionMethodName);
-
                 return new StatusCodeResult(404);
             }
             catch (Exception ex)
