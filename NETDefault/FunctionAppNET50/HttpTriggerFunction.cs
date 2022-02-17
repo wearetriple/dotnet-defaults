@@ -1,17 +1,21 @@
 ﻿using System.Net;
+using FunctionAppNET50.Models;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FunctionAppNET50
 {
     public class HttpTriggerFunction
     {
         private readonly ILogger<HttpTriggerFunction> _logger;
+        private readonly ExampleSettings _settings;
 
-        public HttpTriggerFunction(ILogger<HttpTriggerFunction> logger)
+        public HttpTriggerFunction(ILogger<HttpTriggerFunction> logger, IOptions<ExampleSettings> options)
         {
             _logger = logger;
+            _settings = options.Value;
         }
 
         [Function("HttpTriggerFunction")]
