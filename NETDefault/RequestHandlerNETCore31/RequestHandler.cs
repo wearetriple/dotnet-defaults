@@ -35,7 +35,6 @@ namespace RequestHandlerNETCore31
 
         /// <summary>
         /// Validates TRequestModel and invokes requestHandler.
-        /// 
         /// Catches common exceptions.
         /// </summary>
         /// <typeparam name="TRequestModel"></typeparam>
@@ -57,7 +56,7 @@ namespace RequestHandlerNETCore31
         private static async Task<IActionResult> HandleValidationAsync<TRequestModel>(HttpRequest request, TRequestModel requestBody, ILogger logger, Func<TRequestModel, Task<IActionResult>> requestHandler, string functionMethodName)
         {
             var validationResult = Utilities.ModelValidator(requestBody);
-            
+
             return !validationResult.IsValid
                 ? new BadRequestObjectResult(validationResult.ValidationResults)
                 : await HandleResponseAsync(request, logger, () => requestHandler(requestBody), functionMethodName);
