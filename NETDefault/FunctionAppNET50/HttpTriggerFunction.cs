@@ -10,12 +10,12 @@ namespace FunctionAppNET50
     public class HttpTriggerFunction
     {
         private readonly ILogger<HttpTriggerFunction> _logger;
-        private readonly IOptions<ExampleSettings> _options;
+        private readonly ExampleSettings _settings;
 
         public HttpTriggerFunction(ILogger<HttpTriggerFunction> logger, IOptions<ExampleSettings> options)
         {
             _logger = logger;
-            _options = options;
+            _settings = options.Value;
         }
 
         [Function("HttpTriggerFunction")]
