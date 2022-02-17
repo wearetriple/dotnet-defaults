@@ -12,9 +12,7 @@ Since `ASP.NET Core` 3.0 this in-process hosting has been enabled by default for
 </PropertyGroup>
 ```
 
-If your application is using the default in-process hosting, then using the static [RequestHandlerNETCore31](../RequestHandlerNETCore31/RequestHandler.cs) for `ASP.NET Core 3.1` is your pick.
-
-The in-process hosting model offers better performance over out-of-process, but on the other hand offers less control. Out-of-process hosting has the benefit of employing [middleware](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-6.0), which offers more fine-grained modular control over requests and responses. 
+The in-process hosting model offers better performance over out-of-process, but on the other hand offers less control. Out-of-process hosting has the benefit of employing [middleware](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-6.0), which offers more fine-grained modular control over requests and responses.
 
 Important difference:
 
@@ -26,7 +24,7 @@ Important difference:
 
 ### .NET Core 3.1
 
-- Create your own _RequestHandler_ class, preferrably in a _Common_ place.
+- Create your own [RequestHandler](../RequestHandlerNETCore31/RequestHandler.cs) class, preferrably in a _Common_ place.
 - In the endpoint that receives the HTTP Request you can use it directly, for it is a static class.
 
 ## .NET 6.0
