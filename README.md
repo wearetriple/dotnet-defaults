@@ -5,6 +5,7 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 ## Required patterns
 
 - [Readme](Patterns/Readme.md)
+- [Dependency Injection](Patterns/DependencyInjection.md)
 - [Layered project](Patterns/LayeredProject.md)
 - [Nullable reference types](Patterns/Nullables.md)
 - [Options pattern](Patterns/Options.md)
