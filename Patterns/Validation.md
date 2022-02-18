@@ -16,8 +16,11 @@ public class Data
     [Required]
     public Data Parent { get; set; }
 
-    [Required, JsonConverter(typeof(DateConverter))]
-    public DateTime StartDate { get;. set; }
+    [Required, JsonConverter(typeof(DateConverter))] // Uses the default constructor
+    public DateTime StartDate { get; set; }
+
+    [Required, JsonConverter(typeof(DateConverter), "yyyy-MM")] // Overloads the constructor with a custom format
+    public DateTime EndMonth { get; set; }
 }
 ```
 
@@ -51,7 +54,7 @@ The `[ValidateEnumerable]` and `[ValidateObject]` attributes instruct the valida
 
 ### Validating dates
 
-Validating dates in a concise way can be achieved using specific JsonConverter classes. In the above example you can find the property `StartDate` of type `DateTime`. The `JsonConverter` makes use of the class `DateConverter`:
+Validating dates in a concise way can be achieved using specific JsonConverter classes. In the above example you can find the property `StartDate` of type `DateTime`, using the default constructor for DateConverter. You can overload the constructor with a custom format as shown by the `EndMonth` property. The `JsonConverter` makes use of the class `DateConverter`:
 
 ```c#
 public class DateConverter : IsoDateTimeConverter
@@ -59,6 +62,11 @@ public class DateConverter : IsoDateTimeConverter
         public DateConverter()
         {
             DateTimeFormat = "yyyy-MM-dd";
+        }
+
+        public DateConverter(string format)
+        {
+            DateTimeFormat = format;
         }
 
         public override object? ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer)
@@ -74,6 +82,9 @@ public class DateConverter : IsoDateTimeConverter
         }
 }
 ```
+
+:warning: Be aware that deserialization occurs before validation, which means that `2000-01-01` cannot be parsed with the format `yyyy-MM` which will result in an exception. The `try-catch` block ensures `null` is returned in these cases, which causes the `DateConverter` to default to `DateTime.MinValue`.
+Mitigating this can be done by adding a `[Range]` to catch the `DateTime.Minvalue`.
 
 ### Validating strings using Regex
 
