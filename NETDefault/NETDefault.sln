@@ -1,4 +1,3 @@
-﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31808.319
@@ -27,7 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestingExample", "UnitT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Triple.KeyVault", "Libs\Triple.KeyVault\Triple.KeyVault.csproj", "{ADF9185D-C353-4D30-9C67-4BC436F59115}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Triple.Extensions.Logging", "Libs\Triple.Extensions.Logging\Triple.Extensions.Logging.csproj", "{24077E79-1DC1-468A-AA9C-8A7997D83BB2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestHandlerNETCore31", "RequestHandlerNETCore31\RequestHandlerNETCore31.csproj", "{303A6F1C-D140-43C9-9E70-DD5C3885BFED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,10 +62,10 @@ Global
 		{ADF9185D-C353-4D30-9C67-4BC436F59115}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADF9185D-C353-4D30-9C67-4BC436F59115}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADF9185D-C353-4D30-9C67-4BC436F59115}.Release|Any CPU.Build.0 = Release|Any CPU
-		{24077E79-1DC1-468A-AA9C-8A7997D83BB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{24077E79-1DC1-468A-AA9C-8A7997D83BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{24077E79-1DC1-468A-AA9C-8A7997D83BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{24077E79-1DC1-468A-AA9C-8A7997D83BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{303A6F1C-D140-43C9-9E70-DD5C3885BFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{303A6F1C-D140-43C9-9E70-DD5C3885BFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{303A6F1C-D140-43C9-9E70-DD5C3885BFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{303A6F1C-D140-43C9-9E70-DD5C3885BFED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -75,7 +74,6 @@ Global
 		{66F585E9-EA6D-4BC4-AFFB-3DD5D32A34A0} = {3B338A95-0EBC-49D1-9E3A-D793FB928F6B}
 		{5A2CB20C-4DA7-4A23-BCD3-7840714B1753} = {3B338A95-0EBC-49D1-9E3A-D793FB928F6B}
 		{ADF9185D-C353-4D30-9C67-4BC436F59115} = {3B338A95-0EBC-49D1-9E3A-D793FB928F6B}
-		{24077E79-1DC1-468A-AA9C-8A7997D83BB2} = {3B338A95-0EBC-49D1-9E3A-D793FB928F6B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C5486E77-E6A0-4398-9683-B4BF44008D49}
