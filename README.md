@@ -17,7 +17,7 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 ## Good practices
 
 - [Request cancellation](Patterns/CancelRequest.md)
-- [Hosted service](Patterns/HostedServices.md)
+- [Hosted service](Patterns/HostedService.md)
 - [Data Annotation Validation](Patterns/Validation.md)
 
 ## More guidelines
