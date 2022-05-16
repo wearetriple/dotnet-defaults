@@ -8,7 +8,7 @@ The development environment should also have its own KeyVault, which can be crea
 
 ## How to implement KeyVault
 
-Since the KeyVault is another source of configuration, the setup of KeyVault as config provider must happen at the start of the application. A reference implementation is included in [NETDefault/Libs/Triple.KeyVault](https://github.com/wearetriple/dotnet-defaults/tree/keyvault/NETDefault/Libs/Triple.KeyVault). This consists of a helper which must be invoked at configuration initialization and a secret manager that supports prefixes.
+Since the KeyVault is another source of configuration, the setup of KeyVault as config provider must happen at the start of the application. A reference implementation is included in [NETDefault/Libs/Triple.KeyVault](https://github.com/wearetriple/dotnet-defaults/tree/main/NETDefault/Libs/Triple.KeyVault). This consists of a helper which must be invoked at configuration initialization and a secret manager that supports prefixes.
 
 ### HostBuilder based applications
 
