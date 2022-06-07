@@ -144,7 +144,8 @@ namespace Contoso.Repositories
 }
 ```
 
-Because this class is in the `Repositories` project, it can reference the internal `SomeEntityRepositoryImplementation`. `Contoso.API` can simply call `services.AddContosoRepositories()` and have all the appropriate services registered. Keep in mind that this approach is all or nothing, you either register all the services of a project, or none. If that is problematic, either split the project into multiple project as it has become too broad and contains a diffuse set of classes or split the extension method into multiple methods and call one or multiple of them in projects that use the library.
+Because this class is in the `Repositories` project, it can reference the internal `SomeEntityRepositoryImplementation`. `Contoso.API` can simply call `services.AddContosoRepositories()` and have all the appropriate services registered. Keep in mind that this approach should be all or nothing, you either take full control of dependency registration in your library, or leave it entirely up to users of your library what services to inject. 
+If you run into problems with your library injecting a lot of unused services, you should either split the project into multiple projects as it has become too broad and contains a diffuse set of classes or split the extension method into multiple methods and call one or multiple of them in projects that use the library.
 
 #### Configuration with options
 
