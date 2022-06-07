@@ -144,12 +144,14 @@ namespace Contoso.Repositories
 }
 ```
 
-Because this class is in the `Repositories` project, it can reference the internal `SomeEntityRepositoryImplementation`. `Contoso.API` can simply call `services.AddContosoRepositories()` and have all the appropriate services registered. Keep in mind that this approach should be all or nothing, you either take full control of dependency registration in your library, or leave it entirely up to users of your library what services to inject. 
+Because this class is in the `Repositories` project, it can reference the internal `SomeEntityRepositoryImplementation`. `Contoso.API` can simply call `services.AddContosoRepositories()` and have all the appropriate services registered. Because calls to the dependency container are idempotent, you can safely have your library depend on the dependency registration of others by calling their registration in yours.  e.g. a `Contoso.Services` project is allowed to call `.AddContosoRepositories`.
+
+Keep in mind that this approach should be all or nothing, you either take full control of dependency registration in your library, or leave it entirely up to users of your library what services to inject. 
 If you run into problems with your library injecting a lot of unused services, you should either split the project into multiple projects as it has become too broad and contains a diffuse set of classes or split the extension method into multiple methods and call one or multiple of them in projects that use the library.
 
 #### Configuration with options
 
-It is good practice to combine this with the options pattern by having the extension methods accept a IConfiguration instance to allow the library to setup its own configuration:
+It is good practice to combine this with the [Options pattern](Options.md) by having the extension methods accept a IConfiguration instance to allow the library to setup its own configuration:
 
 ```c#
 namespace Contoso.Gateway
