@@ -128,14 +128,15 @@ services.AddTransient(typeof(IRepository<>), typeof(Repository<>));
 
 ### Registering `internal` services
 
-When building class libraries it is a good practice to make library specific details invisible by marking some classes as `internal`. A service in `Contoso.Services` just needs `IRepository<SomeEntity>` from `Contoso.Repositories` and should not be able to see or touch `SomeEntityRepositoryImplementation`. But when registering that repository in the DI container `Contoso.API` a developer can no longer do `services.AddScoped<IRepository<SomeEntity>, SomeEntityRepositoryImplementation>()` as `Contoso.API` cannot access the internals of `Contoso.Repositories`. To solve this, every class library should have a `DependencyConfiguration.cs` file at the root of its project, containing something like this:
+When building class libraries it is a good practice to make library specific details invisible by marking some classes as `internal`. A service in `Contoso.Services` just needs `IRepository<SomeEntity>` from `Contoso.Repositories` and should not be able to see or touch `SomeEntityRepositoryImplementation`. But when registering that repository in the DI container `Contoso.API` a developer can no longer do `services.AddScoped<IRepository<SomeEntity>, SomeEntityRepositoryImplementation>()` as `Contoso.API` cannot access the internals of `Contoso.Repositories`. 
+To solve this, every class library should provide extension method on IServiceCollection like this:
 
 ```c#
 namespace Contoso.Repositories
 {
-    public static class DependencyConfiguration 
+    public static class ContosoRepositoriesServiceCollectionExtensions 
     {
-        public static void Register(IServiceCollection services) 
+        public static void AddContosoRepositories(this IServiceCollection services) 
         {
             services.AddScoped<IRepository<SomeEntity>, SomeEntityRepositoryImplementation>();
         }
@@ -143,4 +144,23 @@ namespace Contoso.Repositories
 }
 ```
 
-Because this class is in the `Repositories` project, it can reference the internal `SomeEntityRepositoryImplementation`. `Contoso.API` can simply call `Repositories.DependencyConfiguration.Register(services)` and have all the appropriate services registered. Keep in mind that this approach is all or nothing, you either register all the services of a project, or none. If that is problematic, either split the project into multiple project as it has become too broad and contains a diffuse set of classes or split the `Register` method into multiple methods and call one or multiple of them in projects that use the library.
+Because this class is in the `Repositories` project, it can reference the internal `SomeEntityRepositoryImplementation`. `Contoso.API` can simply call `services.AddContosoRepositories()` and have all the appropriate services registered. Keep in mind that this approach is all or nothing, you either register all the services of a project, or none. If that is problematic, either split the project into multiple project as it has become too broad and contains a diffuse set of classes or split the extension method into multiple methods and call one or multiple of them in projects that use the library.
+
+#### Configuration with options
+
+It is good practice to combine this with the options pattern by having the extension methods accept a IConfiguration instance to allow the library to setup its own configuration:
+
+```c#
+namespace Contoso.Gateway
+{
+    public static class ContosoGatewayServiceCollectionExtensions
+    {
+        public static void AddContosoRepositories(this IServiceCollection services, IConfiguration config) 
+        {
+            services.AddScoped<ISomeGateway, SomeGatewayImpelmentation>();
+			services.AddOptions<SomeGatewayConfiguration>()
+				.Bind(configuration.GetSection(SomeGatewayConfiguration.SectionName));
+        }
+    }
+}
+```
