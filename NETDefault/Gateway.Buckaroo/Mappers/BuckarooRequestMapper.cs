@@ -227,12 +227,12 @@ internal static class BuckarooRequestMapper
 
         foreach (var parameter in debtorParameters)
         {
-            subscriptionRequestDto.Services.ServiceList.FirstOrDefault()!.Parameters!.Add(parameter);
+            subscriptionRequestDto.Services.ServiceList.First().Parameters!.Add(parameter);
         }
 
         foreach (var parameter in subscriptionChargeParameters)
         {
-            subscriptionRequestDto.Services.ServiceList.FirstOrDefault()!.Parameters!.Add(parameter);
+            subscriptionRequestDto.Services.ServiceList.First().Parameters!.Add(parameter);
         }
 
         return subscriptionRequestDto;
