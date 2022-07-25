@@ -19,9 +19,7 @@ public class HmacDelegatingHandler : DelegatingHandler
         var requestContentBase64String = string.Empty;
         var requestUri = Uri.EscapeDataString(request.RequestUri!.Authority + request.RequestUri.PathAndQuery).ToLower();
 
-        var epochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
-        var timeSpan = DateTime.UtcNow - epochStart;
-        var requestTimeStamp = Convert.ToUInt64(timeSpan.TotalSeconds).ToString();
+        var requestTimeStamp = Convert.ToUInt64(DateTimeOffset.UtcNow.ToUnixTimeSeconds()).ToString();
 
         var nonce = Guid.NewGuid().ToString("N");
 
