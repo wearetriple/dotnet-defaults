@@ -4,8 +4,6 @@ namespace Gateway.Buckaroo;
 
 public class BuckarooConfiguration
 {
-    public const string SectionName = nameof(BuckarooConfiguration);
-
     [Required]
     public string WebsiteKey { get; set; } = null!;
 

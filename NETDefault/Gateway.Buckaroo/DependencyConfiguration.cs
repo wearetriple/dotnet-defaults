@@ -1,11 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Gateway.Buckaroo;
 
-public class DependencyConfiguration
+public static class DependencyConfiguration
 {
-    public static void Register(IServiceCollection services)
+    public static void AddBuckaroo(this IServiceCollection services, HostBuilderContext context)
     {
+        services.AddOptions<BuckarooConfiguration>()
+                  .Bind(context.Configuration.GetSection(nameof(BuckarooConfiguration)))
+                  .ValidateDataAnnotations();
+
         services.AddScoped<ISubscriptionGateway, BuckarooGateway>();
 
         services.AddTransient<HmacDelegatingHandler>();
