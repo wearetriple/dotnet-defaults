@@ -1,4 +1,5 @@
-﻿using Gateway.Buckaroo.Models.Dto.Requests;
+﻿using Gateway.Buckaroo.Constants;
+using Gateway.Buckaroo.Models.Dto.Requests;
 using Gateway.Buckaroo.Models.Request;
 
 namespace Gateway.Buckaroo.Mappers;
@@ -12,21 +13,21 @@ internal static class BuckarooRequestMapper
             {
                 ServiceList = new List<ServiceListDto>
                 {
-                        new ServiceListDto
+                    new ServiceListDto
+                    {
+                        Name = ParameterConstants.CreditManagement3,
+                        Action = ParameterConstants.DebtorInfo,
+                        Parameters = new List<ParameterDto>
                         {
-                            Name = "CreditManagement3",
-                            Action = "DebtorInfo",
-                            Parameters = new List<ParameterDto>
+                            new ParameterDto
                             {
-                                new ParameterDto
-                                {
-                                    Name = "DebtorCode",
-                                    GroupType = "Debtor",
-                                    GroupID = "",
-                                    Value = request.DebtorId.ToString()
-                                }
+                                Name = ParameterConstants.DebtorCode,
+                                GroupType = ParameterConstants.Debtor,
+                                GroupID = "",
+                                Value = request.DebtorId.ToString()
                             }
                         }
+                    }
                 }
             }
         };
@@ -37,50 +38,50 @@ internal static class BuckarooRequestMapper
         {
             new ParameterDto
             {
-                Name = "RatePlanCode",
-                GroupType = "AddRatePlan",
+                Name = ParameterConstants.RatePlanCode,
+                GroupType = ParameterConstants.AddRatePlan,
                 GroupID = "subscription",
                 Value = request.Subscription.SubscriptionCharge.RatePlanCode
             },
             new ParameterDto
             {
-                Name = "RatePlanChargeCode",
-                GroupType = "AddRatePlanCharge",
+                Name = ParameterConstants.RatePlanChargeCode,
+                GroupType = ParameterConstants.AddRatePlanCharge,
                 GroupID = "subscription",
                 Value = request.Subscription.SubscriptionCharge.RatePlanChargeCode
             },
             new ParameterDto
             {
-                Name = "PricePerUnit",
-                GroupType = "AddRatePlanCharge",
+                Name = ParameterConstants.PricePerUnit,
+                GroupType = ParameterConstants.AddRatePlanCharge,
                 GroupID = "subscription",
                 Value = request.Subscription.SubscriptionCharge.PricePerUnit.ToString(),
             },
             new ParameterDto
             {
-                Name = "VatPercentage",
-                GroupType = "AddRatePlanCharge",
+                Name = ParameterConstants.VatPercentage,
+                GroupType = ParameterConstants.AddRatePlanCharge,
                 GroupID = "subscription",
                 Value = request.Subscription.SubscriptionCharge.VatPercentage.ToString(),
             },
             new ParameterDto
             {
-                Name = "TransactionVatPercentage",
+                Name = ParameterConstants.TransactionVatPercentage,
                 GroupType = "",
                 GroupID = "subscription",
                 Value = "21",
             },
             new ParameterDto
             {
-                Name = "StartDate",
-                GroupType = "AddRatePlan",
+                Name = ParameterConstants.StartDate,
+                GroupType = ParameterConstants.AddRatePlan,
                 GroupID = "subscription",
                 Value = request.Subscription.SubscriptionCharge.StartDate.ToString("dd-MM-yyyy"),
             },
             new ParameterDto
             {
-                Name = "EndDate",
-                GroupType = "AddRatePlan",
+                Name = ParameterConstants.EndDate,
+                GroupType = ParameterConstants.AddRatePlan,
                 GroupID = "subscription",
                 Value = request.Subscription.SubscriptionCharge.EndDate == null ? "" : request.Subscription.SubscriptionCharge.EndDate.Value.ToString("dd-MM-yyyy")
             }
@@ -92,7 +93,7 @@ internal static class BuckarooRequestMapper
             {
                 new CustomParameterDto
                 {
-                    Name = "Gender",
+                    Name = ParameterConstants.Gender,
                     Value = "Other"
                 }
             }
@@ -102,85 +103,85 @@ internal static class BuckarooRequestMapper
         {
             new ParameterDto
             {
-                Name = "Code",
-                GroupType = "Debtor",
+                Name = ParameterConstants.Code,
+                GroupType = ParameterConstants.Debtor,
                 GroupID = "",
                 Value = request.Debtor.Id.ToString()
             },
             new ParameterDto
             {
-                Name = "FirstName",
-                GroupType = "Person",
+                Name = ParameterConstants.FirstName,
+                GroupType = ParameterConstants.Person,
                 GroupID = "",
                 Value = request.Debtor.FirstName
             },
             new ParameterDto
             {
-                Name = "LastName",
-                GroupType = "Person",
+                Name = ParameterConstants.LastName,
+                GroupType = ParameterConstants.Person,
                 GroupID = "",
                 Value = request.Debtor.LastName
             },
             new ParameterDto
             {
-                Name = "Culture",
-                GroupType = "Person",
+                Name = ParameterConstants.Culture,
+                GroupType = ParameterConstants.Person,
                 GroupID = "",
                 Value = "nl-NL"
             },
             new ParameterDto
             {
-                Name = "Street",
-                GroupType = "Address",
+                Name = ParameterConstants.Street,
+                GroupType = ParameterConstants.Address,
                 GroupID = "",
                 Value = request.Debtor.Address.Street
             },
             new ParameterDto
             {
-                Name = "HouseNumber",
-                GroupType = "Address",
+                Name = ParameterConstants.HouseNumber,
+                GroupType = ParameterConstants.Address,
                 GroupID = "",
                 Value = request.Debtor.Address.HouseNumber.ToString()
             },
             new ParameterDto
             {
-                Name = "HouseNumberSuffix",
-                GroupType = "Address",
+                Name = ParameterConstants.HouseNumberSuffix,
+                GroupType = ParameterConstants.Address,
                 GroupID = "",
                 Value = request.Debtor.Address.HouseNumberSuffix
             },
             new ParameterDto
             {
-                Name = "ZipCode",
-                GroupType = "Address",
+                Name = ParameterConstants.ZipCode,
+                GroupType = ParameterConstants.Address,
                 GroupID = "",
                 Value = request.Debtor.Address.PostalCode
             },
             new ParameterDto
             {
-                Name = "City",
-                GroupType = "Address",
+                Name = ParameterConstants.City,
+                GroupType = ParameterConstants.Address,
                 GroupID = "",
                 Value = request.Debtor.Address.City
             },
             new ParameterDto
             {
-                Name = "Country",
-                GroupType = "Address",
+                Name = ParameterConstants.Country,
+                GroupType = ParameterConstants.Address,
                 GroupID = "",
                 Value = "NL"
             },
             new ParameterDto
             {
-                Name = "Email",
-                GroupType = "Email",
+                Name = ParameterConstants.Email,
+                GroupType = ParameterConstants.Email,
                 GroupID = "",
                 Value = request.Debtor.EmailAddress
             },
             new ParameterDto
             {
-                Name = "Mobile",
-                GroupType = "Phone",
+                Name = ParameterConstants.Mobile,
+                GroupType = ParameterConstants.Phone,
                 GroupID = "",
                 Value = request.Debtor.PhoneNumber
             }
@@ -202,20 +203,20 @@ internal static class BuckarooRequestMapper
                     {
                         new ServiceListDto
                         {
-                            Name = "Subscriptions",
-                            Action = "CreateCombinedSubscription",
+                            Name = ParameterConstants.Subscriptions,
+                            Action = ParameterConstants.CreateCombinedSubscription,
                             Parameters = new List<ParameterDto>
                             {
                                 new ParameterDto
                                 {
-                                    Name = "IncludeTransaction",
+                                    Name = ParameterConstants.IncludeTransaction,
                                     GroupType = "",
                                     GroupID = "",
                                     Value = "true"
                                 },
                                 new ParameterDto
                                 {
-                                    Name = "ConfigurationCode",
+                                    Name = ParameterConstants.ConfigurationCode,
                                     Value = request.Subscription.ConfigurationCode
                                 }
                             }
