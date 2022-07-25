@@ -4,5 +4,5 @@ internal class ServiceDto
 {
     public string? Name { get; set; }
     public object? Action { get; set; }
-    public ParameterDto[]? Parameters { get; set; }
+    public List<ParameterDto>? Parameters { get; set; }
 }

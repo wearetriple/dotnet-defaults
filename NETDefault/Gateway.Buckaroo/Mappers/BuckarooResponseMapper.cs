@@ -1,4 +1,6 @@
-﻿using Gateway.Buckaroo.Models.Dto.Responses;
+﻿using AndC.Platform.Gateways.Buckaroo.Extensions;
+using Gateway.Buckaroo.Constants;
+using Gateway.Buckaroo.Models.Dto.Responses;
 using Gateway.Buckaroo.Models.Entities;
 
 namespace Gateway.Buckaroo.Mappers;
@@ -7,26 +9,25 @@ internal static class BuckarooResponseMapper
 {
     internal static Debtor Map(DebtorInfoResponseDto response)
     {
-        var id = response?.Services?.FirstOrDefault(s => s.Name == "CreditManagement3")?.Parameters?.FirstOrDefault(p => p.Name == "Code")?.Value;
-        var guid = string.IsNullOrWhiteSpace(id)
-            ? Guid.Empty
-            : Guid.Parse(id);
+        var parameters = response.GetServiceParameters();
 
         return new Debtor
         {
-            Id = guid,
-            FirstName = response?.Services?.FirstOrDefault(s => s.Name == "CreditManagement3")?.Parameters?.FirstOrDefault(p => p.Name == "FirstName")?.Value ?? "",
-            LastName = response?.Services?.FirstOrDefault(s => s.Name == "CreditManagement3")?.Parameters?.FirstOrDefault(p => p.Name == "LastName")?.Value ?? "",
-            EmailAddress = response?.Services?.FirstOrDefault(s => s.Name == "CreditManagement3")?.Parameters?.FirstOrDefault(p => p.Name == "Email")?.Value ?? "",
-            PhoneNumber = response?.Services?.FirstOrDefault(s => s.Name == "CreditManagement3")?.Parameters?.FirstOrDefault(p => p.Name == "Mobile")?.Value ?? "",
+            Id = parameters.GetGuidByName(ParameterConstants.Code),
+            FirstName = parameters.GetStringByName(ParameterConstants.FirstName),
+            LastName = parameters.GetStringByName(ParameterConstants.LastName),
+            EmailAddress = parameters.GetStringByName(ParameterConstants.Email),
+            PhoneNumber = parameters.GetStringByName(ParameterConstants.Mobile),
             Address = new Address
             {
-                Street = response?.Services?.FirstOrDefault(s => s.Name == "CreditManagement3")?.Parameters?.FirstOrDefault(p => p.Name == "Street")?.Value ?? "",
-                HouseNumber = int.Parse(response?.Services?.FirstOrDefault(s => s.Name == "CreditManagement3")?.Parameters?.FirstOrDefault(p => p.Name == "HouseNumber")?.Value!),
-                HouseNumberSuffix = response?.Services?.FirstOrDefault(s => s.Name == "CreditManagement3")?.Parameters?.FirstOrDefault(p => p.Name == "HouseNumberSuffix")?.Value ?? "",
-                PostalCode = response?.Services?.FirstOrDefault(s => s.Name == "CreditManagement3")?.Parameters?.FirstOrDefault(p => p.Name == "ZipCode")?.Value ?? "",
-                City = response?.Services?.FirstOrDefault(s => s.Name == "CreditManagement3")?.Parameters?.FirstOrDefault(p => p.Name == "City")?.Value ?? "",
-            }
+                Street = parameters.GetStringByName(ParameterConstants.Street),
+                HouseNumber = parameters.GetIntByName(ParameterConstants.HouseNumber),
+                HouseNumberSuffix = parameters.GetStringByName(ParameterConstants.HouseNumberSuffix),
+                PostalCode = parameters.GetStringByName(ParameterConstants.ZipCode),
+                City = parameters.GetStringByName(ParameterConstants.City),
+            },
+            SubscriptionIds = parameters.GetStringCollectionByName(ParameterConstants.SubscriptionIds),
+            InvoiceIds = parameters.GetStringCollectionByName(ParameterConstants.InvoiceIds),
         };
     }
 }

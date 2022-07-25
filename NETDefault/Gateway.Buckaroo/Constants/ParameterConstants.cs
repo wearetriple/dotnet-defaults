@@ -8,6 +8,8 @@ internal class ParameterConstants
     public const string IncludeTransaction = "IncludeTransaction";
     public const string ConfigurationCode = "ConfigurationCode";
     public const string Code = "Code";
+    public const string SubscriptionIds = "SubscriptionGuids";
+    public const string InvoiceIds = "InvoiceNumbers";
 
     public const string DebtorInfo = "DebtorInfo";
     public const string DebtorCode = "DebtorCode";
