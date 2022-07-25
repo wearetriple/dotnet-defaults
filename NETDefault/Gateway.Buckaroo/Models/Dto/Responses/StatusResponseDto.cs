@@ -2,7 +2,7 @@
 
 internal class StatusResponseDto
 {
-    public CodeDto? Code { get; set; }
-    public SubCodeDto? SubCode { get; set; }
+    public CodeDto Code { get; set; } = null!;
+    public SubCodeDto SubCode { get; set; } = null!;
     public DateTime? DateTime { get; set; }
 }

@@ -29,14 +29,14 @@ public class BuckarooGateway : ISubscriptionGateway
         {
             var buckarooResponse = await _client.PostDataRequestAsync<GetDebtorInfoRequestDto, DebtorInfoResponseDto>(buckarooRequest);
 
-            if (buckarooResponse!.Status!.Code!.Description!.Contains("Success"))
+            if (buckarooResponse.Status.Code.Description.Contains("Success"))
             {
                 _logger.LogInformation("Succesfully found debtor {id}", requestModel.DebtorId);
 
                 return BuckarooResponseMapper.Map(buckarooResponse);
             }
 
-            if (buckarooResponse!.Status!.SubCode!.Description!.Contains("The debtor is not found"))
+            if (buckarooResponse.Status.SubCode.Description.Contains("The debtor is not found"))
             {
                 _logger.LogInformation("Failed to find debtor {id}", requestModel.DebtorId);
 
@@ -63,12 +63,12 @@ public class BuckarooGateway : ISubscriptionGateway
         {
             var buckarooResponse = await _client.PostTransactionAsync<CreateCombinedSubscriptionRequestDto, CreateCombinedSubscriptionResponseDto>(buckarooRequest);
 
-            if (buckarooResponse!.Status!.Code!.Description!.Contains("Pending input"))
+            if (buckarooResponse.Status.Code.Description.Contains("Pending input"))
             {
-                return buckarooResponse?.RequiredAction?.RedirectURL;
+                return buckarooResponse.RequiredAction.RedirectURL;
             }
 
-            throw new BuckarooGatewayException(buckarooResponse!.Status!.Code!.Description!);
+            throw new BuckarooGatewayException(buckarooResponse.Status.Code.Description);
         }
         catch (Exception ex)
         {

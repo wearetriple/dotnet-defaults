@@ -2,7 +2,7 @@
 
 internal class RequiredActionDto
 {
-    public string? RedirectURL { get; set; }
+    public string RedirectURL { get; set; } = "";
     public object? RequestedInformation { get; set; }
     public object? PayRemainderDetails { get; set; }
     public string? Name { get; set; }

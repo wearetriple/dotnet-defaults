@@ -3,7 +3,7 @@
 internal class DebtorInfoResponseDto
 {
     public string? Key { get; set; }
-    public StatusResponseDto? Status { get; set; }
+    public StatusResponseDto Status { get; set; } = null!;
     public object? RequiredAction { get; set; }
     public ServiceDto[]? Services { get; set; }
     public ParameterDto[]? CustomParameters { get; set; }

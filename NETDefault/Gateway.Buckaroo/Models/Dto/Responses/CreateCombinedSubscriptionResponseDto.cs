@@ -3,8 +3,8 @@
 internal class CreateCombinedSubscriptionResponseDto
 {
     public string? Key { get; set; }
-    public StatusResponseDto? Status { get; set; }
-    public RequiredActionDto? RequiredAction { get; set; }
+    public StatusResponseDto Status { get; set; } = null!;
+    public RequiredActionDto RequiredAction { get; set; } = null!;
     public ServiceDto[]? Services { get; set; }
     public object? CustomParameters { get; set; }
     public object? AdditionalParameters { get; set; }
