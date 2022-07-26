@@ -19,6 +19,10 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 - [Hosted service](Patterns/HostedServices.md)
 - [Data Annotation Validation](Patterns/Validation.md)
 
+## Kickstart Templates
+
+- [Buckaroo](NETDefault/Gateway.Buckaroo/)
+
 ## More guidelines
 
 - [Coding guidelines](CodingGuidelines.md)
