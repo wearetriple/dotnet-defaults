@@ -3,6 +3,7 @@
 Keyword | Description
 ------------ | -------------
 Accessor | A class tasked to return a specific value or object that is used at many places (like IHttpContextAccessor).
+DTO | A data transfer object (DTO) is an object that defines how the data will be sent over the network. 
 Gateway | An API Gateway serves as a central interface / project for all external communications for a specific endpoint.
 Helper | A static object containing methods that help with simple, mundane tasks.
 Provider | A class implementing a certain strategy / algorithm.
