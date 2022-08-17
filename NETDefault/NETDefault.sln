@@ -26,6 +26,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTestingExample", "UnitT
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Triple.KeyVault", "Libs\Triple.KeyVault\Triple.KeyVault.csproj", "{ADF9185D-C353-4D30-9C67-4BC436F59115}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gateway.Buckaroo", "Gateway.Buckaroo\Gateway.Buckaroo.csproj", "{A6828A79-6305-4090-8987-00BE45BF566E}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RequestHandlerNETCore31", "RequestHandlerNETCore31\RequestHandlerNETCore31.csproj", "{303A6F1C-D140-43C9-9E70-DD5C3885BFED}"
 EndProject
 Global
@@ -62,6 +63,10 @@ Global
 		{ADF9185D-C353-4D30-9C67-4BC436F59115}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADF9185D-C353-4D30-9C67-4BC436F59115}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADF9185D-C353-4D30-9C67-4BC436F59115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6828A79-6305-4090-8987-00BE45BF566E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6828A79-6305-4090-8987-00BE45BF566E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6828A79-6305-4090-8987-00BE45BF566E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6828A79-6305-4090-8987-00BE45BF566E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{303A6F1C-D140-43C9-9E70-DD5C3885BFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{303A6F1C-D140-43C9-9E70-DD5C3885BFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{303A6F1C-D140-43C9-9E70-DD5C3885BFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
