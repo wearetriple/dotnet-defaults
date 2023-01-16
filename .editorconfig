@@ -46,6 +46,9 @@ dotnet_style_collection_initializer = true:error
 dotnet_style_coalesce_expression = true:error
 dotnet_style_null_propagation = true:error
 dotnet_style_explicit_tuple_names = true:error
+dotnet_style_allow_multiple_blank_lines_experimental=false:error
+dotnet_style_require_accessibility_modifiers=for_non_interface_members:error
+dotnet_style_readonly_field=true:error
 
 # CSharp code style settings:
 [*.cs]
