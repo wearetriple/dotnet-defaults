@@ -1,6 +1,6 @@
 # `ILogger<T>` &amp; Seq logging
 
-Seq is a log aggregation service collecting logs from backend services. It enables developers read and analyze logs from a web portal, instead of having to download log files. Inject `ILogger<{concrete type}> logger` into a class to log to Seq via Serilog. Never log any (potential) PII or secrets. 
+Seq is a log aggregation service collecting logs from backend services. It enables developers read and analyze logs from a web portal, instead of having to download log files. Inject `ILogger<{concrete type}> logger` (from `Microsoft.Extensions.Logging`) into a class to log to Seq via Serilog. Never log any (potential) PII or secrets. 
 
 ## Best practices (not exhaustive)
 
@@ -65,7 +65,7 @@ It is very easy as .NET-developer to hit F5 (Start Debugging) and debug your app
 Because of this, try to finishing the last piece of a feature by not using any debugging features, and see if you can follow and debug the application using only logging. To aid in this, it could be useful to run a local SEQ instance using docker:
 
 ```
-docker run --rm --name seq -d -e ACCEPT_EULA=Y -p 5341:80 datalust/seq:latest
+docker run --name seq -d -e ACCEPT_EULA=Y -p 5341:80 datalust/seq:latest
 ```
 
 This starts a SEQ instance under `http://localhost:5341` which you can use to post log messages to. Using a local instance makes it easy to follow your own log messages without having to ignore any other messages.
