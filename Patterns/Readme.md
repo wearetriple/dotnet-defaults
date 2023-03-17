@@ -59,5 +59,51 @@ Use the below for Markdown formatting syntax:
 **bold text**
 [links](https://www.urlgoeshere.nl)
 
+```
 
+## Markdown graphs
+
+By using text-to-graph features of built in various markdown tools, it is possible to include complex diagrams and schemes directly in markdown and in the repo. Various tools exist:
+
+### Mermaid
+
+See https://mermaid.js.org/
+
+``` mermaid
+graph TD
+    A[Have Complex Stuff] --> B(Use)
+    B --> C{decide}
+    C --> D[Graphs]
+    C --> E[Graphs]
+    D --> B
+    E --> B
+```
+
+``` mermaid
+sequenceDiagram
+    Alice->>John: Hello John, how are you?
+    John-->>Alice: Great!
+    Alice-)John: See you later!
+```
+
+### Ascii flow
+
+Use https://asciiflow.com
+
+``` goat
+      ┌──────────────────────┐
+      │                      │
+      │                      │   ┌──────┐
+      │                      │   │      │
+┌─────┼────┐          ┌──────┼───┼─┐    │
+│     │    │          │      └───┘ │    │
+│          ├─────────►│            │    │
+│  Idea    │          │  Graph     │    │
+│          │          │         ◄──┼────┘
+│          │          │            │
+└────┬─────┘          └─▲──────────┘
+     │                  │
+     │                  │
+     │                  │
+     └──────────────────┘
 ```
