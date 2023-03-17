@@ -20,6 +20,16 @@ _logger.LogInformation("Invoice {invoiceId} added.", invoice.Id);
 
 This makes correlating log messages more easy because next to the usual data, `invoiceId` will be saved as a seperate property for that log message. This allows developers to query for `invoiceId == "abc123"` and find all the log messages related to that invoice.
 
+### Object logging
+
+In some cases it can be desirable to log a complete object. In this case serilog provides the *destructuring operator*: `@`
+
+```c#
+Log.Information("Processing invoice {@invoice}", invoice);
+```
+
+This will cause the supplied object to be broken down into its properties with values, which are logged as JSON by default.
+
 ### Exception logging
 
 When logging exceptions, always include the exception to the log message:
