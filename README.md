@@ -29,7 +29,6 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 ## More guidelines
 
 - [Coding guidelines](CodingGuidelines.md)
-- [Kanban guidelines](KanbanGuidelines.md)
 - [Vocabulary](Vocabulary.md)
 - [Source Control](SourceControl.md)
 
