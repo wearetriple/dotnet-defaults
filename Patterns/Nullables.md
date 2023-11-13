@@ -2,7 +2,7 @@
 
 [Nullable reference types](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#nullable-reference-types) were introduced in [C# 8](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8) in an effort to reduce the number of `NullReferenceException`s thrown by applications. The feature helps the developer spot possible `null` values and deal with them during development instead of during testing / production.
 
-Because this feature greatly improves the quality of code, this feature *must* be enabled for all projects (except .NET Framework projects, since the feature is not supported by classic .NET Framework).
+The .net team has a general consensus that this feature improves code quality and reduces faults, so turn it on if possible. (With nullable warnings as errors.)
 
 When a reference type property or variable is not-nullable, you as developer promise that:
 
