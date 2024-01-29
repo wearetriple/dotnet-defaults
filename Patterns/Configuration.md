@@ -43,7 +43,23 @@ This can also be stored in environment variables as follows:
 }
 ```
 
-For keyvaults a similar approach is necassery when using the keyvault, but instead of `:` the keyvault requires `--` to separate the sections.
+or
+
+```json
+{
+    "Serilog__SeqServerUrl": null,
+    "Serilog__MinimumLevel__Default": "Information",
+    "Serilog__MinimumLevel__Override__Microsoft": "Warning",
+    "Serilog__MinimumLevel__Override__Microsoft.eShopOnContainers": "Information",
+    "Serilog__MinimumLevel__Override__System": "Warning"
+}
+```
+
+As you can see both `:` or `__` works as seperator.
+
+This is also how you can add these settings to the configuration/appsettings section in a webapp or functionapp.
+
+A similar approach is necassery when using the keyvault, but instead of `:` or `__` the keyvault requires `--` to separate the sections.
 
 ## Azure functions
 
