@@ -7,11 +7,11 @@ namespace UnitTestingExample
     internal class UserServiceTestsBase
     {
         protected UserService _subject;
-        protected Mock<IUserGateway> _gateway;
+        private Mock<IUserGateway> _gateway;
 
-        protected string _knownUsername = "known";
-        protected string _unknownUsername = "unknown";
-        protected int _userId = 2;
+        protected const string KnownUsername = "known";
+        protected const string UnknownUsername = "unknown";
+        protected const int UserId = 2;
 
         [SetUp]
         public void Setup()
@@ -23,28 +23,28 @@ namespace UnitTestingExample
             _subject = autoMocker.CreateInstance<UserService>();
         }
 
-        protected void SetupGetUserIdByUserName(string username)
+        protected void SetupGetUserIdByUserName()
         {
             _gateway
-                .Setup(x => x.GetUserIdByUserName("unknown"))
+                .Setup(x => x.GetUserIdByUserName(UnknownUsername))
                 .Throws<NotFoundException>();
 
             _gateway
-                    .Setup(x => x.GetUserIdByUserName("known"))
-                    .Returns(_userId);
+                    .Setup(x => x.GetUserIdByUserName(KnownUsername))
+                    .Returns(UserId);
         }
 
         protected void SetupGetHobbiesByUserId(string[] hobbies)
         {
             _gateway
-                .Setup(x => x.GetHobbiesByUserId(_userId))
+                .Setup(x => x.GetHobbiesByUserId(UserId))
                 .Returns(hobbies);
         }
 
         protected void SetupGetNotificationsByUserId(int? count)
         {
             _gateway
-                .Setup(x => x.GetNotificationsByUserId(_userId))
+                .Setup(x => x.GetNotificationsByUserId(UserId))
                 .Returns(count);
         }
     }

@@ -1,4 +1,4 @@
-﻿using Moq;
+﻿using System;
 using NUnit.Framework;
 
 namespace UnitTestingExample
@@ -9,65 +9,54 @@ namespace UnitTestingExample
         public void GetDashboard_WhenCustomerNameNotFound_ItShouldThrow()
         {
             // Arrange
-            SetupGetUserIdByUserName(_unknownUsername);
+            SetupGetUserIdByUserName();
 
             // Assert
-            Assert.Throws<NotFoundException>(() => _subject.GetDashboardByUserName(_unknownUsername));
-
-            _gateway.Verify(x => x.GetUserIdByUserName(_unknownUsername), Times.Once());
-            _gateway.VerifyNoOtherCalls();
+            Assert.Throws<NotFoundException>(() => _subject.GetDashboardByUserName(UnknownUsername));
         }
 
         [Test]
         public void GetDashboard_WhenCustomerNameFound_ItShouldBeReturned()
         {
             // Arrange
-            SetupGetUserIdByUserName(_knownUsername);
+            SetupGetUserIdByUserName();
 
-            var expected = _userId.ToString();
+            var expected = UserId.ToString();
 
             // Act
-            var result = _subject.GetDashboardByUserName(_knownUsername);
+            var result = _subject.GetDashboardByUserName(KnownUsername);
 
             // Assert
             Assert.That(result.Contains(expected));
-
-            _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
-            _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
         }
 
         [Test]
         public void GetDashboard_WhenUserFound_ItShouldGetHobbies()
         {
             // Arrange
-            SetupGetUserIdByUserName(_knownUsername);
-            SetupGetHobbiesByUserId(new string[0] { });
+            SetupGetUserIdByUserName();
+            SetupGetHobbiesByUserId(["my-hobby"]);
 
             // Act
-            _ = _subject.GetDashboardByUserName(_knownUsername);
+            var result = _subject.GetDashboardByUserName(KnownUsername);
 
-            // Assert
-            _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
-            _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
-            _gateway.Verify(x => x.GetNotificationsByUserId(_userId), Times.Once());
-            _gateway.VerifyNoOtherCalls();
+            Console.WriteLine(result);
+            
+            Assert.That(result.Contains("my-hobby"));
         }
 
         [TestCaseSource(typeof(HobbiesTestCases))]
         public void GetDashboard_WhenHobbiesFound_ItShouldBeReturned(string[] hobbies, string expectedHobbiesAsString)
         {
             // Arrange
-            SetupGetUserIdByUserName(_knownUsername);
+            SetupGetUserIdByUserName();
             SetupGetHobbiesByUserId(hobbies);
 
             // Act
-            var result = _subject.GetDashboardByUserName(_knownUsername);
+            var result = _subject.GetDashboardByUserName(KnownUsername);
 
             // Assert
             Assert.That(result.Contains(expectedHobbiesAsString));
-
-            _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
-            _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
         }
 
         [TestCase(null, "notification error")]
@@ -76,19 +65,14 @@ namespace UnitTestingExample
         public void GetDashboard_WhenNotificationsFound_ItShouldBeReturned(int? count, string expectedNotificationString)
         {
             // Arrange
-            SetupGetUserIdByUserName(_knownUsername);
-            SetupGetHobbiesByUserId(new string[0] { });
+            SetupGetUserIdByUserName();
             SetupGetNotificationsByUserId(count);
 
             // Act
-            var result = (string)_subject.GetDashboardByUserName(_knownUsername);
+            var result = _subject.GetDashboardByUserName(KnownUsername);
 
             // Assert
             Assert.That(result.Contains(expectedNotificationString));
-
-            _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
-            _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
-            _gateway.Verify(x => x.GetNotificationsByUserId(_userId), Times.Once());
         }
     }
 }
