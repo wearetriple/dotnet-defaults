@@ -1,7 +1,7 @@
 # Unit Testing with NUnit and Moq
 
 In this directory you will find a small project where we demonstrate the usage of NUnit and Moq to bring our code under test. 
-Here, a _Service_ is being the subject under test, which depends on a _Gateway_ and nan _ILogger_ for completing the _GetDashboard_ call. \
+Here, a _Service_ is being the subject under test, which depends on a _Gateway_ and an _ILogger_ for completing the _GetDashboard_ call. \
 Since we are unit testing, we do *not* want to include the external calls with the Gateway or the _ILogger_ because that is not what we want to 
 test and it would take far too long to complete. It is therefore that we create a fake instance of the gateway and the logger for which we use [Moq](https://github.com/moq).
 Most of the time Moq is used to create Mocks, but it can also be used to create Stubs. 
