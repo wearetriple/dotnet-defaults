@@ -1,4 +1,6 @@
-﻿using Moq;
+﻿using System;
+using Microsoft.Extensions.Logging;
+using Moq;
 using Moq.AutoMock;
 using NUnit.Framework;
 
@@ -8,6 +10,7 @@ namespace UnitTestingExample
     {
         protected UserService _subject;
         private Mock<IUserGateway> _gateway;
+        protected Mock<ILogger<UserService>> _logger;
 
         protected const string KnownUsername = "known";
         protected const string UnknownUsername = "unknown";
@@ -19,6 +22,8 @@ namespace UnitTestingExample
             var autoMocker = new AutoMocker();
 
             _gateway = autoMocker.GetMock<IUserGateway>();
+
+            _logger = autoMocker.GetMock<ILogger<UserService>>();
 
             _subject = autoMocker.CreateInstance<UserService>();
         }

@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
+using Moq;
 using NUnit.Framework;
 
 namespace UnitTestingExample
@@ -73,6 +75,23 @@ namespace UnitTestingExample
 
             // Assert
             Assert.That(result.Contains(expectedNotificationString));
+        }
+        
+        [Test]
+        public void GetDashboard_WhenExceptionIsThrown_ItShouldBeLogged()
+        {
+            // Arrange
+            SetupGetUserIdByUserName();
+
+            // Assert
+            Assert.Throws<NotFoundException>(() => _subject.GetDashboardByUserName(UnknownUsername));
+            _logger.Verify(x => x.Log(
+                    LogLevel.Error, 
+                    It.IsAny<EventId>(), 
+                    It.Is<It.IsAnyType>((v,t) => v.ToString() == $"User with username {UnknownUsername} could not be found"), 
+                    It.IsAny<NotFoundException>(), 
+                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                Times.Once);
         }
     }
 }

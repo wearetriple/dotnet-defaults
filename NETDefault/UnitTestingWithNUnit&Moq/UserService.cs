@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using Microsoft.Extensions.Logging;
 
 namespace UnitTestingExample
 {
-    internal class UserService
+    public class UserService
     {
-        private IUserGateway _gateway;
+        private readonly IUserGateway _gateway;
+        private readonly ILogger<UserService> _logger;
 
-        public UserService(IUserGateway gateway)
+        public UserService(IUserGateway gateway, ILogger<UserService> logger)
         {
             _gateway = gateway;
+            _logger = logger;
         }
 
         public string GetDashboardByUserName(string userName)
@@ -28,9 +31,9 @@ namespace UnitTestingExample
                 var notificationCount = _gateway.GetNotificationsByUserId(userId);
                 dashboard += FormatNotificationCountToString(notificationCount);
             }
-            catch(Exception ex)
+            catch(NotFoundException ex)
             {
-                Console.WriteLine($"Logging exception: {ex}");
+                _logger.LogError(ex, "User with username {username} could not be found", userName);
                 throw;
             }
 
@@ -72,7 +75,7 @@ namespace UnitTestingExample
                     return ", 1 notification";
                 default:
                     return $"{count} notifications";
-            };
+            }
         }
     }
 }
