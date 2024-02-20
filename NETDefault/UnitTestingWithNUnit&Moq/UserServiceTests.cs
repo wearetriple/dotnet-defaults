@@ -28,12 +28,13 @@ namespace UnitTestingExample
         public void GetDashboard_WhenCustomerNameNotFound_ItShouldThrow()
         {
             // Arrange
+            const string userName = "invalidUserName";
             _gateway
-                .Setup(x => x.GetUserIdByUserName("invalidUserName"))
+                .Setup(x => x.GetUserIdByUserName(userName))
                 .Throws<NotFoundException>();
             
             // Assert
-            Assert.Throws<NotFoundException>(() => _subject.GetDashboardByUserName("invalidUserName"));
+            Assert.Throws<NotFoundException>(() => _subject.GetDashboardByUserName(userName));
         }
 
         [Test]
@@ -56,12 +57,13 @@ namespace UnitTestingExample
         public void GetDashboard_WhenUserFound_ItShouldGetHobbies()
         {
             // Arrange
-            SetupGetHobbies(["my-hobby"]);
+            const string hobby = "my-hobby";
+            SetupGetHobbies([hobby]);
 
             // Act
             var result = _subject.GetDashboardByUserName("blaat");
 
-            Assert.That(result.Contains("my-hobby"));
+            Assert.That(result.Contains(hobby));
         }
 
         [TestCaseSource(typeof(HobbiesTestCases))]
