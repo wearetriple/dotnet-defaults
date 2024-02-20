@@ -42,8 +42,6 @@ namespace UnitTestingExample
             // Act
             var result = _subject.GetDashboardByUserName(KnownUsername);
 
-            Console.WriteLine(result);
-            
             Assert.That(result.Contains("my-hobby"));
         }
 
