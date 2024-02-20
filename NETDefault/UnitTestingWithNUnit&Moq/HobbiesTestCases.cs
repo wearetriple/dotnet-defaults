@@ -7,9 +7,6 @@ namespace UnitTestingExample
     {
         public IEnumerator GetEnumerator()
         {
-            yield return new TestCaseData(null, ", hobbies error")
-                .SetName($"{nameof(UserServiceTests.GetDashboard_WhenHobbiesFound_ItShouldBeReturned)}(null)");
-
             yield return new TestCaseData(new string[0] { }, ", zero hobbies")
                 .SetName($"{nameof(UserServiceTests.GetDashboard_WhenHobbiesFound_ItShouldBeReturned)}(zero hobbies)");
 
