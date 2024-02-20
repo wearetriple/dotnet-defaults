@@ -1,20 +1,25 @@
 # Unit Testing with NUnit and Moq
 
-In this directory you will find a small project where we demonstrate the usage of NUnit and Moq to bring our code under test. 
+In this directory you will find a small project where we demonstrate the usage of [NUnit](https://docs.nunit.org/articles/nunit/intro.html), [Moq](https://github.com/devlooped/moq) and [AutoMocker](https://github.com/moq/Moq.AutoMocker) to bring our code under test. 
 Here, a _Service_ is being the subject under test, which depends on a _Gateway_ and an _ILogger_ for completing the _GetDashboard_ call. \
 Since we are unit testing, we do *not* want to include the external calls with the Gateway or the _ILogger_ because that is not what we want to 
-test and it would take far too long to complete. It is therefore that we create a fake instance of the gateway and the logger for which we use [Moq](https://github.com/moq).
+test and it would take far too long to complete. It is therefore that we create a fake instance of the gateway and the logger for which we use Moq.
 Most of the time Moq is used to create Mocks, but it can also be used to create Stubs. 
 For more information about the difference between Mocks and Stubs, see [here](https://martinfowler.com/articles/mocksArentStubs.html). \
-Our _Service_ is the actual concrete class we want to test, which we do with [NUnit](https://github.com/moq).
+Our _Service_ is the actual concrete class we want to test, which we do with NUnit.
 
 ## Points of interest
 
 - ### ServiceTestsBase.cs
 
-The base class of the subject contains the ceremony to support the tests. Here we start with the _Setup()_ method, which instantiates your concrete class which we will test, and also creates mocks for its dependencies.
+We start with the _Setup()_ method, which instantiates the concrete class which we will test, and also creates mocks for its dependencies.
 
-While writing tests you will find you need to make a call to your dependency. Since it's a fake instance, you cannot make the actual call (which is good!) and so you need to tell it what to do instead. This is what happens in the _Setup{DoSomething}()_ methods. For example: when we use the gateway to get a userId with the name 'unknown', we will get a _NotFoundException_ back from it.
+While writing tests you will find you need to make a call to your dependency. 
+Since it's a fake instance, you cannot make the actual call (which is good!) and so you need to tell it what to do instead. 
+This is what happens in the _Arrange_ part of the test methods. 
+
+For example: when we want to test that a _NotFoundException_ is thrown when we request the id of an unknown user, we tell the gateway to return the _NotFoundException_ when a specified userName is passed to a specific method call.
+This way we can test that the service handles the _NotFoundException_ correctly.
 
 Lastly some interesting *attributes*:
 - The *[[Test](https://docs.nunit.org/articles/nunit/writing-tests/attributes/test.html)]* attribute is used to mark simple (non-parameterized) tests.
@@ -23,11 +28,12 @@ Lastly some interesting *attributes*:
 
 - ### ServiceTests.cs
 
-The test class *only* contains the actual tests without any ceremony. This file will be read most often to understand the class we test, so make sure it is clean, easy to read, and consistent. Note the following:
+This file will be read most often to understand the class we test, so make sure it is clean, easy to read, and consistent. Note the following:
 - Test names should contain the _When...ItShould()_ pattern
 - We use the _Arrange_, _Act_, _Assert_ pattern to structure our tests and keep them consistent.
 - _Assert_ is part of the NUnit Framework, which we use to validate our subject.
-- _Verify_ is part of Moq and can be used on mocks to verify that a method was called with certain parameters. In our example, we use it to verify that the _LogError_ method was called with a certain message. This is useful in scenarios where we want to test known side effect of our behavior under test. 
+- _Assume_ is also part of the NUnit Framework. We use this to set up assumptions for our tests. If the assumption is not met, the test will be inconclusive. This is useful when we want to test a specific scenario, but only if certain conditions are met.
+- _Verify_ is part of Moq and can be used on mocks to verify that a method was called with certain parameters. In our example, we use it to verify that the logger was called with a certain message. This is useful in scenarios where we want to test known side effect of our behavior under test. 
 
 - ### Service.cs
 
