@@ -113,7 +113,7 @@ namespace UnitTestingExample
                     It.IsAny<EventId>(), 
                     It.Is<It.IsAnyType>((v,t) => v.ToString() == "User with username invalidUserName could not be found"), 
                     It.IsAny<NotFoundException>(), 
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)!),
                 Times.Once);
         }
         
