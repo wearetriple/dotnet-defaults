@@ -2,7 +2,7 @@
 
 namespace UnitTestingExample;
 
-internal sealed class MockUserGateWay : Mock<IUserGateway>
+internal sealed class MockUserGateway : Mock<IUserGateway>
 {
     private MockUserGateWay(string userName, int? userId = null, string[]? hobbies = null, int? notificationCount = null)
     {
