@@ -4,7 +4,7 @@ namespace UnitTestingExample;
 
 internal sealed class MockUserGateway : Mock<IUserGateway>
 {
-    private MockUserGateWay(string userName, int? userId = null, string[]? hobbies = null, int? notificationCount = null)
+    private MockUserGateway(string userName, int? userId = null, string[]? hobbies = null, int? notificationCount = null)
     {
         if (userId == null)
         {
@@ -25,6 +25,6 @@ internal sealed class MockUserGateway : Mock<IUserGateway>
             .Returns(notificationCount);
     }
     
-    public static MockUserGateWay Create(string userName, int? userId = null, string[]? hobbies = null, int? notificationCount = null) =>
+    public static MockUserGateway Create(string userName, int? userId = null, string[]? hobbies = null, int? notificationCount = null) =>
         new (userName, userId, hobbies, notificationCount);
 }

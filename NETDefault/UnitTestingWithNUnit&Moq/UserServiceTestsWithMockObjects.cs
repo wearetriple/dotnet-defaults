@@ -11,7 +11,7 @@ internal class UserServiceTestsWithMockObjects
     {
         // Arrange
         const string userName = "invalidUserName";
-        var sut = CreateSubject(MockUserGateWay.Create(userName));
+        var sut = CreateSubject(MockUserGateway.Create(userName));
         
         // Assert
         Assert.Throws<NotFoundException>(() => sut.GetDashboardByUserName(userName));
@@ -22,7 +22,7 @@ internal class UserServiceTestsWithMockObjects
     {
         // Arrange
         const string userName = "validUserName";
-        var sut = CreateSubject(MockUserGateWay.Create(userName, 1));
+        var sut = CreateSubject(MockUserGateway.Create(userName, 1));
 
         // Act
         var result = sut.GetDashboardByUserName(userName);
@@ -37,7 +37,7 @@ internal class UserServiceTestsWithMockObjects
         // Arrange
         const string hobby = "my-hobby";
         const string userName = "validUserName";
-        var gateway = MockUserGateWay.Create(userName,1, [hobby]);
+        var gateway = MockUserGateway.Create(userName,1, [hobby]);
         var sut = CreateSubject(gateway);
 
         // Act
@@ -52,7 +52,7 @@ internal class UserServiceTestsWithMockObjects
     {
         // Arrange
         const string userName = "validUserName";
-        var gateway = MockUserGateWay.Create(userName, 1, hobbies);
+        var gateway = MockUserGateway.Create(userName, 1, hobbies);
         var sut = CreateSubject(gateway);
 
         // Act
@@ -67,7 +67,7 @@ internal class UserServiceTestsWithMockObjects
     {
         // Arrange
         const string userName = "validUserName";
-        var gateway = MockUserGateWay.Create(userName, 1);
+        var gateway = MockUserGateway.Create(userName, 1);
         var sut = CreateSubject(gateway);
         
         // Act
@@ -83,7 +83,7 @@ internal class UserServiceTestsWithMockObjects
     public void GetDashboard_WhenNotificationsFound_ItShouldBeReturned(int? count, string expectedNotificationString)
     {
         // Arrange
-        var gateway = MockUserGateWay.Create("validUserName", 1, notificationCount: count);
+        var gateway = MockUserGateway.Create("validUserName", 1, notificationCount: count);
         var sut = CreateSubject(gateway);
         
         // Act
@@ -100,7 +100,7 @@ internal class UserServiceTestsWithMockObjects
         const string userName = "invalidUserName";
 
         var logger = MockLogger.Create("User with username invalidUserName could not be found");
-        var gateWay = MockUserGateWay.Create(userName);
+        var gateWay = MockUserGateway.Create(userName);
         var sut = CreateSubject(gateWay, logger);
             
         // Act
