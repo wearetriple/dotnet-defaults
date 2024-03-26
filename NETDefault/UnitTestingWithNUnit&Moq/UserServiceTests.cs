@@ -1,73 +1,82 @@
-﻿using Moq;
+﻿using System;
+using Microsoft.Extensions.Logging;
+using Moq;
+using Moq.AutoMock;
 using NUnit.Framework;
 
 namespace UnitTestingExample
 {
-    internal class UserServiceTests : UserServiceTestsBase
+    internal class UserServiceTests
     {
+        private UserService _subject;
+        private Mock<IUserGateway> _gateway;
+        private Mock<ILogger<UserService>> _logger;
+
+        [SetUp]
+        public void Setup()
+        {
+            var autoMocker = new AutoMocker();
+
+            _gateway = autoMocker.GetMock<IUserGateway>();
+
+            _logger = autoMocker.GetMock<ILogger<UserService>>();
+
+            _subject = autoMocker.CreateInstance<UserService>();
+        }
+        
         [Test]
         public void GetDashboard_WhenCustomerNameNotFound_ItShouldThrow()
         {
             // Arrange
-            SetupGetUserIdByUserName(_unknownUsername);
-
+            const string userName = "invalidUserName";
+            _gateway
+                .Setup(x => x.GetUserIdByUserName(userName))
+                .Throws<NotFoundException>();
+            
             // Assert
-            Assert.Throws<NotFoundException>(() => _subject.GetDashboardByUserName(_unknownUsername));
-
-            _gateway.Verify(x => x.GetUserIdByUserName(_unknownUsername), Times.Once());
-            _gateway.VerifyNoOtherCalls();
+            Assert.Throws<NotFoundException>(() => _subject.GetDashboardByUserName(userName));
         }
 
         [Test]
-        public void GetDashboard_WhenCustomerNameFound_ItShouldBeReturned()
+        public void GetDashboard_WhenCustomerNameFound_IdShouldBeReturned()
         {
             // Arrange
-            SetupGetUserIdByUserName(_knownUsername);
-
-            var expected = _userId.ToString();
+            const string userName = "someUserName";
+            _gateway
+                .Setup(x => x.GetUserIdByUserName(userName))
+                .Returns(1);   
 
             // Act
-            var result = _subject.GetDashboardByUserName(_knownUsername);
+            var result = _subject.GetDashboardByUserName(userName);
 
             // Assert
-            Assert.That(result.Contains(expected));
-
-            _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
-            _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
+            Assert.That(result.Contains('1'));
         }
 
         [Test]
         public void GetDashboard_WhenUserFound_ItShouldGetHobbies()
         {
             // Arrange
-            SetupGetUserIdByUserName(_knownUsername);
-            SetupGetHobbiesByUserId(new string[0] { });
+            const string hobby = "my-hobby";
+            SetupGetHobbies([hobby]);
 
             // Act
-            _ = _subject.GetDashboardByUserName(_knownUsername);
+            var result = _subject.GetDashboardByUserName("blaat");
 
-            // Assert
-            _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
-            _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
-            _gateway.Verify(x => x.GetNotificationsByUserId(_userId), Times.Once());
-            _gateway.VerifyNoOtherCalls();
+            Assert.That(result.Contains(hobby));
         }
 
         [TestCaseSource(typeof(HobbiesTestCases))]
         public void GetDashboard_WhenHobbiesFound_ItShouldBeReturned(string[] hobbies, string expectedHobbiesAsString)
         {
             // Arrange
-            SetupGetUserIdByUserName(_knownUsername);
-            SetupGetHobbiesByUserId(hobbies);
+            SetupGetHobbies(hobbies);
 
             // Act
-            var result = _subject.GetDashboardByUserName(_knownUsername);
+            var result = _subject.GetDashboardByUserName("KnownUsername");
 
             // Assert
             Assert.That(result.Contains(expectedHobbiesAsString));
-
-            _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
-            _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
         }
 
         [TestCase(null, "notification error")]
@@ -76,19 +85,43 @@ namespace UnitTestingExample
         public void GetDashboard_WhenNotificationsFound_ItShouldBeReturned(int? count, string expectedNotificationString)
         {
             // Arrange
-            SetupGetUserIdByUserName(_knownUsername);
-            SetupGetHobbiesByUserId(new string[0] { });
-            SetupGetNotificationsByUserId(count);
+            _gateway
+                .Setup(x => x.GetNotificationsByUserId(It.IsAny<int>()))
+                .Returns(count);
 
             // Act
-            var result = (string)_subject.GetDashboardByUserName(_knownUsername);
+            var result = _subject.GetDashboardByUserName("KnownUsername");
 
             // Assert
             Assert.That(result.Contains(expectedNotificationString));
+        }
+        
+        [Test]
+        public void GetDashboard_WhenExceptionIsThrown_ItShouldBeLogged()
+        {
+            // Arrange
+            const string userName = "invalidUserName";
+            
+            _gateway
+                .Setup(x => x.GetUserIdByUserName(userName))
+                .Throws<NotFoundException>();
 
-            _gateway.Verify(x => x.GetUserIdByUserName(_knownUsername), Times.Once());
-            _gateway.Verify(x => x.GetHobbiesByUserId(_userId), Times.Once());
-            _gateway.Verify(x => x.GetNotificationsByUserId(_userId), Times.Once());
+            Assume.That(() => _subject.GetDashboardByUserName(userName), Throws.Exception);
+            
+            _logger.Verify(x => x.Log(
+                    LogLevel.Error, 
+                    It.IsAny<EventId>(), 
+                    It.Is<It.IsAnyType>((v,t) => v.ToString() == "User with username invalidUserName could not be found"), 
+                    It.IsAny<NotFoundException>(), 
+                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                Times.Once);
+        }
+        
+        private void SetupGetHobbies(string[] hobbies)
+        {
+            _gateway
+                .Setup(x => x.GetHobbiesByUserId(It.IsAny<int>()))
+                .Returns(hobbies);
         }
     }
 }
