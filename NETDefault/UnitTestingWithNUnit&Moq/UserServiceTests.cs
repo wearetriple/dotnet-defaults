@@ -8,9 +8,9 @@ namespace UnitTestingExample
 {
     internal class UserServiceTests
     {
-        private UserService _subject;
-        private Mock<IUserGateway> _gateway;
-        private Mock<ILogger<UserService>> _logger;
+        private UserService _subject = default!;
+        private Mock<IUserGateway> _gateway  = default!;
+        private Mock<ILogger<UserService>> _logger = default!;
 
         [SetUp]
         public void Setup()
@@ -113,7 +113,7 @@ namespace UnitTestingExample
                     It.IsAny<EventId>(), 
                     It.Is<It.IsAnyType>((v,t) => v.ToString() == "User with username invalidUserName could not be found"), 
                     It.IsAny<NotFoundException>(), 
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)),
+                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)!),
                 Times.Once);
         }
         
