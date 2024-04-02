@@ -15,14 +15,15 @@ internal sealed class MockUserGateway : Mock<IUserGateway>
         {
             Setup(x => x.GetUserIdByUserName(userName))
                 .Returns(userId.Value);
-        
+            
+            Setup(x => x.GetHobbiesByUserId(userId.Value))
+                .Returns(hobbies!);
+
+            Setup(x => x.GetNotificationsByUserId(userId.Value))
+                .Returns(notificationCount);
         }
 
-        Setup(x => x.GetHobbiesByUserId(userId ?? -1))
-            .Returns(hobbies!);
-
-        Setup(x => x.GetNotificationsByUserId(userId ?? -1))
-            .Returns(notificationCount);
+        
     }
     
     public static MockUserGateway Create(string userName, int? userId = null, string[]? hobbies = null, int? notificationCount = null) =>
