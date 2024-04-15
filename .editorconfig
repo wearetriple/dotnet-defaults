@@ -202,6 +202,3 @@ dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style = prefix_interf
 
 # Braces (+ must be last instruction due to bugs)
 csharp_prefer_braces = true:error
-
-# Analyzers
-dotnet_diagnostic.VSTHRD200.severity = error
