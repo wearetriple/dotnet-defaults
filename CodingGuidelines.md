@@ -3,7 +3,7 @@
 ## C# General
 
 In order to improve team wide readability and lower onboarding time we agreed to stick to defined coding guidelines. These coding guidelines help us writing better and more coherent code, both on an individual level, as well as across individual developers since the style becomes more aligned.
-Details can be found in the .editorconfig file, included in the root of this repository. The .editorconfig should be included in every solution. The team is open for changes through a pull request on this file.
+Details can be found in the .editorconfig and Directory.Build.props files, included in the root of this repository. The .editorconfig and Directory.Build.props should be included in every solution. The team is open for changes through a pull request on this file.
 
 The coding guidelines can be found [here](https://csharpcodingguidelines.com/).
 Feel free to download the .PDF for later references.
