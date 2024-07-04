@@ -50,6 +50,10 @@ dotnet_style_allow_multiple_blank_lines_experimental=false:error
 dotnet_style_require_accessibility_modifiers=for_non_interface_members:error
 dotnet_style_readonly_field=true:error
 
+# But not too modern
+csharp_style_prefer_primary_constructors = false
+resharper_convert_to_primary_constructor_highlighting = none
+
 # CSharp code style settings:
 [*.cs]
 # Prefer "var" everywhere
