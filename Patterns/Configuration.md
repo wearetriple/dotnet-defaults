@@ -2,20 +2,20 @@
 
 Configuration in dotnet applications in generally handled through the IConfiguration implementation, which allows multiple providers to supply key,value data to use in the application. [Keyvault](./KeyVault.md) is one such a provider. [Options](./Options.md) Shows an example how to handle the IConfiguration via dependency injection an how to setup classes to map the key value data to.
 
-Besides Keyvault some commonly added providers are the `JsonConfigurationProvider` which is generally used to read an appsettings.json file wich contains nested json data.
+Besides Keyvault some commonly added providers are the `JsonConfigurationProvider` which is generally used to read an appsettings.json file which contains nested json data.
 
 ```csharp
 var filePath = Path.Combine(applicationRootPath, "appsettings.common.json");
 configurationBuilder.AddJsonFile(filePath, optional: true, reloadOnChange: false);
 ```
 
-Another commenly used provider is the `EnvironmentVariablesConfigurationProvider`.
+Another commonly used provider is the `EnvironmentVariablesConfigurationProvider`.
 
 ```csharp
 configurationBuilder.AddEnvironmentVariables();
 ```
 
-This provider has some caveats, mainly because environment variables are a flat (meaning just `key_string: value_string`) dictionary not containing a nested structure. But configuration is generally setup with nested sections. for example a logging section with a section for different log options. In a appsettings.json file this would look something like:
+This provider has some caveats, mainly because environment variables are a flat (meaning just `key_string: value_string`) dictionary not containing a nested structure. But configuration is generally setup with nested sections. for example a logging section with a section for different log options. In an appsettings.json file this would look something like:
 
 ```json
 "Serilog": {
@@ -55,11 +55,11 @@ or
 }
 ```
 
-As you can see both `:` or `__` works as seperator.
+As you can see both `:` or `__` works as separator.
 
 This is also how you can add these settings to the configuration/appsettings section in a webapp or functionapp.
 
-A similar approach is necassery when using the keyvault, but instead of `:` or `__` the keyvault requires `--` to separate the sections.
+A similar approach is necessary when using the keyvault, but instead of `:` or `__` the keyvault requires `--` to separate the sections.
 
 ## Azure functions
 
@@ -77,7 +77,7 @@ When locally developing azure functions you are required to create a `local.sett
 }
 ```
 
-This file helps local developers by setting all values in the `Values` dictionary as environment variables so it is not necessary to add them to your shell. So this list is also a flat dictionary and requires the `:` seperator when adding sections in the key.
+This file helps local developers by setting all values in the `Values` dictionary as environment variables so it is not necessary to add them to your shell. So this list is also a flat dictionary and requires the `:` separator when adding sections in the key.
 
 The `local.settings.json` file is locally useful because it replaces the Azure function App Settings configuration.
 

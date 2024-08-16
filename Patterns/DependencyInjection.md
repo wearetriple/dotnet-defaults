@@ -6,7 +6,7 @@ This moves the burden of knowing how to compose them out of the class itself.
 
 ## Fundamentals
 
-- [DI in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection?view=aspnetcore-6.0)
+- [DI in ASP.NET Core](https://docs.microsoft.com/en-us/aspnet/core/fundamentals/dependency-injection)
 - [DI in Azure Functions .NET Core 3.1](https://docs.microsoft.com/en-us/azure/azure-functions/functions-dotnet-dependency-injection)
 - [DI in Azure Functions .NET >= 5](https://docs.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide)
 
@@ -161,7 +161,7 @@ namespace Contoso.Gateway
     {
         public static void AddContosoRepositories(this IServiceCollection services, IConfiguration config) 
         {
-            services.AddScoped<ISomeGateway, SomeGatewayImpelmentation>();
+            services.AddScoped<ISomeGateway, SomeGatewayImplementation>();
 			services.AddOptions<SomeGatewayConfiguration>()
 				.Bind(configuration.GetSection(SomeGatewayConfiguration.SectionName));
         }

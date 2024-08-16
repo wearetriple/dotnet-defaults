@@ -6,7 +6,7 @@ When the instance is the only instance in the load balancing pool Azure ignores 
 
 The health check and application warm-up features are only available for Azure Web Apps so only the implementation for ASP.NET applications is described.
 
-## ASP.NET Core (.NET Core 3.1 & .NET 5.0)
+## ASP.NET
 
 ### Warm-up
 
@@ -38,7 +38,7 @@ See the WebApp project for more implementation details.
 
 ### Swap warm-up
 
-When using deployment slots, the Application Initialization feature is useful to instruct Azure to wait with the DNS change after the swapped slot has warmed up. This prevents a cold instance from being exposed to the internet directly after swap. When performing a swap, the app settings of the target slot are applied to the source slot. Since this restarts the application in the source slot, Azure will wait before the source slot has come back online and report its readiness via Application Initialization. When it does, the DNS settings are changed and the source application is moved in the target slot. The target application is moved to the soure slot and is restarted with the staging slot settings. If the preview option was enabled, the old production application will remain online for a quick revert if needed.
+When using deployment slots, the Application Initialization feature is useful to instruct Azure to wait with the DNS change after the swapped slot has warmed up. This prevents a cold instance from being exposed to the internet directly after swap. When performing a swap, the app settings of the target slot are applied to the source slot. Since this restarts the application in the source slot, Azure will wait before the source slot has come back online and report its readiness via Application Initialization. When it does, the DNS settings are changed and the source application is moved in the target slot. The target application is moved to the source slot and is restarted with the staging slot settings. If the preview option was enabled, the old production application will remain online for a quick revert if needed.
 
 No additional configuration is needed to enable swap warm-up, other than defining [App Service Deployment Slots](https://docs.microsoft.com/en-us/azure/app-service/deploy-staging-slots). 
 
@@ -48,7 +48,7 @@ NOTE: The documentation mentions [customizing warm-up](https://docs.microsoft.co
 
 In Azure App Service, the [health check](https://docs.microsoft.com/en-us/azure/app-service/monitor-instances-health-check) is an endpoint which is polled every 2 to 10 minutes and an instance is considered healthy if the endpoint returns an OK-ish (200 - 299) response. This feature supports HTTPS, and when the App Service is configured to be HTTPS only, the health check is performed using HTTPS.
 
-In ASP.NET Core, the [health check](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks?view=aspnetcore-5.0) is a feature in which health checks can be added to an ASP.NET application which report the health status of the entire application. 
+In ASP.NET Core, the [health check](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks) is a feature in which health checks can be added to an ASP.NET application which report the health status of the entire application. 
 
 These two health check features can be combined to make for easy health monitoring; by the load-balancer and possible by an external monitoring tool. 
 
@@ -57,9 +57,7 @@ To implement health checks:
 - Add a class which implements `IHealthCheck`. Have the implementation return a correct `HealthStatus`.
 - Startup.cs: Add each health check to the list of health checks by adding to `ConfigureServices`: `services.AddHealthChecks().AddCheck<{Class}>("{description}");`.
 - Startup.cs: Map an endpoint to the health check by adding to `UseEndpoints` in  `Configure`: `endpoints.MapHealthChecks("/{endpoint}]");`.
-- If needed, [extra authorization can be added](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks?view=aspnetcore-5.0#use-health-checks-routing) to the health check endpoint to prevent anonymous access to this information.
-
-In the WebApp example application, the `/apptest` endpoint is routed to the health checks, and will return a `200 OK` when all health checks return `HealthStatus.Healthy`. When one of the health checks returns `HealthStatus.Degraded` the result is still `200 OK`, but when one or more health checks return `HealthStatus.Unhealthy` the response will be `503 Service Unavailable`. These statuses can be used by monitoring software to monitor the status of the app. 
+- If needed, [extra authorization can be added](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/health-checks#use-health-checks-routing) to the health check endpoint to prevent anonymous access to this information.
 
 If more details are required in the health check response, a simple `ResponseWriter` can be added to provide those details:
 

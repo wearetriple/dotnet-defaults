@@ -15,17 +15,17 @@ _logger.LogInformation($"Invoice {invoice.Id} added.");
 The messages should be created as:
 
 ```c#
-_logger.LogInformation("Invoice {invoiceId} added.", invoice.Id);
+_logger.LogInformation("Invoice {InvoiceId} added.", invoice.Id);
 ```
 
-This makes correlating log messages more easy because next to the usual data, `invoiceId` will be saved as a seperate property for that log message. This allows developers to query for `invoiceId == "abc123"` and find all the log messages related to that invoice.
+This makes correlating log messages more easy because next to the usual data, `InvoiceId` will be saved as a separate property for that log message. This allows developers to query for `InvoiceId == "abc123"` and find all the log messages related to that invoice.
 
 ### Object logging
 
 In some cases it can be desirable to log a complete object. In this case serilog provides the *destructuring operator*: `@`
 
 ```c#
-Log.Information("Processing invoice {@invoice}", invoice);
+Log.Information("Processing invoice {@Invoice}", invoice);
 ```
 
 This will cause the supplied object to be broken down into its properties with values, which are logged as JSON by default.
@@ -42,7 +42,7 @@ This will save and include the stack trace of that `caughtException` in Seq, mak
 
 ### Create log scopes to correlate logging
 
-(Implementation can be found in Triple.Extensions.Logging)
+(Implementation at the end of this document)
 
 Use log scopes to correlate messages:
 
@@ -54,7 +54,7 @@ using (_logger.AddToScope(invoiceId).BeginScope("Invoice processing"))
 }
 ```
 
-This will create a log scope that will, until it is disposed, add the `invoiceId` property with value `"INV123"` to every log message that is created within the scope. The logs inside the Invoice Service will also have the `invoiceId` property added. Next to that, the `BeginScope` method will log an `"Invoice processing started"`-message at the start of the scope and `"Invoice processing finished"` once it is disposed. 
+This will create a log scope that will, until it is disposed, add the `InvoiceId` property with value `"INV123"` to every log message that is created within the scope. The logs inside the Invoice Service will also have the `InvoiceId` property added. Next to that, the `BeginScope` method will log an `"Invoice processing started"`-message at the start of the scope and `"Invoice processing finished"` once it is disposed. 
 
 ### Correlate logging between requests
 
@@ -84,24 +84,91 @@ This starts a SEQ instance under `http://localhost:5341` which you can use to po
 
 - `Fatal`: Application crashes.
 - `Error`: Unhandled exceptions; unexpected results.
-- `Warnings`: Calls to depricated functionality; handled exceptions; expected but uncommon results.
+- `Warnings`: Calls to deprecated functionality; handled exceptions; expected but uncommon results.
 - `Info`: Application flow summaries; statistic information.
 - `Debug`: Application flow messages, happy and unhappy.
 - `Verbose`: Everything else which would otherwise flood Debug.
 
-## Web Apps (.NET 5 & .NET Core 3.1)
+## Log scope builder
 
-- Program.cs: Wrap `CreateHostBuilder(args).Build().Run()` in a try-catch. This enables Serilog to log fatal exceptions.
-- Program.cs: Use `ConfigureLogging` on `IHostBuilder` to configure Serilog.
-- appsettings.json: Configure `Serilog` section to add Seq as sink, and use `$controlSwitch` to configure minimum log level using Seq Api Key Configuration. Configure the default level to `Warning` to prevent noisy application starts.
+```c#
+public static class ILoggerExtensions
+{
+    public static IDisposable BeginHttpContextScope(this ILogger logger, HttpContext httpContext)
+    {
+        var builder = logger.AddToScope(httpContext.TraceIdentifier);
 
-## Function Apps (.NET 5 isolated)
+        // Log the X-Trace request header from the request to trace remote requests.
+        if (httpContext.Request.Headers.TryGetValue("X-Trace", out var headerValues) &&
+            headerValues.ToString() is string remoteTraceIdentifier)
+        {
+            builder.AddToScope(remoteTraceIdentifier);
+        }
 
-- Program.cs: Wrap `CreateHostBuilder().Build().Run()` in a try-catch. This enables Serilog to log fatal exceptions.
-- Program.cs: Use `ConfigureLogging` on `HostBuilder` to configure Serilog.
-- local.settings.json: Configure `Serilog` parameters in `Values` section to add Seq as sink, and use `$controlSwitch` to configure minimum log level using Seq Api Key Configuration.  Configure the default level to `Warning` to prevent noisy application starts.
+        return builder.BeginScope("Request");
+    }
 
-## Function Apps (.NET Core 3.1)
+    public static ILogScopeBuilder AddToScope<TValue>(this ILogger logger, TValue value, [CallerArgumentExpression("value")] string argumentExpression = "")
+    {
+        return new LogScopeBuilder(logger).AddToScope(value, argumentExpression);
+    }
+}
 
-- Startup.cs: Read configuration and configure `Log.Logger`. Use `AddSerilog` to add Serilog to logging pipeline. Add a `LoggingLevelSwitch` to allow for switching log levels from Seq Api Key Configuration. Configure the default level to `Warning` to prevent noisy application starts.
-- local.settings.json: Set `Serilog` parameters in `Values` section to configure the Url and Key of the Seq server.
+public interface ILogScopeBuilder
+{
+    ILogScopeBuilder AddToScope<TValue>(TValue value, [CallerArgumentExpression("value")] string argumentExpression = "");
+
+    IDisposable BeginScope();
+
+    IDisposable BeginScope(string message, params object?[] args);
+}
+
+internal class LogScope : IDisposable
+{
+    private readonly ILogger _logger;
+    private readonly IDisposable _scope;
+    private readonly string _message;
+    private readonly object?[] _args;
+
+    public LogScope(ILogger logger, Dictionary<string, object?> data, string message, params object?[] args)
+    {
+        _logger = logger;
+        _message = message;
+        _args = args;
+
+        _scope = _logger.BeginScope(data);
+        _logger.LogInformation($"{_message} started", _args);
+    }
+
+    public void Dispose()
+    {
+        _logger.LogInformation($"{_message} finished", _args);
+        _scope.Dispose();
+    }
+}
+
+internal class LogScopeBuilder : ILogScopeBuilder
+{
+    private readonly Dictionary<string, object?> _data = new();
+    private readonly ILogger _logger;
+
+    public LogScopeBuilder(ILogger logger)
+    {
+        _logger = logger;
+    }
+
+    public ILogScopeBuilder AddToScope<TValue>(TValue value, [CallerArgumentExpression("value")] string argumentExpression = "")
+    {
+        var property = argumentExpression.Split(".")[^1];
+
+        _data[property] = value;
+
+        return this;
+    }
+
+    public IDisposable BeginScope() => _logger.BeginScope(_data);
+
+    public IDisposable BeginScope(string message, params object?[] args) => new LogScope(_logger, _data, message, args);
+}
+
+```
