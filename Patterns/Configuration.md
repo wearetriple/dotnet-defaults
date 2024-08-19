@@ -55,7 +55,7 @@ or
 }
 ```
 
-As you can see both `:` or `__` works as separator.
+As you can see both `:` or `__` works as separator. `__` works cross-platform, so should be preferred.
 
 This is also how you can add these settings to the configuration/appsettings section in a webapp or functionapp.
 
@@ -77,7 +77,7 @@ When locally developing azure functions you are required to create a `local.sett
 }
 ```
 
-This file helps local developers by setting all values in the `Values` dictionary as environment variables so it is not necessary to add them to your shell. So this list is also a flat dictionary and requires the `:` separator when adding sections in the key.
+This file helps local developers by setting all values in the `Values` dictionary as environment variables so it is not necessary to add them to your shell. So this list is also a flat dictionary and requires `:` or `__` as separator when adding sections in the key.
 
 The `local.settings.json` file is locally useful because it replaces the Azure function App Settings configuration.
 
