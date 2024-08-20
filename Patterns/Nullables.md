@@ -14,7 +14,7 @@ If you cannot promise that: mark it as nullable.
 
 ## To enable the feature
 
-- Under the `<TargetFramework>` node in `.csproj` add: `<Nullable>enable</Nullable>`.
+- Under the `<TargetFramework>` node in `.csproj` add: `<Nullable>enable</Nullable>`, or use our default [Directory.Build.Props](DirectoryBuildProps.md).
 - Fix all possible null reference warnings.
 
 ## Common strategies

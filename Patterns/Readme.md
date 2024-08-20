@@ -1,7 +1,7 @@
 # Readme
 
 To help following developers getting started with the project every project should have a README.md at the root. 
-It should describe what the project is, how to get it running locally, and what tool dependencies it has. If the project has unusual requirements or quirks, put them in the README.md. Ideally A developer should be able to get started with the project with just the information in there.
+It should describe what the project is, how to get it running locally, and what tool dependencies it has. If the project has unusual requirements or quirks, put them in the README.md. Ideally, a developer should be able to get started with the project with just the information in there.
 
 If you encounter a project that has no README.md, you should make one right away.
 A good start would be filling in the template below. It also contains some examples on how to generate diagrams in markdown.

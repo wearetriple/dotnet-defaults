@@ -2,7 +2,7 @@
 
 ## Data Annotation Validators
 
-Validating data using [Data Annotation Validators](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations?view=net-5.0) is a simple but powerful way of validating incoming data or settings. It provides a convenient amount of validators that can be assigned to properties using attributes. 
+Validating data using [Data Annotation Validators](https://docs.microsoft.com/en-us/dotnet/api/system.componentmodel.dataannotations) is a simple but powerful way of validating incoming data or settings. It provides a convenient amount of validators that can be assigned to properties using attributes. 
 
 ```c#
 public class Data 
@@ -50,7 +50,7 @@ public class Data
 }
 ```
 
-The `[ValidateEnumerable]` and `[ValidateObject]` attributes instruct the validator to go into the enumerable or object. Error messages from the deeper properties are grouped under the error message of the `Children` and `Parent` properties. The implementation of these attributes can be found in NETDefault/Libs/Triple.DataAnnotations.
+The `[ValidateEnumerable]` and `[ValidateObject]` attributes instruct the validator to go into the enumerable or object. Error messages from the deeper properties are grouped under the error message of the `Children` and `Parent` properties. The implementation of these attributes can be found at the end of this document.
 
 ### Validating dates
 
@@ -98,4 +98,82 @@ Input validation with regex can be achieved by the use of attributes, inheriting
             ErrorMessage = "Invalid Stormtrooper Id: should consist of 7 numbers";
         }
     }
+```
+
+## Nested validation
+
+```c#
+public class CompositeValidationResult : ValidationResult
+{
+    public string? MemberName { get; private set; }
+    public List<ValidationResult> Results { get; private set; } = new List<ValidationResult>();
+
+    public CompositeValidationResult(string errorMessage, string? memberName = default) : base(errorMessage) { MemberName = memberName; }
+}
+
+/// <summary>
+/// This attribute will instruct the entity validator to also validate the properties of this object, instead of just the object itself.
+/// </summary>
+public class ValidateObjectAttribute : ValidationAttribute
+{
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+    {
+        if (value is null)
+        {
+            return ValidationResult.Success;
+        }
+
+        var results = new List<ValidationResult>();
+        var context = new ValidationContext(value, validationContext, null);
+
+        Validator.TryValidateObject(value, context, results, true);
+
+        if (results.Count != 0)
+        {
+            var compositeResults = new CompositeValidationResult($"Validation for {validationContext.DisplayName} failed!", validationContext.MemberName ?? "Unknown member");
+            compositeResults.Results.AddRange(results);
+
+            return compositeResults;
+        }
+
+        return ValidationResult.Success;
+    }
+}
+
+/// <summary>
+/// This attribute will instruct the entity validator to also validate each of the elements of this enumerable, instead of just the enumerable itself.
+/// </summary>
+public class ValidateEnumerableAttribute : ValidationAttribute
+{
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+    {
+        if (value is null)
+        {
+            return ValidationResult.Success;
+        }
+
+        if (value is not IEnumerable enumerable)
+        {
+            return new ValidationResult($"{nameof(ValidateEnumerableAttribute)} can only be used on IEnumerable's");
+        }
+
+        var results = new List<ValidationResult>();
+
+        foreach (var item in enumerable)
+        {
+            var context = new ValidationContext(item, validationContext, null);
+
+            Validator.TryValidateObject(item, context, results, true);
+        }
+
+        var compositeResults = new CompositeValidationResult($"Validation for {validationContext.DisplayName} failed!", validationContext.MemberName ?? "Unknown member");
+        if (results.Count != 0)
+        {
+            compositeResults.Results.AddRange(results);
+            return compositeResults;
+        }
+
+        return ValidationResult.Success;
+    }
+}
 ```
