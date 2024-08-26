@@ -93,11 +93,13 @@ When this happens the PR will be marked as immortal. There's settings to prevent
 
 # ignoring packages
 
+If you want to exclude certain packages, you do so via the "packagerules" property, the following example would disable any auto updates for packages matching the pattern "umbraco"
+
 ```js
   "packageRules": [
     {
-      "matchPackagePatterns": ["postgres"],
-      "matchManagers": ["docker-compose"],
+      "matchPackagePatterns": ["umbraco"],
+      "matchManagers": ["nuget"],
       "enabled": false
     }
   ]
