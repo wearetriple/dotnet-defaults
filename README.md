@@ -22,3 +22,7 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 - [Request cancellation](Patterns/CancelRequest.md)
 - [Hosted service](Patterns/HostedService.md)
 - [Data Annotation Validation](Patterns/Validation.md)
+
+## Tools
+
+- [Automatic Dependency Updates With RenovateBot](Tools/RenovateBot/RenovateHowTo.md)
