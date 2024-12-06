@@ -1,0 +1,18 @@
+<Project>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- Example: 
+      <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    -->
+  </ItemGroup>
+  <ItemGroup>
+    <!-- Pinned transitive packages to fix vulnerabilities. Should be removed in the future once packages update their dependencies. -->
+    <!-- Example: 
+      <GlobalPackageReference Include="System.Drawing.Common" Version="[6.0.0,8.0.11]" />
+      <GlobalPackageReference Include="System.Text.Json" Version="8.0.5" />
+    -->
+  </ItemGroup>
+</Project>

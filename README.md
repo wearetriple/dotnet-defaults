@@ -7,6 +7,7 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 - [Readme](Patterns/Readme.md)
 - [`.editorconfig`](Patterns/Editorconfig.md)
 - [`Directory.Build.props`](Patterns/DirectoryBuildProps.md)
+- [`Directory.Packages.props`](Patterns/DirectoryPackagesProps.md)
 - [Dependency Injection](Patterns/DependencyInjection.md)
 - [Layered project](Patterns/LayeredProject.md)
 - [Nullable reference types](Patterns/Nullables.md)
