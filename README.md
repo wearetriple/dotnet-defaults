@@ -15,7 +15,6 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 - [KeyVault](Patterns/KeyVault.md)
 - [Logging with `ILogger<>` using Serilog to Seq](Patterns/Serilog.md)
 - [Health check and application warmup](Patterns/HealthCheck+WarmUp.md)
-- [Unit tests](NETDefault/UnitTestingWithNUnit&Moq/UnitTesting.md)
 
 ## Good practices
 
