@@ -10,7 +10,7 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 - [`Directory.Packages.props`](Patterns/DirectoryPackagesProps.md)
 - [Dependency Injection](Patterns/DependencyInjection.md)
 - [Layered project](Patterns/LayeredProject.md)
-- [Nullable reference types](Patterns/Nullables.md)
+- [Nullable reference types and `required`](Patterns/Nullables.md)
 - [Options pattern](Patterns/Options.md)
 - [Configuration](Patterns/Configuration.md)
 - [KeyVault](Patterns/KeyVault.md)
