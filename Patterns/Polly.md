@@ -290,6 +290,16 @@ new ResiliencePipelineBuilder().AddTimeout(options);
 ## [Rate Limiter strategy](https://www.pollydocs.org/strategies/rate-limiter.html)
 The rate limiter proactive resilience strategy controls the number of operations that can pass through it. This strategy is a thin layer over the API provided by the System.Threading.RateLimiting package. This strategy can be used in two flavors: to control inbound load via a rate limiter and to control outbound load via a concurrency limiter.
 
+graph TD
+    Start["Start Operation"] --> CheckLimit{Requests Below Limit?}
+    CheckLimit -- Yes --> AllowRequest["Allow Request"]
+    AllowRequest --> Execute["Execute Operation"]
+    Execute --> Success["Return Success Result"]
+    CheckLimit -- No --> Throttle["Throttle Request"]
+    Throttle --> RetryLater["Delay or Deny Request"]
+    RetryLater --> End["End Operation"]
+
+
 ### Add rate limiter with default options
 ```csharp
 //PermitLimit = 1000
@@ -469,3 +479,52 @@ await pipeline.ExecuteAsync(static async token =>
     // Your custom logic goes here
 });
 ```
+
+# [Use cases]
+
+## Retry:
+
+**Transient Errors:** Retry operations prone to temporary failures, such as network issues or throttling by an external service.
+**HTTP Requests:** Retrying failed API calls when encountering HTTP 5xx or timeout errors.
+**Database Operations:** Retrying transient errors like deadlocks or temporary connection issues.
+
+**Example:** Retrying a failed API call a few times with increasing delays can significantly improve success rates.
+
+## Circuit Breaker:
+
+**Downstream Service Protection:** Preventing an overwhelmed or failing API from cascading failures to other parts of your system.
+**Database Fallback:** Avoiding overloading a database experiencing temporary instability.
+**Microservices:** Ensuring stability in distributed systems by preventing overloading of unstable services.
+ 
+**Example:** If a service is consistently unavailable, the circuit breaker "opens," blocking further requests until a timeout period elapses or a successful test call is made.
+
+## Timeout:
+
+**Long-Running Operations:** Preventing operations (e.g., API calls, database queries) from hanging indefinitely.
+**Service-Level Agreements (SLAs):** Enforcing time limits for responses from third-party services.
+**User Experience:** Ensuring UI responsiveness by cancelling long-running tasks.
+
+**Example:** Setting a timeout for a long-running operation ensures that the application doesn't wait forever for a response.  
+
+## Fallback:
+
+**Graceful Degradation:** Providing a default value or alternative response when an operation fails.
+**Failover Logic:** Redirecting requests to a secondary service when the primary service is down.
+**User Notifications:** Showing a meaningful error message or default content to users.
+ 
+**Example:** If a primary data source is unavailable, a fallback mechanism can retrieve data from a secondary source or provide default values.
+
+## Rate Limiter:
+
+**Shared Resources Protection:** Limiting the number of concurrent requests to a service or resource (e.g., database, file system).
+**System Stability:** Isolating failures in one subsystem to prevent cascading effects across the application.
+  
+**Example:** Limiting the number of requests to an external API within a specific time window can prevent your application from being throttled.   
+
+## Hedging:
+
+**High-Availability Systems:** Running redundant tasks in parallel to reduce latency (e.g., querying multiple replicas of a database).
+**Critical Services:** Ensuring a response is returned quickly by hedging requests to multiple endpoints.
+**Geographically Distributed APIs:** Sending requests to different regions and accepting the first successful response.
+
+**Example:** If one part of a service fails, it won't impact other parts due to resource limitations.
