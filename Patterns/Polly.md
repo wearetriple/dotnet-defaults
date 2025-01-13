@@ -480,7 +480,7 @@ await pipeline.ExecuteAsync(static async token =>
 });
 ```
 
-# [Use cases]
+# Use cases
 
 ## Retry:
 
