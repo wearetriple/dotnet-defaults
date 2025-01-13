@@ -1,6 +1,6 @@
 # [Polly.NET](https://www.pollydocs.org/)
 
-Polly is a powerful library for .NET that helps you handle transient faults and improve the resilience of your applications. With Polly, you can easily define and apply strategies such as Retry, Circuit Breaker, Hedging, Timeout, Rate Limiter and Fallback to handle failures and slowdowns in a fluent and thread-safe way. Polly lets you use and combine different resilience strategies to cope with various scenarios, such as:
+Polly is a powerful library for .NET that helps you handle transient faults and improve the resilience of your applications in a fluent and thread-safe way. Polly lets you use and combine different resilience strategies to cope with various scenarios, such as:
 
 * **Retry**: Try again if something fails. This can be useful when the problem is temporary and might go away.
 * **Circuit Breaker**: Stop trying if something is broken or busy. This can benefit you by avoiding wasting time and making things worse. It can also support the system to recover.
@@ -515,7 +515,7 @@ await pipeline.ExecuteAsync(static async token =>
 **Service-Level Agreements (SLAs):** Enforcing time limits for responses from third-party services.
 **User Experience:** Ensuring UI responsiveness by cancelling long-running tasks.
 
-**Example:** Setting a timeout for a long-running operation ensures that the application doesn't wait forever for a response.  
+**Example:** Setting a timeout for a long-running operation ensures that the application doesn't wait forever for a response. Â 
 
 ## Fallback
 
@@ -529,8 +529,8 @@ await pipeline.ExecuteAsync(static async token =>
 
 **Shared Resources Protection:** Limiting the number of concurrent requests to a service or resource (e.g., database, file system).
 **System Stability:** Isolating failures in one subsystem to prevent cascading effects across the application.
-  
-**Example:** Limiting the number of requests to an external API within a specific time window can prevent your application from being throttled.   
+Â  
+**Example:** Limiting the number of requests to an external API within a specific time window can prevent your application from being throttled. Â  
 
 ## Hedging
 
