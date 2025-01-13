@@ -20,6 +20,7 @@ Polly categorizes resilience strategies into two main groups:
 ## [Retry strategy](https://www.pollydocs.org/strategies/retry.html)
 The retry reactive resilience strategy re-executes the same callback method if its execution fails. Failure can be either an Exception or a result object indicating unsuccessful processing. Between the retry attempts the retry strategy waits a specified amount of time. You have fine-grained control over how to calculate the next delay. The retry strategy stops invoking the same callback when it reaches the maximum allowed number of retry attempts or an unhandled exception is thrown / result object indicating a failure is returned.
 
+``` mermaid
 graph TD
     Start["Start Operation"] --> CheckFailure{Operation Fails?}
     CheckFailure -- No --> Success["Success"]
@@ -28,6 +29,7 @@ graph TD
     RetryCount -- Yes --> Wait["Wait (if defined)"]
     Wait --> Retry["Retry Operation"]
     Retry --> CheckFailure
+```
 
 ### Retry using the default options
 ```csharp
@@ -131,6 +133,7 @@ new ResiliencePipelineBuilder().AddRetry(options);
 
 The circuit breaker reactive resilience strategy shortcuts the execution if the underlying resource is detected as unhealthy. The detection process is done via sampling. If the sampled executions' failure-success ratio exceeds a predefined threshold then a circuit breaker will prevent any new executions by throwing a BrokenCircuitException. After a preset duration the circuit breaker performs a probe, because the assumption is that this period was enough for the resource to self-heal. Depending on the outcome of the probe, the circuit will either allow new executions or continue to block them. If an execution is blocked by the circuit breaker, the thrown exception may indicate the amount of time executions will continue to be blocked through its RetryAfter property.
 
+``` mermaid
 graph TD
     Start["Start Operation"] --> CheckState{Circuit State?}
     CheckState -- Closed --> Execute["Execute Operation"]
@@ -149,6 +152,7 @@ graph TD
     TestOperation --> TestSuccess{Test Success?}
     TestSuccess -- Yes --> CloseCircuit["Close Circuit (Back to Normal)"]
     TestSuccess -- No --> OpenCircuit
+```
 
 ### Circuit breaker with default options
 ```csharp
@@ -235,6 +239,7 @@ await manualControl.CloseAsync();
 ## [Timeout strategy](https://www.pollydocs.org/strategies/timeout.html)
 The timeout proactive resilience strategy cancels the execution if it does not complete within the specified timeout period. If the execution is canceled by the timeout strategy, it throws a TimeoutRejectedException. The timeout strategy operates by wrapping the incoming cancellation token with a new one. Should the original token be canceled, the timeout strategy will transparently honor the original cancellation token without throwing a TimeoutRejectedException.
 
+``` mermaid
 graph TD
     Start["Start Operation"] --> StartTimer["Start Timeout Timer"]
     StartTimer --> ExecuteOperation["Execute Operation"]
@@ -243,6 +248,7 @@ graph TD
     CheckCompletion -- No --> CheckTimeout{Timeout Expired?}
     CheckTimeout -- No --> ExecuteOperation
     CheckTimeout -- Yes --> Timeout["Timeout Exception"]
+```
 
 ### To add a timeout with a custom TimeSpan duration
 ```csharp
@@ -290,6 +296,7 @@ new ResiliencePipelineBuilder().AddTimeout(options);
 ## [Rate Limiter strategy](https://www.pollydocs.org/strategies/rate-limiter.html)
 The rate limiter proactive resilience strategy controls the number of operations that can pass through it. This strategy is a thin layer over the API provided by the System.Threading.RateLimiting package. This strategy can be used in two flavors: to control inbound load via a rate limiter and to control outbound load via a concurrency limiter.
 
+``` mermaid
 graph TD
     Start["Start Operation"] --> CheckLimit{Requests Below Limit?}
     CheckLimit -- Yes --> AllowRequest["Allow Request"]
@@ -298,7 +305,7 @@ graph TD
     CheckLimit -- No --> Throttle["Throttle Request"]
     Throttle --> RetryLater["Delay or Deny Request"]
     RetryLater --> End["End Operation"]
-
+```
 
 ### Add rate limiter with default options
 ```csharp
@@ -326,6 +333,7 @@ new ResiliencePipelineBuilder()
 ## [Fallback strategy](https://www.pollydocs.org/strategies/fallback.html)
 The fallback reactive resilience strategy provides a substitute if the execution of the callback fails. Failure can be either an Exception or a result object indicating unsuccessful processing. Typically this strategy is used as a last resort, meaning that if all other strategies failed to overcome the transient failure you could still provide a fallback value to the caller.
 
+``` mermaid
 graph TD
     Start["Start Operation"] --> TryOperation["Try Primary Operation"]
     TryOperation --> CheckSuccess{Operation Succeeded?}
@@ -333,6 +341,7 @@ graph TD
     CheckSuccess -- No --> TriggerFallback["Trigger Fallback"]
     TriggerFallback --> ExecuteFallback["Execute Fallback Action"]
     ExecuteFallback --> ReturnFallback["Return Fallback Result"]
+```
 
 ### A fallback/substitute value if an operation fails
 ```csharp
@@ -386,6 +395,7 @@ new ResiliencePipelineBuilder<UserAvatar>().AddFallback(options);
 ## [Hedging strategy](https://www.pollydocs.org/strategies/hedging.html)
 The hedging reactive strategy enables the re-execution of the callback if the previous execution takes too long. This approach gives you the option to either run the original callback again or specify a new callback for subsequent hedged attempts. Implementing a hedging strategy can boost the overall responsiveness of the system. However, it's essential to note that this improvement comes at the cost of increased resource utilization. If low latency is not a critical requirement, you may find the retry strategy more appropriate. This strategy also supports multiple concurrency modes to flexibly tailor the behavior for your own needs.
 
+``` mermaid
 graph TD
     Start["Start Operation"] --> LaunchTasks["Launch Multiple Parallel Tasks"]
     LaunchTasks --> CheckFirstCompletion{Any Task Completed?}
@@ -393,6 +403,7 @@ graph TD
     CheckFirstCompletion -- Yes --> CancelRemaining["Cancel Remaining Tasks"]
     CancelRemaining --> Success["Return Result from First Successful Task"]
     Wait --> CheckFirstCompletion
+```
 
 ### Hedging with default options
 ```csharp
@@ -482,7 +493,7 @@ await pipeline.ExecuteAsync(static async token =>
 
 # Use cases
 
-## Retry:
+## Retry
 
 **Transient Errors:** Retry operations prone to temporary failures, such as network issues or throttling by an external service.
 **HTTP Requests:** Retrying failed API calls when encountering HTTP 5xx or timeout errors.
@@ -490,7 +501,7 @@ await pipeline.ExecuteAsync(static async token =>
 
 **Example:** Retrying a failed API call a few times with increasing delays can significantly improve success rates.
 
-## Circuit Breaker:
+## Circuit Breaker
 
 **Downstream Service Protection:** Preventing an overwhelmed or failing API from cascading failures to other parts of your system.
 **Database Fallback:** Avoiding overloading a database experiencing temporary instability.
@@ -498,7 +509,7 @@ await pipeline.ExecuteAsync(static async token =>
  
 **Example:** If a service is consistently unavailable, the circuit breaker "opens," blocking further requests until a timeout period elapses or a successful test call is made.
 
-## Timeout:
+## Timeout
 
 **Long-Running Operations:** Preventing operations (e.g., API calls, database queries) from hanging indefinitely.
 **Service-Level Agreements (SLAs):** Enforcing time limits for responses from third-party services.
@@ -506,7 +517,7 @@ await pipeline.ExecuteAsync(static async token =>
 
 **Example:** Setting a timeout for a long-running operation ensures that the application doesn't wait forever for a response.  
 
-## Fallback:
+## Fallback
 
 **Graceful Degradation:** Providing a default value or alternative response when an operation fails.
 **Failover Logic:** Redirecting requests to a secondary service when the primary service is down.
@@ -514,14 +525,14 @@ await pipeline.ExecuteAsync(static async token =>
  
 **Example:** If a primary data source is unavailable, a fallback mechanism can retrieve data from a secondary source or provide default values.
 
-## Rate Limiter:
+## Rate Limiter
 
 **Shared Resources Protection:** Limiting the number of concurrent requests to a service or resource (e.g., database, file system).
 **System Stability:** Isolating failures in one subsystem to prevent cascading effects across the application.
   
 **Example:** Limiting the number of requests to an external API within a specific time window can prevent your application from being throttled.   
 
-## Hedging:
+## Hedging
 
 **High-Availability Systems:** Running redundant tasks in parallel to reduce latency (e.g., querying multiple replicas of a database).
 **Critical Services:** Ensuring a response is returned quickly by hedging requests to multiple endpoints.
