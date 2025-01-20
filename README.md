@@ -22,3 +22,4 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 - [Request cancellation](Patterns/CancelRequest.md)
 - [Hosted service](Patterns/HostedService.md)
 - [Data Annotation Validation](Patterns/Validation.md)
+- [Polly: The .NET resilience library](Patterns/Polly.md)
