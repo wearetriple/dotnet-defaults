@@ -43,6 +43,10 @@ Example:
     "updateLockFiles": false //I try to use central package management without lockfiles in .net, so there's no lockfiles to update.
     "packageRules": [
         {
+            "groupName": "Serilog Packages",
+            "matchPackageNames": "/^Serilog/"
+        },
+        {
             "groupName": "EF Core Packages",
             "matchSourceUrlPrefixes": [
                 "https://github.com/dotnet/efcore"
