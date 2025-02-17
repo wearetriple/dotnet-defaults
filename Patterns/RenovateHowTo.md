@@ -13,6 +13,8 @@ You *can* rename these files via env config, but there should not be a need.
 
 ### config.js
 This file contains the settings to actually run the application, things like personal access tokens and how it can find your code.
+Only add this file after creating the onboarding PR.
+
 Example:
 ```js
 module.exports = {
@@ -36,10 +38,11 @@ Example:
 
 ```js
 {
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
     "extends": [ //Renovate works via a config inheritance scheme with community built recommended defaults.
         "config:recommended" //This is the recommended config, contains a lot of rules you usually want.
     ],
-    "enabledManagers": ["nuget"], //If you don't specify this it will autodetect and also put in PR's for other package managers.
+    "enabledManagers": ["nuget", "npm"], //If you don't specify this it will autodetect and also put in PR's for other package managers.
     "updateLockFiles": false //I try to use central package management without lockfiles in .net, so there's no lockfiles to update.
     "packageRules": [
         {
@@ -67,15 +70,27 @@ Example:
     ]
 }
 ```
+### package.json
+In order for npm to install renovate when executing the pipeline the best way is to add it as a dependency to the package.config.
+
+```json
+  "dependencies": {
+    "renovate": "39.7.1" //please check latest version before updating
+  }
+```
+This way renovate will update itself once a new version becomes available.
+If you do not want to add this in your package.json you can replace `npm i` with `npm install renovate` in  [running it](#running-it).
 
 ## Setting it up
 In order to get renovate to work in your repository you want to create the `config.js` file as described above, 
-create a PAT and set that path as the environment variable `RENOVATE_TOKEN`. Then you can run
-`npx renovate`. If renovate can access your repository you should now see a new pull request, called your onboarding PR.
+create a PAT and set that path as the environment variable `RENOVATE_TOKEN`.
+You do not want to add the renovate.json already, as renovate will delete it automatically
+Then you can run`npx renovate`. 
+If renovate can access your repository you should now see a new pull request, called your onboarding PR.
 In this PR renovate tells you what packages it detected, a summary of your configuration and what to expect when you merge the onboarding process.
 
 Now you do not have any configurations yet. To get renovate to adapt this pull request to your configuration you have to
-push your `renovate.json` file to the branch `renovate\configure`, which is the branch renovate wants to merge in the PR.
+add the `renovate.json` file and push it to the branch `renovate\configure`, which is the branch renovate wants to merge in the PR. 
 Once you have pushed your code, you can run `npx renovate` again locally, which will then update your PR description to your new configuration.
 
 When you are completely satisfied with your configuration, you can merge renovates PR.
@@ -88,7 +103,7 @@ though you probably want it automated, easiest way is probably putting it in a d
 ```yaml
 schedules:
 - cron: '0 4 * * 1-5' #Thanks crontab.guru
-  displayName: Run renovate bot hourly around office hours.
+  displayName: Run renovate bot Monday through Friday at 4:00 AM.
   branches:
     include:
     - main 
@@ -103,11 +118,12 @@ stages:
         - task: NodeTool@0
           inputs:
              versionSource: 'spec'
-             versionSpec: 20.x
+             versionSpec: 22.x
              checkLatest: true
         - task: PowerShell@2
           displayName: 'Run Renovate'         
           env: #Inject secret as secrets don't go into env by themselves.
+            RENOVATE_CONFIG_FILE: './renovate-config.js' #needed when you name config file something else than config.js
             GITHUB_COM_TOKEN: $(GITHUB_TOKEN) #Insert github PAT here to see changelogs in PRs
             RENOVATE_TOKEN: $(RENOVATE_TOKEN)
           inputs:
