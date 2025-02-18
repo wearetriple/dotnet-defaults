@@ -1,0 +1,38 @@
+﻿{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [ //Renovate works via a config inheritance scheme with community built recommended defaults.
+    "config:recommended" //This is the recommended config, contains a lot of rules you usually want.
+  ],
+  "enabledManagers": ["nuget", "npm"], //If you don't specify this it will autodetect and also put in PR's for other package managers.
+  "updateLockFiles": false //I try to use central package management without lockfiles in .net, so there's no lockfiles to update.
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 2,
+  "packageRules": [
+    {
+      "groupName": "Serilog Packages",
+      "matchPackageNames": "/^Serilog/"
+    },
+    {
+      "groupName": "Npgsql Packages",
+      "matchPackageNames": "/^Npgsql/"
+    },
+    {
+      "groupName": "EF Core Packages",
+      "matchSourceUrlPrefixes": [
+        "https://github.com/dotnet/efcore"
+      ]
+    },
+    {
+      "groupName": "ASP .NET Core Packages",
+      "matchSourceUrlPrefixes": [
+        "https://github.com/dotnet/aspnetcore"
+      ]
+    },
+    {
+      "groupName": ".NET Runtime Packages",
+      "matchSourceUrlPrefixes": [
+        "https://github.com/dotnet/runtime"
+      ]
+    }
+  ]
+}
