@@ -13,7 +13,7 @@ You *can* rename these files via env config, but there should not be a need.
 
 ### renovate-config.js
 This file contains the settings to actually run the application, things like personal access tokens and how it can find your code.
-Only add this file after creating the onboarding PR.
+
 This file should be at the root of your project.
 
 Example: [renovate-config.js](renovate-config.js)
@@ -22,6 +22,7 @@ Documentation: [global config](https://docs.renovatebot.com/getting-started/runn
 
 ### renovate.json
 Stored in the root of your repository, contains settings on how renovate should behave.
+Only add this file after creating the onboarding PR.
 
 Example: [renovate.json](renovate.json)
 
@@ -39,7 +40,7 @@ If you do not want to add this in your package.json you can replace `npm i` with
 
 ### Initial setup
 We start by introducing renovate to our repository locally.
-1. In order to get renovate to work in your repository you want to create the `renovate-config.js` file as described above.
+1. In order to get renovate to work in your repository you want to create the [renovate-config.js](renovate-config.js) file as described above.
 2. create a PAT and set that as the environment variable `RENOVATE_TOKEN`.
 3. Then you can run `npm i -g renovate` and `npx renovate`. 
 4. If renovate can access your repository you should now see a new pull request, called your onboarding PR.
