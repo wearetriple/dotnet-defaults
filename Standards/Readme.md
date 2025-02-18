@@ -7,7 +7,7 @@ Configuration defaults; [Guide](./Configuration/Readme.md)
 1. Styling by [.editorconfig](./Configuration/.editorconfig)
 2. Styling errors by [Directory.Build.props](./Configuration/Directory.Build.props)
 3. Shared versioning by [Directory.Packages.props](./Configuration/Directory.Packages.props)
-4. [Git ignore](./Configuration/.gitignore)
+4. Ignoring files for git by [.gitignore](./../.gitignore)
 
 ## Renovate
 

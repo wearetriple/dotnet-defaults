@@ -25,6 +25,19 @@ File: [Directory.Packages.props](Directory.Packages.props)
 
 Documentation: https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management
 
+### Pinning transitive packages
+
+To fix package vulnerabilities in packages that we use, we can pin transitive package versions using
+`GlobalPackageReference` in the Directory.Packages.props file. This includes the package and pins
+it to a specific version. By using a version expression (e.g. `[6.0.0,8.0.11]`) we set these packages
+to a certain minimum version, but allow for newer versions when needed. We should always set an explicit
+version or a minimum & maximum version.
+
+Make sure `<CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>` is
+included in Directory.Packages.props to opt into central transitive package pinning.
+
+See https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management#transitive-pinning.
+
 ## Directory.Build.props
 
 In addition to `.editorconfig` for aligning our coding styles we use Directory.Build.props to force
@@ -41,19 +54,11 @@ File: [Directory.Build.props](Directory.Build.props)
 
 Documentation: https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory
 
-### Pinning transitive packages
-
-To fix package vulnerabilities in packages that we use, we can pin transitive package versions using
-`GlobalPackageReference` in the Directory.Packages.props file. This includes the package and pins
-it to a specific version. By using a version expression (e.g. `[6.0.0,8.0.11]`) we set these packages
-to a certain minimum version, but allow for newer versions when needed. We should always set an explicit
-version or a minimum & maximum version.
-
-Make sure `<CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>` is
-included in Directory.Packages.props to opt into central transitive package pinning.
-
-See https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management#transitive-pinning.
-
 ## .gitignore
 
-File: [.gitignore](.gitignore)
+Shared configuration for ignoring files for git.
+To be placed in root of the solution.
+
+File: [.gitignore](./../../.gitignore)
+
+Documentation: https://git-scm.com/docs/gitignore
