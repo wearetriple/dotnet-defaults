@@ -2,12 +2,16 @@
 
 Common boilerplate, practices, and guidelines for Triple .NET projects.
 
+## Required standardizations
+
+Our [Standardization](./Standards/Readme.md) overview
+
+- [Configuration](./Standards/Configuration/Readme.md)
+- [Renovate](./Standards/Renovate/Readme.md)
+
 ## Required patterns
 
 - [Readme](Patterns/Readme.md)
-- [`.editorconfig`](Patterns/Editorconfig.md)
-- [`Directory.Build.props`](Patterns/DirectoryBuildProps.md)
-- [`Directory.Packages.props`](Patterns/DirectoryPackagesProps.md)
 - [Dependency Injection](Patterns/DependencyInjection.md)
 - [Layered project](Patterns/LayeredProject.md)
 - [Nullable reference types and `required`](Patterns/Nullables.md)
