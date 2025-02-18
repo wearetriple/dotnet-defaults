@@ -41,9 +41,11 @@ If you do not want to add this in your package.json you can replace `npm i` with
 ### Initial setup
 We start by introducing renovate to our repository locally.
 1. In order to get renovate to work in your repository you want to create the [renovate-config.js](renovate-config.js) file as described above.
-2. create a PAT and set that as the environment variable `RENOVATE_TOKEN`.
-3. Then you can run `npm i -g renovate` and `npx renovate`. 
-4. If renovate can access your repository you should now see a new pull request, called your onboarding PR.
+2. Create a PAT and set that as the environment variable `RENOVATE_TOKEN`.
+3. Then you can run `npm i -g renovate` to install renovate locally
+4. Define the location and name of your config.js file by running `$env:RENOVATE_CONFIG_FILE='./renovate-config.js'`
+5. Now you can run `npx renovate` to execute renovate. 
+6. If renovate can access your repository you should now see a new pull request, called your onboarding PR.
 In this PR renovate tells you what packages it detected, a summary of your configuration and what to expect when you merge the onboarding process.
 
 ### Configuration
