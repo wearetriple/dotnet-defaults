@@ -33,7 +33,7 @@ In order for npm to install renovate when executing the pipeline the best way is
 Example: [package.json](package.json)
 
 This way renovate will update itself once a new version becomes available.
-If you do not want to add this in your package.json you can replace `npm i` with `npm install renovate` in  [adding your pipeline](#adding-your-pipeline).
+If you do not want to add this in your package.json you can replace `npm i` with `npm install renovate` in [adding your pipeline](#adding-your-pipeline).
 
 ## Setting it up
 
@@ -60,7 +60,7 @@ In order to be able to run renovate periodically we will add a pipeline.
 2. Add your secrets to a library
    1.  A [devops PAT](#ownership) called `RENOVATE_TOKEN`
    2.  A [github PAT](#release-notes) called `GITHUB_TOKEN`
-3. add the pipeline to devops.
+3. Add the pipeline to devops.
 
 Example: [renovate-pipeline.yml](renovate-pipeline.yml)
 
