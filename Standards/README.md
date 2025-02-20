@@ -2,7 +2,7 @@
 
 ## Configuration
 
-Configuration defaults; [Guide](./Configuration/Readme.md)
+Configuration defaults; [Guide](./Configuration/README.md)
 
 1. Styling by [.editorconfig](./Configuration/.editorconfig)
 2. Styling errors by [Directory.Build.props](./Configuration/Directory.Build.props)
@@ -11,7 +11,7 @@ Configuration defaults; [Guide](./Configuration/Readme.md)
 
 ## Renovate
 
-The auto dependency updater; [Guide](./Renovate/Readme.md)
+The auto dependency updater; [Guide](./Renovate/README.md)
 
 1. Npm package for installing and versioning by [package.json](./Renovate/package.json)
 2. Global configuration by [renovate-config.json](./Renovate/renovate-config.js)

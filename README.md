@@ -4,14 +4,14 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 
 ## Required standardizations
 
-Our [Standardization](./Standards/Readme.md) overview
+Our [Standardization](./Standards/README.md) overview
 
-- [Configuration](./Standards/Configuration/Readme.md)
-- [Renovate](./Standards/Renovate/Readme.md)
+- [Configuration](./Standards/Configuration/README.md)
+- [Renovate](./Standards/Renovate/README.md)
 
 ## Required patterns
 
-Our [Patterns](./Patterns/Readme.md) overview
+Our [Patterns](./Patterns/README.md) overview
 
 - [Dependency Injection](./Patterns/DependencyInjection.md)
 - [Layered project](./Patterns/LayeredProject.md)
