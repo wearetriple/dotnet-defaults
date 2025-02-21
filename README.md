@@ -2,24 +2,29 @@
 
 Common boilerplate, practices, and guidelines for Triple .NET projects.
 
+## Required standardizations
+
+Our [Standardization](./Standards/README.md) overview
+
+- [Configuration](./Standards/Configuration/README.md)
+- [Renovate](./Standards/Renovate/README.md)
+
 ## Required patterns
 
-- [Readme](Patterns/Readme.md)
-- [`.editorconfig`](Patterns/Editorconfig.md)
-- [`Directory.Build.props`](Patterns/DirectoryBuildProps.md)
-- [`Directory.Packages.props`](Patterns/DirectoryPackagesProps.md)
-- [Dependency Injection](Patterns/DependencyInjection.md)
-- [Layered project](Patterns/LayeredProject.md)
-- [Nullable reference types and `required`](Patterns/Nullables.md)
-- [Options pattern](Patterns/Options.md)
-- [Configuration](Patterns/Configuration.md)
-- [KeyVault](Patterns/KeyVault.md)
-- [Logging with `ILogger<>` using Serilog to Seq](Patterns/Serilog.md)
-- [Health check and application warmup](Patterns/HealthCheck+WarmUp.md)
+Our [Patterns](./Patterns/README.md) overview
+
+- [Dependency Injection](./Patterns/DependencyInjection.md)
+- [Layered project](./Patterns/LayeredProject.md)
+- [Nullable reference types and `required`](./Patterns/Nullables.md)
+- [Options pattern](./Patterns/Options.md)
+- [Configuration](./Patterns/Configuration.md)
+- [KeyVault](./Patterns/KeyVault.md)
+- [Logging with `ILogger<>` using Serilog to Seq](./Patterns/Serilog.md)
+- [Health check and application warmup](./Patterns/HealthCheck+WarmUp.md)
 
 ## Good practices
 
-- [Request cancellation](Patterns/CancelRequest.md)
-- [Hosted service](Patterns/HostedService.md)
-- [Data Annotation Validation](Patterns/Validation.md)
-- [Polly: The .NET resilience library](Patterns/Polly.md)
+- [Request cancellation](./Patterns/CancelRequest.md)
+- [Hosted service](./Patterns/HostedService.md)
+- [Data Annotation Validation](./Patterns/Validation.md)
+- [Polly: The .NET resilience library](./Patterns/Polly.md)
