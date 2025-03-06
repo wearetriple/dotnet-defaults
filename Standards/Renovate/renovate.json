@@ -1,10 +1,15 @@
 ﻿{
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [ //Renovate works via a config inheritance scheme with community built recommended defaults.
-    "config:recommended" //This is the recommended config, contains a lot of rules you usually want.
+  "extends": [
+    // Renovate works via a config inheritance scheme with community built recommended defaults.
+    // This is the recommended config, contains a lot of rules you usually want.
+    "config:recommended"
   ],
-  "enabledManagers": ["nuget", "npm"], //If you don't specify this it will autodetect and also put in PR's for other package managers.
-  "updateLockFiles": false //I try to use central package management without lockfiles in .net, so there's no lockfiles to update.
+  "enabledManagers": [ // Package managers to enable
+    "nuget",
+    "npm" // NPM is used for Renovate
+  ],
+  "updateLockFiles": false, // Try to use central package management without lockfiles in .NET, so there's no lockfiles to update.
   "prConcurrentLimit": 10,
   "prHourlyLimit": 2,
   "packageRules": [
@@ -15,6 +20,14 @@
     {
       "groupName": "Npgsql Packages",
       "matchPackageNames": "/^Npgsql/"
+    },
+    {
+      "groupName": "NUnit Packages",
+      "matchPackageNames": "/^NUnit/"
+    },
+    {
+      "groupName": "NodaTime Packages",
+      "matchPackageNames": "/^NodaTime/"
     },
     {
       "groupName": "EF Core Packages",
