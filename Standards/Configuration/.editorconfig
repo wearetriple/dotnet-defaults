@@ -49,6 +49,17 @@ dotnet_style_explicit_tuple_names = true:error
 dotnet_style_allow_multiple_blank_lines_experimental=false:error
 dotnet_style_require_accessibility_modifiers=for_non_interface_members:error
 dotnet_style_readonly_field=true:error
+dotnet_style_prefer_auto_properties = true:error
+dotnet_style_prefer_simplified_boolean_expressions = true:error
+dotnet_style_prefer_conditional_expression_over_assignment = true:error
+dotnet_style_prefer_conditional_expression_over_return = true:error
+dotnet_style_prefer_inferred_tuple_names = true:error
+dotnet_style_prefer_inferred_anonymous_type_member_names = true:error
+dotnet_style_prefer_compound_assignment = true:error
+dotnet_style_prefer_simplified_interpolation = true:error
+dotnet_style_prefer_collection_expression = when_types_loosely_match:warning
+csharp_style_prefer_top_level_statements = true:suggestion
+csharp_prefer_system_threading_lock = true:error
 
 # But not too modern
 csharp_style_prefer_primary_constructors = false
@@ -59,7 +70,7 @@ resharper_convert_to_primary_constructor_highlighting = none
 # Prefer "var" everywhere
 csharp_style_var_for_built_in_types = true:error
 csharp_style_var_when_type_is_apparent = true:error
-csharp_style_var_elsewhere = true:suggestion
+csharp_style_var_elsewhere = true:error
 
 # Prefer method-like constructs to have a block body
 csharp_style_expression_bodied_methods = false:none
@@ -67,9 +78,11 @@ csharp_style_expression_bodied_constructors = false:none
 csharp_style_expression_bodied_operators = false:none
 
 # Prefer property-like constructs to have an expression-body
-csharp_style_expression_bodied_properties = true:none
-csharp_style_expression_bodied_indexers = true:none
-csharp_style_expression_bodied_accessors = true:none
+csharp_style_expression_bodied_properties = true:suggestion
+csharp_style_expression_bodied_indexers = true:suggestion
+csharp_style_expression_bodied_accessors = true:suggestion
+csharp_style_expression_bodied_lambdas = true:suggestion
+csharp_style_expression_bodied_local_functions = false:suggestion
 
 # Suggest more modern language features when available
 csharp_style_pattern_matching_over_is_with_cast_check = true:error
@@ -92,6 +105,8 @@ dotnet_style_prefer_inferred_anonymous_type_member_names = true:error
 # Null
 dotnet_style_coalesce_expression = true:error
 dotnet_style_null_propagation = true:error
+dotnet_style_prefer_is_null_check_over_reference_equality_method = true:error
+csharp_style_prefer_null_check_over_type_check = true:error
 
 # Newline settings
 csharp_new_line_before_open_brace = all
@@ -116,6 +131,7 @@ csharp_space_between_parentheses = false
 # Newlines
 csharp_preserve_single_line_statements = false
 csharp_preserve_single_line_blocks = true
+dotnet_style_operator_placement_when_wrapping = beginning_of_line:suggestion
 
 # Naming Symbols
 # constant_fields - Define constant fields
@@ -204,13 +220,33 @@ dotnet_naming_rule.interface_types_must_be_prefixed_with_i.severity = error
 dotnet_naming_rule.interface_types_must_be_prefixed_with_i.symbols = interface_types
 dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style = prefix_interface_interface_with_i
 
+csharp_style_namespace_declarations= file_scoped:warning
+csharp_using_directive_placement= outside_namespace:warning
+insert_final_newline=true
+
 # Braces (+ must be last instruction due to bugs)
 csharp_prefer_braces = true:error
 
-# Rider/resharper configuration
-# Disable [Attribute] on the same line as type, method, property and field
-resharper_csharp_keep_existing_attribute_arrangement = false
-resharper_csharp_place_type_attribute_on_same_line = false
-resharper_csharp_place_method_attribute_on_same_line = false
-resharper_csharp_place_accessorholder_attribute_on_same_line = false
-resharper_csharp_place_field_attribute_on_same_line = false
+# Other format
+dotnet_style_namespace_match_folder = true:error
+csharp_space_around_binary_operators = before_and_after:error
+csharp_prefer_simple_using_statement = true:error
+csharp_style_prefer_method_group_conversion = true:suggestion
+csharp_style_prefer_local_over_anonymous_function = true:warning
+csharp_style_prefer_index_operator = true:warning
+csharp_style_prefer_range_operator = true:warning
+csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
+csharp_style_prefer_tuple_swap = true:error
+csharp_style_prefer_utf8_string_literals = true:error
+csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+
+# code style settings for unit test files only
+[*Test*.cs]
+# IDE1006 : Async methods must end with 'Async' destroys readability of test methods
+dotnet_diagnostic.IDE1006.severity = none
+dotnet_analyzer_diagnostic.IDE1006.severity = none
+dotnet_diagnostic.VSTHRD200.severity = none
+dotnet_analyzer_diagnostic.VSTHRD200.severity = none
+
+# NUnit1032: An IDisposable field/property should be Disposed in a TearDown method
+dotnet_diagnostic.NUnit1032.severity = suggestion
