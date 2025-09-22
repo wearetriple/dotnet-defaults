@@ -57,7 +57,7 @@ dotnet_style_prefer_inferred_tuple_names = true:error
 dotnet_style_prefer_inferred_anonymous_type_member_names = true:error
 dotnet_style_prefer_compound_assignment = true:error
 dotnet_style_prefer_simplified_interpolation = true:error
-dotnet_style_prefer_collection_expression = when_types_loosely_match:warning
+dotnet_style_prefer_collection_expression = when_types_loosely_match:error
 csharp_style_prefer_top_level_statements = true:suggestion
 csharp_prefer_system_threading_lock = true:error
 
@@ -131,7 +131,7 @@ csharp_space_between_parentheses = false
 # Newlines
 csharp_preserve_single_line_statements = false
 csharp_preserve_single_line_blocks = true
-dotnet_style_operator_placement_when_wrapping = beginning_of_line:suggestion
+dotnet_style_operator_placement_when_wrapping = end_of_line:suggestion
 
 # Naming Symbols
 # constant_fields - Define constant fields
@@ -220,8 +220,8 @@ dotnet_naming_rule.interface_types_must_be_prefixed_with_i.severity = error
 dotnet_naming_rule.interface_types_must_be_prefixed_with_i.symbols = interface_types
 dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style = prefix_interface_interface_with_i
 
-csharp_style_namespace_declarations= file_scoped:warning
-csharp_using_directive_placement= outside_namespace:warning
+csharp_style_namespace_declarations= file_scoped:error
+csharp_using_directive_placement= outside_namespace:error
 insert_final_newline=true
 
 # Braces (+ must be last instruction due to bugs)
@@ -232,9 +232,9 @@ dotnet_style_namespace_match_folder = true:error
 csharp_space_around_binary_operators = before_and_after:error
 csharp_prefer_simple_using_statement = true:error
 csharp_style_prefer_method_group_conversion = true:suggestion
-csharp_style_prefer_local_over_anonymous_function = true:warning
-csharp_style_prefer_index_operator = true:warning
-csharp_style_prefer_range_operator = true:warning
+csharp_style_prefer_local_over_anonymous_function = true:error
+csharp_style_prefer_index_operator = true:error
+csharp_style_prefer_range_operator = true:error
 csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
 csharp_style_prefer_tuple_swap = true:error
 csharp_style_prefer_utf8_string_literals = true:error
