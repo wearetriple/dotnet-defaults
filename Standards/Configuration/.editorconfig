@@ -46,9 +46,9 @@ dotnet_style_collection_initializer = true:error
 dotnet_style_coalesce_expression = true:error
 dotnet_style_null_propagation = true:error
 dotnet_style_explicit_tuple_names = true:error
-dotnet_style_allow_multiple_blank_lines_experimental=false:error
-dotnet_style_require_accessibility_modifiers=for_non_interface_members:error
-dotnet_style_readonly_field=true:error
+dotnet_style_allow_multiple_blank_lines_experimental = false:error
+dotnet_style_require_accessibility_modifiers = for_non_interface_members:error
+dotnet_style_readonly_field = true:error
 dotnet_style_prefer_auto_properties = true:error
 dotnet_style_prefer_simplified_boolean_expressions = true:error
 dotnet_style_prefer_conditional_expression_over_assignment = true:error
@@ -220,9 +220,9 @@ dotnet_naming_rule.interface_types_must_be_prefixed_with_i.severity = error
 dotnet_naming_rule.interface_types_must_be_prefixed_with_i.symbols = interface_types
 dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style = prefix_interface_interface_with_i
 
-csharp_style_namespace_declarations= file_scoped:error
-csharp_using_directive_placement= outside_namespace:error
-insert_final_newline=true
+csharp_style_namespace_declarations = file_scoped:error
+csharp_using_directive_placement = outside_namespace:error
+insert_final_newline = true
 
 # Braces (+ must be last instruction due to bugs)
 csharp_prefer_braces = true:error
