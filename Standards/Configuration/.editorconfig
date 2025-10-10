@@ -224,7 +224,7 @@ csharp_style_namespace_declarations = file_scoped:error
 csharp_using_directive_placement = outside_namespace:error
 insert_final_newline = true
 
-# Braces (+ must be last instruction due to bugs)
+# Braces
 csharp_prefer_braces = true:error
 
 # Other format
@@ -239,6 +239,9 @@ csharp_style_implicit_object_creation_when_type_is_apparent = true:suggestion
 csharp_style_prefer_tuple_swap = true:error
 csharp_style_prefer_utf8_string_literals = true:error
 csharp_style_unused_value_assignment_preference = discard_variable:suggestion
+
+# we always want [] instead of new List<>(), but we don't always want [.. x] instead of x.ToArray()
+dotnet_diagnostic.IDE0305.severity = silent
 
 # code style settings for unit test files only
 [*Test*.cs]
