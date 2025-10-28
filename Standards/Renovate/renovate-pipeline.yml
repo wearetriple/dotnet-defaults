@@ -1,8 +1,11 @@
 ﻿pr: none
 trigger:
-  - main
+  batch: true
+  branches:
+    include:
+      - main
 schedules:
-  - cron: '0 0-5 * * 1-5' #Thanks crontab.guru
+  - cron: '0 0-5 * * 1-5'
     displayName: Run renovate bot Monday through Friday every hour from 00:00 till 5:00.
     branches:
       include:
@@ -22,9 +25,9 @@ stages:
               checkLatest: true
           - task: PowerShell@2
             displayName: 'Run Renovate'
-            env: #Inject secret as secrets don't go into env by themselves.
-              RENOVATE_CONFIG_FILE: './renovate-config.js' #needed when you name config file something else than config.js
-              GITHUB_COM_TOKEN: $(GITHUB_TOKEN) #Insert github PAT here to see changelogs in PRs
+            env: # Inject secret as secrets don't go into env by themselves.
+              RENOVATE_CONFIG_FILE: './renovate-config.js' # Needed when you name config file something else than config.js
+              GITHUB_COM_TOKEN: $(GITHUB_TOKEN) # GitHub PAT to see changelogs in PRs
               RENOVATE_TOKEN: $(RENOVATE_TOKEN)
             inputs:
               targetType: 'inline'
