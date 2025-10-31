@@ -27,7 +27,7 @@ This means when a new .NET version is released (typically mid-November) we can a
 
 ### Policy
 
-- Wait for 1 month before releasing your application on the new version
+- Wait for 1 month before updating your application to the new version
 - On **LTS releases** a migration is required thus needs to be planned & executed
   - .NET team informs devs, PMs and TechOps on it's release
 - On **STS releases** a migration is optional and should be evaluated on necessity
