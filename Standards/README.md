@@ -23,7 +23,7 @@ The auto dependency updater; [Guide](./Renovate/README.md)
 From .NET 9 on, STS versions will be supported for 2 years. Overlapping entirely with the LTS version from a year earlier.
 Read: <https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core>
 
-This means when a new .NET version is released (typically mid-November) we can always use the latest version for **new projects**.
+This means when a new .NET version is released (typically mid-November) we can always use the latest version.
 
 ### Policy
 
