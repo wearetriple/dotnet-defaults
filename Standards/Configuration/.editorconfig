@@ -222,7 +222,6 @@ dotnet_naming_rule.interface_types_must_be_prefixed_with_i.style = prefix_interf
 
 csharp_style_namespace_declarations = file_scoped:error
 csharp_using_directive_placement = outside_namespace:error
-insert_final_newline = true
 
 # Braces
 csharp_prefer_braces = true:error
@@ -242,6 +241,14 @@ csharp_style_unused_value_assignment_preference = discard_variable:suggestion
 
 # we always want [] instead of new List<>(), but we don't always want [.. x] instead of x.ToArray()
 dotnet_diagnostic.IDE0305.severity = silent
+
+# Rider/resharper configuration
+# Disable [Attribute] on the same line as type, method, property and field
+resharper_csharp_keep_existing_attribute_arrangement = false
+resharper_csharp_place_type_attribute_on_same_line = false
+resharper_csharp_place_method_attribute_on_same_line = false
+resharper_csharp_place_accessorholder_attribute_on_same_line = false
+resharper_csharp_place_field_attribute_on_same_line = false
 
 # code style settings for unit test files only
 [*Test*.cs]
