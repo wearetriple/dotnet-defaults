@@ -95,16 +95,7 @@ csharp_prefer_simple_default_expression = true:error
 csharp_style_deconstructed_variable_declaration = true:error
 csharp_style_pattern_local_over_anonymous_function = true:error
 
-# Initializers
-dotnet_style_object_initializer = true:error
-dotnet_style_collection_initializer = true:error
-dotnet_style_explicit_tuple_names = true:error
-dotnet_style_prefer_inferred_tuple_names = true:error
-dotnet_style_prefer_inferred_anonymous_type_member_names = true:error
-
 # Null
-dotnet_style_coalesce_expression = true:error
-dotnet_style_null_propagation = true:error
 dotnet_style_prefer_is_null_check_over_reference_equality_method = true:error
 csharp_style_prefer_null_check_over_type_check = true:error
 
@@ -131,7 +122,7 @@ csharp_space_between_parentheses = false
 # Newlines
 csharp_preserve_single_line_statements = false
 csharp_preserve_single_line_blocks = true
-dotnet_style_operator_placement_when_wrapping = end_of_line:suggestion
+dotnet_style_operator_placement_when_wrapping = end_of_line
 
 # Naming Symbols
 # constant_fields - Define constant fields
