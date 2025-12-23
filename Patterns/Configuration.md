@@ -16,18 +16,25 @@ provider to build the configuration provider for the application.
 ```csharp
 var host = new HostBuilder()
     .ConfigureAppConfiguration((context, builder) => {
-        var initialBuilder = new ConfigurationBuilder();
+        var env = context.HostingEnvironment.EnvironmentName;
 
         // configure the initial builder 
+        var initialBuilder = new ConfigurationBuilder();
         initialBuilder
-            .AddJsonFile(Path.Combine(rootPath, "appsettings.json"), optional: false, reloadOnChange: false)
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
             .AddEnvironmentVariables();
         
         var initialConfig = initialBuilder.Build();
 
         // configure the actual builder using config from the initial builder
         var credential = CredentialHelper.GetCredential(initialConfig);
-        builder.AddKeyVault([..]);
+
+        builder
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+            .AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange: false);
+            .AddKeyVault(credential);
 
         // add environment variables as last so they always override any other provider
         builder.AddEnvironmentVariables();
