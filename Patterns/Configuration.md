@@ -1,37 +1,151 @@
 # Configuration
 
-Configuration in dotnet applications in generally handled through the IConfiguration implementation, which allows multiple providers to supply key,value data to use in the application. [Keyvault](./KeyVault.md) is one such a provider. [Options](./Options.md) Shows an example how to handle the IConfiguration via dependency injection an how to setup classes to map the key value data to.
+Configuration in dotnet applications in generally handled through the `IConfiguration` implementation, 
+which allows multiple providers to supply key,value data to use in the application. [KeyVault](./KeyVault.md) 
+is one such a provider, next to JSON and environment variable configuration providers.
 
-Besides Keyvault some commonly added providers are the `JsonConfigurationProvider` which is generally used to read an appsettings.json file which contains nested json data.
+Using configuration throughout the application is done using the [Options pattern](./Options.md).
+
+## Bootstrap problem
+
+The challenge with configuration, and especially with the more advanced providers like KeyVault, is that
+configuration is needed before it has been set up, making it a bit awkward to get right. To solve
+this, first build a small configuration provider that reads JSON and or environment variables, and use that
+provider to build the configuration provider for the application.
 
 ```csharp
-var filePath = Path.Combine(applicationRootPath, "appsettings.common.json");
-configurationBuilder.AddJsonFile(filePath, optional: true, reloadOnChange: false);
+var host = new HostBuilder()
+    .ConfigureAppConfiguration((context, builder) => {
+        var initialBuilder = new ConfigurationBuilder();
+
+        // configure the initial builder 
+        initialBuilder
+            .AddJsonFile(Path.Combine(rootPath, "appsettings.json"), optional: false, reloadOnChange: false)
+            .AddEnvironmentVariables();
+        
+        var initialConfig = initialBuilder.Build();
+
+        // configure the actual builder using config from the initial builder
+        var credential = CredentialHelper.GetCredential(initialConfig);
+        builder.AddKeyVault([..]);
+
+        // add environment variables as last so they always override any other provider
+        builder.AddEnvironmentVariables();
+    })
+    [..]
+    // when this method is called the configuration providers are build, validated, and will construct their data
+    .Build();
 ```
 
-Another commonly used provider is the `EnvironmentVariablesConfigurationProvider`.
+Be aware of the defaults applied to the configuration builder, sometimes some configuration is already added
+in an order that's undesirable. In that case, use `builder.Remove[..]Source()` to remove a configuration provider, or
+reapply a provider again so it's always at the desired position. Generally we use this order:
+
+1. Base configuration - e.g `appsettings.json`.
+2. Environment specific base configuration - e.g `application.prod.json`.
+3. Environment specific external configuration - e.g KeyVault.
+4. Resource specific configuration - e.g. Environment Variables.
+
+This way base configuration can be overwritten by environment specific configuration, which in turn can
+be overwritten by resource specific configuration. By allowing environment variables to overwrite any other
+config, some issues can be fixed or debugged by temporarily by adding an environment variable by hand, which 
+can come in handy when in a pickle. 
+
+## Configuration providers
+
+### Azure KeyVault
+
+Using KeyVault for secrets (and feature flags / switches / config in small quantities) is highly advised, as it moves
+secrets into a secure place. Using a KeyVault for secrets during local development can be very practical, as no exchange
+of secrets between developers is required during onboarding. 
 
 ```csharp
-configurationBuilder.AddEnvironmentVariables();
+var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
+{
+    // set the tenant id (or use AZURE_TENANT_ID) so the credential provider does not get confused when using external Azure AD accounts
+    TenantId = [..],
+    
+    // exclude all the credential providers that don't make sense for the project - this can improve startup performance while developing
+    Exclude[..]Credential = true
+});
+
+// keyVaultName is typically fetched from the initial config
+var secretClient = new SecretClient(new Uri($"https://{keyVaultName}.vault.azure.net/"), credential);
+
+// use the default secret manager, or use a derivative to change its behavior (like filtering secrets based on prefix)
+var keyVaultSecretManager = new KeyVaultSecretManager();
+
+configurationBuilder.AddAzureKeyVault(
+    secretClient,
+    new AzureKeyVaultConfigurationOptions
+    {
+        Manager = keyVaultSecretManager,
+
+        // configuring the reload interval will allow this provider to refresh periodically
+        // this allows for updating / rotating secrets without application restarts
+        ReloadInterval = config.KeyVaultRefreshInterval
+    });
 ```
 
-This provider has some caveats, mainly because environment variables are a flat (meaning just `key_string: value_string`) dictionary not containing a nested structure. But configuration is generally setup with nested sections. for example a logging section with a section for different log options. In an appsettings.json file this would look something like:
+Multiple KeyVaults are allowed to be used in a single application, so common secrets can be configured in a common
+KeyVault, while application specific secrets can be configured in a separate KeyVault. 
+Use [Vaultr](https://github.com/ThomasBleijendaal/Vaultr) to manage secrets in multiple KeyVaults more easily.
+
+### Azure App Configuration
+
+Avoid Azure App Configuration, because:
+
+- The service is very expensive, costing at least $36 per month for what's a simple JSON API.
+- When request quota is exhausted, the service will return 429s, which will prevent new instances
+of your application to start. Avoiding this quota requires spending $288 per month.
+- Background refresh is unreliable and hard to trigger consistently.
+- Giving customers access to this configuration still requires Azure Portal access.
+- Feature flags are implemented in a clunky way, which makes them hard to use.
+- The built-in CICD tooling overwrite custom config, resetting any runtime customization during deploy.
+
+### Command line switches
+
+If the application accepts command line switches provider via the command line arguments, use the command line
+configuration provider to parse and provide these switches.
+
+```csharp
+var switchMap = new Dictionary<string, string>
+{
+    ["-s"] = "Options__Source",
+    ["--source"] = "Options__Source",
+};
+
+configurationBuilder.AddCommandLine(args, switchMap);
+```
+
+Identical switches overwrite each other, and only primitive values are supported.
+
+### JSON
+
+```csharp
+var filePath = Path.Combine(applicationRootPath, "appsettings.json");
+configurationBuilder.AddJsonFile(filePath, optional: false, reloadOnChange: false);
+```
+
+Example config file (nested structure):
 
 ```json
-"Serilog": {
-    "SeqServerUrl": null,
-    "MinimumLevel": {
-        "Default": "Information",
-        "Override": {
-            "Microsoft": "Warning",
-            "Microsoft.eShopOnContainers": "Information",
-            "System": "Warning"
+{
+    "Serilog": {
+        "SeqServerUrl": null,
+        "MinimumLevel": {
+            "Default": "Information",
+            "Override": {
+                "Microsoft": "Warning",
+                "Microsoft.eShopOnContainers": "Information",
+                "System": "Warning"
+            }
         }
     }
 }
 ```
 
-This can also be stored in environment variables as follows:
+Flat structure:
 
 ```json
 {
@@ -55,17 +169,24 @@ or
 }
 ```
 
-As you can see both `:` or `__` works as separator. `__` works cross-platform, so should be preferred.
+### Environment variables
 
-This is also how you can add these settings to the configuration/appsettings section in a webapp or functionapp.
+Environment variables are primarily used in Azure, where application configuration in services like
+App Services or Container Apps is made available for your application via environment variables.
 
-A similar approach is necessary when using the keyvault, but instead of `:` or `__` the keyvault requires `--` to separate the sections.
+```csharp
+configurationBuilder.AddEnvironmentVariables();
+```
 
-## Azure functions
+Environment variables are always flat, and must use the dunders for nested variables 
+(e.g `"Serilog__MinimumLevel__Default": "Information"`).
 
-**Warning** local.settings.json is not a appsettings.json.
+#### Azure functions
 
-When locally developing azure functions you are required to create a `local.settings.json`. Which minimally looks like this:
+**Warning** local.settings.json is not an appsettings.json.
+
+When locally developing azure functions you are required to create a `local.settings.json`. 
+Which minimally looks like this:
 
 ```json
 {
@@ -77,63 +198,6 @@ When locally developing azure functions you are required to create a `local.sett
 }
 ```
 
-This file helps local developers by setting all values in the `Values` dictionary as environment variables so it is not necessary to add them to your shell. So this list is also a flat dictionary and requires `:` or `__` as separator when adding sections in the key.
-
-The `local.settings.json` file is locally useful because it replaces the Azure function App Settings configuration.
-
-⚠️ This file should not be used with the `JsonConfigurationProvider`
-
-## Environment variables
-
-Environment variables are like the name suggest variables specifically for an environment, but they mainly reference the variables that a process has access to that are set by the operating system.
-
-```bash
-# CMD
-echo %AppData%
-echo %Temp%
-echo %Username%
-echo %Path%
-
-# Powershell
-echo $env:AppData
-echo $env:Temp
-echo $env:Username
-echo $env:Path
-
-# Bash
-echo $PATH
-echo $USER
-```
-
-When starting a process from a shell(e.g. CMD, Powershell and Bash) system set environment variables are loaded as well as locally set variables with only live until you close the shell again.
-
-Some ways of setting this locally set variables are:
-
-```bash
-# Bash
-set ENABLE_NETWORKING=1
-set FLASK_NAME="Python process"
-
-# Powershell
-$env:ENABLE_NETWORKING=1
-$env:FLASK_NAME="Python process"
-
-# Bash
-ENABLE_NETWORKING=1
-FLASK_NAME="Python process"
-```
-
-Now when you run your process from the shell (e.g. `func start` or `dotnet run` or `process.exe`) there is a way to access them.
-
-```csharp
-# Sample way of directly accessing the variable
-using System;
-
-var AppData = Environment.GetEnvironmentVariable("AppData");
-```
-
-### Adding persistent environment variable
-
-On windows you can use the `SystemPropertiesAdvanced.exe` (under the advanced tab) and click the `Environment Variables` button at the bottom to open an interface where you can manage your environment variables.
-
-[.NET runtime Environment variables docs](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables)
+This file helps local developers by setting all values in the `Values` dictionary as environment variables.
+To read these variables, `AddEnvironmentVariables()` must be used. `Values` is a flat dictionary 
+and should use `__` as separator when adding sections in the key.
