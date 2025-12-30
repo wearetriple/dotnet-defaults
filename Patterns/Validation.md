@@ -296,5 +296,5 @@ var validator = new DataFluentValidator();
 var results = validator.Validate(data);
 ```
 
-Fluent Validation also supports dependency injection, which can help with setting up
-validation in generic contexts.
+[Fluent Validation also supports dependency injection](https://docs.fluentvalidation.net/en/latest/di.html), 
+which can help with setting up validation in generic contexts.
