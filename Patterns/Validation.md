@@ -67,7 +67,7 @@ Add the interface `IValidatableObject`, and implement the `Validate` method:
 ```c#
 public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
 {
-    if (StartDate < EndMonth)
+    if (StartDate >= EndMonth)
     {
         yield return new ValidationResult("StartDate must be before EndMonth");
     }
