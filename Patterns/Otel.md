@@ -102,7 +102,21 @@ This will create a sub span below the currently active span, and add the `Invoic
 tag to that span. It also opens a log scope that is active for the same duration as
 the span, which adds the `InvoiceId` to all of the log lines inside the scope.
 
-## Extensions and builder 
+## Create details logs with log scopes
+
+Not every log scope needs to become a span in OpeTelemetry. By using `AddToLog` and
+`StartDetailedLogScope` it is easy to add data to a log scope (and all logs inside
+that scope) without having to mention that data in the log message.
+
+```c#
+var invoice = // invoice structure that really useful for querying logs;
+using (_logger.AddToLog(invoice).StartDetailedLogScope("Invoice processing"))
+{
+    _logger.LogInformation("Logging from invoice processing");
+}
+```
+
+## Extensions and builder for creating spans
 
 ```c#
 public static class LoggerExtensions
@@ -181,7 +195,7 @@ internal class SpanBuilder : ISpanBuilder
         // if there is no state, there is no need to start a log scope
         if (_state == null)
         {
-            return activity ?? Undisposable.Default;
+            return activity ?? Pfas.Default;
         }
         else
         {
@@ -217,15 +231,312 @@ internal class SpanBuilder : ISpanBuilder
             }
         }
     }
+}
 
-    private sealed class Undisposable : IDisposable
+internal sealed class Pfas : IDisposable
+{
+    public static readonly IDisposable Default = new Pfas();
+
+    public void Dispose()
     {
-        public static readonly IDisposable Default = new Undisposable();
+        // doesn't do anything
+    }
+}
 
-        public void Dispose()
+```
+
+## Extensions and builder for detailed log scopes
+
+```c#
+public static class LoggerExtensions
+{
+    extension(ILogger logger)
+    {
+        public ILogBuilder AddToLog(
+            object? value,
+            [CallerArgumentExpression(nameof(value))] string valueName = ""
+        )
         {
-            // don't do anything
+            var logBuilder = new LogBuilder(logger);
+            logBuilder.AddToLog(value, valueName);
+            return logBuilder;
         }
+
+        public ILogBuilder AddToLog<TValue>(
+            IEnumerable<KeyValuePair<string, TValue>> value,
+            [CallerArgumentExpression(nameof(value))] string valueName = ""
+        )
+        {
+            var logBuilder = new LogBuilder(logger);
+            logBuilder.AddToLog(value, valueName);
+            return logBuilder;
+        }
+
+        public ILogBuilder AddJsonToLog(
+            string value,
+            [CallerArgumentExpression(nameof(value))] string valueName = ""
+        )
+        {
+            var logBuilder = new LogBuilder(logger);
+            logBuilder.AddJsonToLog(value, valueName);
+            return logBuilder;
+        }
+    }
+}
+
+public interface ILogBuilder
+{
+    ILogBuilder AddToLog(
+        object? value,
+        [CallerArgumentExpression(nameof(value))] string valueName = ""
+    );
+
+    ILogBuilder AddToLog<TValue>(
+        IEnumerable<KeyValuePair<string, TValue>> value,
+        [CallerArgumentExpression(nameof(value))] string valueName = ""
+    );
+
+    ILogBuilder AddJsonToLog(
+        string value,
+        [CallerArgumentExpression(nameof(value))] string valueName = ""
+    );
+
+    IDisposable StartDetailedLogScope([CallerMemberName] string spanName = "");
+}
+
+internal class LogBuilder : ILogBuilder
+{
+    private static readonly JsonDocumentOptions DefaultJsonOptions = new JsonDocumentOptions
+    {
+        AllowTrailingCommas = true,
+    };
+
+    private readonly ILogger _logger;
+
+    private readonly string? _property;
+    private readonly Dictionary<string, object?> _state;
+
+    public LogBuilder(ILogger logger)
+    {
+        _logger = logger;
+
+        _property = null;
+        _state = [];
+    }
+
+    internal LogBuilder(ILogger logger, string property, Dictionary<string, object?> state)
+    {
+        _logger = logger;
+
+        _property = property;
+        _state = state;
+    }
+
+    public ILogBuilder AddToLog(
+        object? value,
+        [CallerArgumentExpression(nameof(value))] string valueName = ""
+    )
+    {
+        if (GetFullName(valueName) is not string fullName)
+        {
+            return this;
+        }
+
+        if (value is IDictionary dictionary)
+        {
+            var nestedLogBuilder = new LogBuilder(_logger, fullName, _state);
+            foreach (DictionaryEntry entry in dictionary)
+            {
+                if (entry.Key is string key)
+                {
+                    nestedLogBuilder.AddToLog(entry.Value, key);
+                }
+            }
+
+            return this;
+        }
+        else if (value is StringValues stringValues)
+        {
+            if (stringValues.Count == 1)
+            {
+                _state.Add(fullName, stringValues[0]);
+            }
+            else
+            {
+                _state.Add(fullName, stringValues);
+            }
+
+            return this;
+        }
+        else if (value is string[] stringArray)
+        {
+            if (stringArray.Length == 1)
+            {
+                _state.Add(fullName, stringArray[0]);
+            }
+            else
+            {
+                _state.Add(fullName, stringArray);
+            }
+
+            return this;
+        }
+        else
+        {
+            _state.Add(fullName, value);
+            return this;
+        }
+    }
+
+    public ILogBuilder AddToLog<TValue>(
+        IEnumerable<KeyValuePair<string, TValue>> value,
+        [CallerArgumentExpression(nameof(value))] string valueName = ""
+    )
+    {
+        if (GetFullName(valueName) is not string fullName)
+        {
+            return this;
+        }
+
+        var nestedLogBuilder = new LogBuilder(_logger, fullName, _state);
+        foreach (var entry in value)
+        {
+            nestedLogBuilder.AddToLog(entry.Value, entry.Key);
+        }
+
+        return this;
+    }
+
+    public ILogBuilder AddJsonToLog(
+        string value,
+        [CallerArgumentExpression(nameof(value))] string valueName = ""
+    )
+    {
+        if (GetFullName(valueName) is not string fullName)
+        {
+            return this;
+        }
+
+        try
+        {
+            var element = JsonElement.Parse(value, DefaultJsonOptions);
+            var dictionary = element.Flatten(fullName);
+
+            foreach (var entry in dictionary)
+            {
+                _state.Add(entry.Key, entry.Value);
+            }
+
+            return this;
+        }
+        catch
+        {
+            _state.Add(fullName, value);
+            return this;
+        }
+    }
+
+    public IDisposable StartDetailedLogScope([CallerMemberName] string spanName = "")
+    {
+        return _logger.BeginScope(_state) ?? Pfas.Default;
+    }
+
+    private string? GetFullName(string valueName)
+    {
+        if (PropertyNameHelper.Sanitize(valueName) is not string name)
+        {
+            return null;
+        }
+
+        return _property == null ? name : $"{_property}.{name}";
+    }
+}
+
+internal static class Flattener
+{
+    extension(JsonElement element)
+    {
+        /// <summary>
+        /// Flattens a JSON structure into a single-level dictionary.
+        /// </summary>
+        /// <param name="element">The <see cref="JsonElement"/> which should be flattened.</param>
+        /// <returns>A dictionary mapping each JSON path to its corresponding value.</returns>
+        public IDictionary<string, string> Flatten(string rootName)
+        {
+            var result = new Dictionary<string, string>();
+            Visit(element, rootName, result);
+            return result;
+        }
+    }
+
+    private static void Visit(JsonElement element, string path, IDictionary<string, string> result)
+    {
+        switch (element.ValueKind)
+        {
+            case JsonValueKind.Array:
+                VisitArray(element, path, result);
+                break;
+            case JsonValueKind.Object:
+                VisitObject(element, path, result);
+                break;
+            default:
+                result[path] = element.ToString();
+                break;
+        }
+    }
+
+    private static void VisitArray(
+        JsonElement element,
+        string path,
+        IDictionary<string, string> result
+    )
+    {
+        var i = 0;
+        foreach (var item in element.EnumerateArray())
+        {
+            var itemPath = $"{path}[{i}]";
+            Visit(item, itemPath, result);
+            i++;
+        }
+    }
+
+    private static void VisitObject(
+        JsonElement element,
+        string path,
+        IDictionary<string, string> result
+    )
+    {
+        foreach (var property in element.EnumerateObject())
+        {
+            var propertyPath = $"{path}.{PropertyNameHelper.Sanitize(property.Name)}";
+            Visit(property.Value, propertyPath, result);
+        }
+    }
+}
+
+internal static class PropertyNameHelper
+{
+    [return: NotNullIfNotNull(nameof(input))]
+    public static string? Sanitize(string? input)
+    {
+        if (input == null)
+        {
+            return null;
+        }
+
+        if (string.IsNullOrWhiteSpace(input))
+        {
+            return string.Empty;
+        }
+
+        if (char.IsLower(input[0]))
+        {
+            input = $"{char.ToUpper(input[0])}{input[1..]}";
+        }
+
+        input = input.Replace("-", "_");
+
+        return input;
     }
 }
 
