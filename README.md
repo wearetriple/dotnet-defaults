@@ -19,6 +19,7 @@ Our [Patterns](./Patterns/README.md) overview
 - [Options pattern](./Patterns/Options.md)
 - [Configuration](./Patterns/Configuration.md)
 - [KeyVault](./Patterns/KeyVault.md)
+- [Logging with `ILogger<>` using OpenTelemetry to any OTLP sink (or Seq)](./Patterns/Otel.md)
 - [Logging with `ILogger<>` using Serilog to Seq](./Patterns/Serilog.md)
 - [Health check and application warmup](./Patterns/HealthCheck+WarmUp.md)
 
