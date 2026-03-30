@@ -1,0 +1,9 @@
+# https://github.com/dotnet/roslyn/blob/main/src/RoslynAnalyzers/Microsoft.CodeAnalysis.BannedApiAnalyzers/BannedApiAnalyzers.Help.md
+
+P:System.DateTime.Now;Use System.DateTime.UtcNow instead
+P:System.DateTimeOffset.Now;Use System.DateTimeOffset.UtcNow instead
+
+T:Microsoft.Extensions.Options.IOptions`1;Always use IOptionsMonitor instead
+T:Microsoft.Extensions.Options.IOptionsSnapshot`1;Always use IOptionsMonitor instead
+T:Microsoft.Extensions.Options.IOptionsFactory`1;Always use IOptionsMonitor instead
+M:Microsoft.Extensions.DependencyInjection.OptionsServiceCollectionExtensions.AddOptions`1(Microsoft.Extensions.DependencyInjection.IServiceCollection);Use AddConfiguration instead

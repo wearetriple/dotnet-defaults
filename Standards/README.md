@@ -1,13 +1,18 @@
 ﻿# Standards
 
+All project must follow these standards.
+
 ## Configuration
 
 Configuration defaults; [Guide](./Configuration/README.md)
 
 1. Styling by [.editorconfig](./Configuration/.editorconfig)
-2. Styling errors by [Directory.Build.props](./Configuration/Directory.Build.props)
+2. Styling errors, Async analyzers and Banned Symbols by 
+[Directory.Build.props](./Configuration/Directory.Build.props)
 3. Shared versioning by [Directory.Packages.props](./Configuration/Directory.Packages.props)
-4. Ignoring files for git by [.gitignore](./../.gitignore)
+4. Shared testing configuration by [Directory.Tests.props](./Configuration/Directory.Packages.props)
+5. Shared Banned Symbols by [BannedSymbols.txt](./Configuration/BannedSymbols.txt)
+5. Ignoring files for git by [.gitignore](./../.gitignore)
 
 ## Renovate
 
@@ -20,10 +25,12 @@ The auto dependency updater; [Guide](./Renovate/README.md)
 
 ## .NET version policy
 
-From .NET 9 on, STS versions will be supported for 2 years. Overlapping entirely with the LTS version from a year earlier.
+From .NET 9 on, STS versions will be supported for 2 years. Overlapping entirely 
+with the LTS version from a year earlier. 
 Read: <https://dotnet.microsoft.com/en-us/platform/support/policy/dotnet-core>
 
-This means when a new .NET version is released (typically mid-November) we can always use the latest version.
+This means when a new .NET version is released (typically mid-November) we can 
+always use the latest version.
 
 ### Policy
 

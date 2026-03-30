@@ -54,6 +54,29 @@ File: [Directory.Build.props](Directory.Build.props)
 
 Documentation: https://learn.microsoft.com/en-us/visualstudio/msbuild/customize-by-directory
 
+### Directory.Test.props
+
+Directory.Build.props references Directory.Test.props when the project file ends with `.Tests`. This
+props file configures Rider to use the new Microsoft Testing Platform Runner, and disables any
+errors about using banned symbols. Tests are allowed to use any banned symbol, as those might
+be needed to setup or run a test.
+
+File: [Directory.Test.props](Directory.Test.props)
+
+## Banned Symbols
+
+Banned Symbols allow for preventing common made mistakes and codify alternatives. For example, it is
+easy to miss `DateTime.Now` in a PR. Banned Symbols help with disallowing `DateTime.Now` and point
+developers to `DateTime.UtcNow`. It also helps with preventing developers using a default feature,
+while the project might have an extension that wraps that feature. For example, our default
+[Options](../../Patterns/Options.md) way-of-working adds the `AddConfiguration()` extension method
+that should always be used, instead of the default `AddOptions`.
+
+Each of our projects should have it own Banned Symbol list, and should be expanded with project
+specific rules and conventions. 
+
+Files: [Banned Symbols](BannedSymbols.txt) and [Directory.Build.props](Directory.Build.props)
+
 ## .gitignore
 
 Shared configuration for ignoring files for git.
