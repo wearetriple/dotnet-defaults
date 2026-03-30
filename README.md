@@ -7,6 +7,7 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 Our [Standardization](./Standards/README.md) overview
 
 - [Configuration](./Standards/Configuration/README.md)
+- [CSharpier](./Standards/CSharpier/README.md)
 - [Renovate](./Standards/Renovate/README.md)
 
 ## Required patterns
