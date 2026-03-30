@@ -1,0 +1,25 @@
+# PR verification: code formatting (CSharpier).
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: verify_formatting
+    jobs:
+      - job: verify_formatting
+        displayName: Verify formatting
+        steps:
+          - task: UseDotNet@2
+            displayName: "Use .NET SDK"
+            inputs:
+              packageType: "sdk"
+              version: "10.0.x"
+            retryCountOnTaskFailure: 1
+
+          - script: |
+              dotnet tool restore --tool-manifest .config/dotnet-tools.json
+              dotnet csharpier check .
+            displayName: "Verify code is formatted with CSharpier"
+            workingDirectory: $(Build.SourcesDirectory)

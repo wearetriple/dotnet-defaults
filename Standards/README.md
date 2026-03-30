@@ -9,6 +9,14 @@ Configuration defaults; [Guide](./Configuration/README.md)
 3. Shared versioning by [Directory.Packages.props](./Configuration/Directory.Packages.props)
 4. Ignoring files for git by [.gitignore](./../.gitignore)
 
+## Azure DevOps Terraform
+
+- Capture Azure DevOps pipelines and configuration in Terraform; 
+[Guide](./AzureDevOpsTerraform/README.pipelines.md)
+
+- Capture Azure DevOps service connections in Terraform; 
+[Guide](./AzureDevOpsTerraform/README.service-connections.md)
+
 ## Renovate
 
 The auto dependency updater; [Guide](./Renovate/README.md)

@@ -8,6 +8,8 @@ Our [Standardization](./Standards/README.md) overview
 
 - [Configuration](./Standards/Configuration/README.md)
 - [Renovate](./Standards/Renovate/README.md)
+- [Azure DevOps pipelines via Terraform](./Standards/AzureDevOpsTerraform/README.pipelines.md)
+- [Azure DevOps service connections via Terraform](./Standards/AzureDevOpsTerraform/README.service-connections.md)
 
 ## Required patterns
 

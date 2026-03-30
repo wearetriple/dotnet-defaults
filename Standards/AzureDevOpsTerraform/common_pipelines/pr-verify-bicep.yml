@@ -1,0 +1,23 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: "verify_bicep"
+    jobs:
+      - job: verify_bicep
+        displayName: Verify bicep
+        steps:
+          - task: PowerShell@2
+            displayName: 'Build all bicep files'
+            inputs:
+              targetType: "inline"
+              script: |
+                get-childitem -path ./ -recurse -filter '*.bicep' `
+                | % {$_.FullName} `
+                | ForEach-Object { 
+                    Write-Host "Validating $_"
+                    az bicep build -f $_ 
+                    Write-Host "---"
+                  }
