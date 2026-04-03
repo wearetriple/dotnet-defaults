@@ -1,0 +1,55 @@
+# PR verification: PR title and other PR-related checks.
+# Configure this pipeline in Azure DevOps as a required status check for PRs.
+# The pipeline may need "Allow scripts to access the OAuth token" for the PR title API call.
+
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+stages:
+  - stage: verify_pr
+    jobs:
+      - job: verify_pr_checks
+        displayName: Verify PR
+        steps:
+          - task: PowerShell@2
+            displayName: "Verify PR title"
+            condition: eq(variables['Build.Reason'], 'PullRequest')
+            inputs:
+              targetType: "inline"
+              script: |
+                $ticketPattern = "^(TICKET-[0-9]+)\s*[:\-]\s*.+$"
+                $title = ""
+
+                try {
+                  $url = "$($env:SYSTEM_TEAMFOUNDATIONCOLLECTIONURI)$env:SYSTEM_TEAMPROJECTID/_apis/git/repositories/$(Build.Repository.ID)/pullRequests/$(System.PullRequest.PullRequestId)?api-version=7.0"
+                  $headers = @{
+                    Authorization = "Bearer $(System.AccessToken)"
+                  }
+                  $pullRequestInfo = Invoke-RestMethod -Uri $url -Method Get -ContentType 'application/json' -Headers $headers
+                  $title = $pullRequestInfo.title
+                }
+                catch {
+                  Write-Host "##vso[task.logissue type=warning]Could not get pull request data: $_"
+                  Write-Host "##vso[task.complete result=SucceededWithIssues;]"
+                  exit 0
+                }
+
+                Write-Host "PR title: $title"
+
+                if ($title -match $ticketPattern) {
+                  Write-Host "PR title is valid."
+                }
+                else {
+                  Write-Host "##vso[task.logissue type=error]Invalid PR title: $title"
+                  Write-Host "##vso[task.logissue type=error]Title must start with a ticket number (TICKET-1234) followed by ': ' or ' - ' and a description."
+                  Write-Host "##vso[task.complete result=Failed;]"
+                  exit 1
+                }
+
+          - script: echo "Not a pull request; PR checks skipped."
+            displayName: "Skip (not a PR)"
+            condition: ne(variables['Build.Reason'], 'PullRequest')
+
+          # Add more PR-related checks here as needed

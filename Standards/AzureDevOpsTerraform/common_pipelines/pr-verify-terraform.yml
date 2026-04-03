@@ -1,0 +1,45 @@
+trigger: none
+
+pool:
+  vmImage: "ubuntu-latest"
+
+stages:
+  - stage: "verify_terraform"
+    jobs:
+      - job: verify_terraform
+        displayName: Verify terraform
+        steps:
+          - task: TerraformInstaller@1
+            inputs:
+              terraformVersion: "latest"
+          - task: PowerShell@2
+            displayName: Verify terraform
+            inputs:
+              targetType: "inline"
+              script: |
+                Write-Host "Verifying valid terraform"
+
+                terraform --version
+
+                # Find all main.tf files but exclude those in module directories which would fail during terraform init
+
+                $tfs = get-childitem -path ./ -recurse -filter '*main.tf' | % {$_.FullName}
+
+                foreach ($tf in $tfs) {
+                  if ($tf.Contains('/modules/') -or $tf.Contains('\modules\')) {
+                    Write-Host "Skipping $tf (excluded directory)"
+                  }
+                  else {
+                    Write-Host "Verifying $tf"
+                    
+                    $dirName = [System.IO.Path]::GetDirectoryName($tf)
+
+                    Push-Location $dirName
+
+                    terraform init -backend=false
+                    terraform workspace select -or-create test
+                    terraform validate
+
+                    Pop-Location
+                  }
+                }
