@@ -1,0 +1,9 @@
+<Project>
+  <PropertyGroup>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <!-- UseMicrosoftTestingPlatformRunner is needed for Rider to correctly detect MTPv2 test projects -->
+    <UseMicrosoftTestingPlatformRunner>true</UseMicrosoftTestingPlatformRunner>
+    <!-- Do not complain about banned APIs in tests -->
+    <NoWarn>RS0030</NoWarn>
+  </PropertyGroup>
+</Project>
