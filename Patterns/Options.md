@@ -18,7 +18,7 @@ since the connection details to databases and storages are usually stored in env
 variables, changes in those trigger restarts, which causes the connection details to be
 updated anyway.
 
-The use `IOptions`, `IOptionSnapshot` and `IOptionsFactory` should be [banned](../Standards/Configuration/README.md)
+The use of `IOptions`, `IOptionSnapshot` and `IOptionsFactory` should be [banned](../Standards/Configuration/README.md)
 in our projects.
 
 Use the `FakeOptionsMonitor.Create<T>()` snippet from below to create `IOptionsMonitor<T>`s
