@@ -1,6 +1,6 @@
 ﻿# Standards
 
-All project must follow these standards.
+All projects must follow these standards.
 
 ## Configuration
 
