@@ -1,24 +1,52 @@
-# [Polly.NET](https://www.pollydocs.org/)
+# Resilience
 
-Polly is a powerful library for .NET that helps you handle transient faults and improve the resilience of your applications in a fluent and thread-safe way. Polly lets you use and combine different resilience strategies to cope with various scenarios, such as:
 
-* **Retry**: Try again if something fails. This can be useful when the problem is temporary and might go away.
-* **Circuit Breaker**: Stop trying if something is broken or busy. This can benefit you by avoiding wasting time and making things worse. It can also support the system to recover.
-* **Timeout**: Give up if something takes too long. This can improve your performance by freeing up space and resources.
-* **Rate Limiter**: Limit how many requests you make or accept. This can enable you to control the load and prevent problems or penalties.
-* **Fallback**: Do something else if something fails. This can improve your user experience and keep the program working.
-* **Hedging**: Do more than one thing at the same time and take the fastest one. This can make your program faster and more responsive.
+
+## [Polly.NET](https://www.pollydocs.org/)
+
+Polly is a powerful library for .NET that helps you handle transient faults and
+improve the resilience of your applications in a fluent and thread-safe way. Polly 
+lets you use and combine different resilience strategies to cope with various 
+scenarios, such as:
+
+* **Retry**: Try again if something fails. This can be useful when the problem is 
+temporary and might go away.
+* **Circuit Breaker**: Stop trying if something is broken or busy. This can benefit
+you by avoiding wasting time and making things worse. It can also support the 
+system to recover.
+* **Timeout**: Give up if something takes too long. This can improve your performance 
+by freeing up space and resources.
+* **Rate Limiter**: Limit how many requests you make or accept. This can enable you 
+to control the load and prevent problems or penalties.
+* **Fallback**: Do something else if something fails. This can improve your user 
+experience and keep the program working.
+* **Hedging**: Do more than one thing at the same time and take the fastest one.
+This can make your program faster and more responsive.
 
 # [Resilience strategies](https://www.pollydocs.org/strategies/index.html)
-Resilience strategies are essential components of Polly, designed to execute user-defined callbacks while adding an extra layer of resilience. These strategies can't be executed directly; they must be run through a resilience pipeline. Polly provides an API to construct resilience pipelines by incorporating one or more resilience strategies through the pipeline builders.
+Resilience strategies are essential components of Polly, designed to execute user-defined 
+callbacks while adding an extra layer of resilience. These strategies can't be executed 
+directly; they must be run through a resilience pipeline. Polly provides an API 
+to construct resilience pipelines by incorporating one or more resilience strategies
+through the pipeline builders.
 
 Polly categorizes resilience strategies into two main groups:
 
-* **Reactive**: These strategies handle specific exceptions that are thrown, or results that are returned, by the callbacks executed through the strategy.
-* **Proactive**: Unlike reactive strategies, proactive strategies do not focus on handling errors by the callbacks might throw or return. They can make proactive decisions to cancel or reject the execution of callbacks (e.g., using a rate limiter or a timeout resilience strategy).
+* **Reactive**: These strategies handle specific exceptions that are thrown, or 
+results that are returned, by the callbacks executed through the strategy.
+* **Proactive**: Unlike reactive strategies, proactive strategies do not focus on 
+handling errors by the callbacks might throw or return. They can make proactive 
+decisions to cancel or reject the execution of callbacks (e.g., using a rate 
+limiter or a timeout resilience strategy).
 
 ## [Retry strategy](https://www.pollydocs.org/strategies/retry.html)
-The retry reactive resilience strategy re-executes the same callback method if its execution fails. Failure can be either an Exception or a result object indicating unsuccessful processing. Between the retry attempts the retry strategy waits a specified amount of time. You have fine-grained control over how to calculate the next delay. The retry strategy stops invoking the same callback when it reaches the maximum allowed number of retry attempts or an unhandled exception is thrown / result object indicating a failure is returned.
+The retry reactive resilience strategy re-executes the same callback method if 
+its execution fails. Failure can be either an Exception or a result object indicating
+unsuccessful processing. Between the retry attempts the retry strategy waits a 
+specified amount of time. You have fine-grained control over how to calculate the 
+next delay. The retry strategy stops invoking the same callback when it reaches 
+the maximum allowed number of retry attempts or an unhandled exception is thrown
+/ result object indicating a failure is returned.
 
 ``` mermaid
 graph TD
@@ -51,6 +79,7 @@ new ResiliencePipelineBuilder().AddRetry(options);
 ```
 
 ### For advanced control over the retry behavior, including the number of attempts, delay between retries, and the types of exceptions to handle.
+
 ```csharp
 var options = new RetryStrategyOptions
 {
@@ -131,7 +160,16 @@ new ResiliencePipelineBuilder().AddRetry(options);
 
 ## [Circuit Breaker strategy](https://www.pollydocs.org/strategies/circuit-breaker.html)
 
-The circuit breaker reactive resilience strategy shortcuts the execution if the underlying resource is detected as unhealthy. The detection process is done via sampling. If the sampled executions' failure-success ratio exceeds a predefined threshold then a circuit breaker will prevent any new executions by throwing a BrokenCircuitException. After a preset duration the circuit breaker performs a probe, because the assumption is that this period was enough for the resource to self-heal. Depending on the outcome of the probe, the circuit will either allow new executions or continue to block them. If an execution is blocked by the circuit breaker, the thrown exception may indicate the amount of time executions will continue to be blocked through its RetryAfter property.
+The circuit breaker reactive resilience strategy shortcuts the execution if the 
+underlying resource is detected as unhealthy. The detection process is done via
+sampling. If the sampled executions' failure-success ratio exceeds a predefined 
+threshold then a circuit breaker will prevent any new executions by throwing a 
+BrokenCircuitException. After a preset duration the circuit breaker performs a 
+probe, because the assumption is that this period was enough for the resource to 
+self-heal. Depending on the outcome of the probe, the circuit will either allow 
+new executions or continue to block them. If an execution is blocked by the 
+circuit breaker, the thrown exception may indicate the amount of time executions 
+will continue to be blocked through its RetryAfter property.
 
 ``` mermaid
 graph TD
@@ -237,7 +275,12 @@ await manualControl.CloseAsync();
 ```
 
 ## [Timeout strategy](https://www.pollydocs.org/strategies/timeout.html)
-The timeout proactive resilience strategy cancels the execution if it does not complete within the specified timeout period. If the execution is canceled by the timeout strategy, it throws a TimeoutRejectedException. The timeout strategy operates by wrapping the incoming cancellation token with a new one. Should the original token be canceled, the timeout strategy will transparently honor the original cancellation token without throwing a TimeoutRejectedException.
+The timeout proactive resilience strategy cancels the execution if it does not
+complete within the specified timeout period. If the execution is canceled by the
+timeout strategy, it throws a TimeoutRejectedException. The timeout strategy operates 
+by wrapping the incoming cancellation token with a new one. Should the original
+token be canceled, the timeout strategy will transparently honor the original
+cancellation token without throwing a TimeoutRejectedException.
 
 ``` mermaid
 graph TD
@@ -294,7 +337,11 @@ new ResiliencePipelineBuilder().AddTimeout(options);
 ```
 
 ## [Rate Limiter strategy](https://www.pollydocs.org/strategies/rate-limiter.html)
-The rate limiter proactive resilience strategy controls the number of operations that can pass through it. This strategy is a thin layer over the API provided by the System.Threading.RateLimiting package. This strategy can be used in two flavors: to control inbound load via a rate limiter and to control outbound load via a concurrency limiter.
+The rate limiter proactive resilience strategy controls the number of operations
+that can pass through it. This strategy is a thin layer over the API provided by
+the System.Threading.RateLimiting package. This strategy can be used in two flavors: 
+to control inbound load via a rate limiter and to control outbound load via a
+concurrency limiter.
 
 ``` mermaid
 graph TD
@@ -331,7 +378,11 @@ new ResiliencePipelineBuilder()
 ```
 
 ## [Fallback strategy](https://www.pollydocs.org/strategies/fallback.html)
-The fallback reactive resilience strategy provides a substitute if the execution of the callback fails. Failure can be either an Exception or a result object indicating unsuccessful processing. Typically this strategy is used as a last resort, meaning that if all other strategies failed to overcome the transient failure you could still provide a fallback value to the caller.
+The fallback reactive resilience strategy provides a substitute if the execution
+of the callback fails. Failure can be either an Exception or a result object indicating
+unsuccessful processing. Typically this strategy is used as a last resort, meaning
+that if all other strategies failed to overcome the transient failure you could
+still provide a fallback value to the caller.
 
 ``` mermaid
 graph TD
@@ -393,7 +444,14 @@ new ResiliencePipelineBuilder<UserAvatar>().AddFallback(options);
 ```
 
 ## [Hedging strategy](https://www.pollydocs.org/strategies/hedging.html)
-The hedging reactive strategy enables the re-execution of the callback if the previous execution takes too long. This approach gives you the option to either run the original callback again or specify a new callback for subsequent hedged attempts. Implementing a hedging strategy can boost the overall responsiveness of the system. However, it's essential to note that this improvement comes at the cost of increased resource utilization. If low latency is not a critical requirement, you may find the retry strategy more appropriate. This strategy also supports multiple concurrency modes to flexibly tailor the behavior for your own needs.
+The hedging reactive strategy enables the re-execution of the callback if the previous
+execution takes too long. This approach gives you the option to either run the
+original callback again or specify a new callback for subsequent hedged attempts.
+Implementing a hedging strategy can boost the overall responsiveness of the system.
+However, it's essential to note that this improvement comes at the cost of increased
+resource utilization. If low latency is not a critical requirement, you may find
+the retry strategy more appropriate. This strategy also supports multiple concurrency
+modes to flexibly tailor the behavior for your own needs.
 
 ``` mermaid
 graph TD
@@ -446,7 +504,10 @@ new ResiliencePipelineBuilder<HttpResponseMessage>().AddHedging(options);
 ```
 
 # [Usage](https://www.pollydocs.org/getting-started.html)
-To use Polly, you must provide a callback and execute it using a resilience pipeline. A resilience pipeline is a combination of one or more resilience strategies such as retry, timeout, and rate limiter. Polly uses builders to integrate these strategies into a pipeline.
+To use Polly, you must provide a callback and execute it using a resilience pipeline.
+A resilience pipeline is a combination of one or more resilience strategies such
+as retry, timeout, and rate limiter. Polly uses builders to integrate these strategies
+into a pipeline.
 
 You can create a ResiliencePipeline using the ResiliencePipelineBuilder class as shown below:
 ```csharp
@@ -460,7 +521,9 @@ ResiliencePipeline pipeline = new ResiliencePipelineBuilder()
 await pipeline.ExecuteAsync(static async token => { /* Your custom logic goes here */ }, cancellationToken);
 ```
 
-If you prefer to define resilience pipelines using IServiceCollection, you'll need to install the Polly.Extensions package. Then you can define your resilience pipeline using the AddResiliencePipeline(...) extension method as shown:
+If you prefer to define resilience pipelines using IServiceCollection, you'll need
+to install the Polly.Extensions package. Then you can define your resilience pipeline
+using the AddResiliencePipeline(...) extension method as shown:
 ```csharp
 var services = new ServiceCollection();
 
@@ -495,47 +558,69 @@ await pipeline.ExecuteAsync(static async token =>
 
 ## Retry
 
-**Transient Errors:** Retry operations prone to temporary failures, such as network issues or throttling by an external service.
-**HTTP Requests:** Retrying failed API calls when encountering HTTP 5xx or timeout errors.
-**Database Operations:** Retrying transient errors like deadlocks or temporary connection issues.
+**Transient Errors:** Retry operations prone to temporary failures, such as network 
+issues or throttling by an external service.
+**HTTP Requests:** Retrying failed API calls when encountering HTTP 5xx or timeout 
+errors.
+**Database Operations:** Retrying transient errors like deadlocks or temporary connection 
+issues.
 
-**Example:** Retrying a failed API call a few times with increasing delays can significantly improve success rates.
+**Example:** Retrying a failed API call a few times with increasing delays can significantly 
+improve success rates.
 
 ## Circuit Breaker
 
-**Downstream Service Protection:** Preventing an overwhelmed or failing API from cascading failures to other parts of your system.
-**Database Fallback:** Avoiding overloading a database experiencing temporary instability.
-**Microservices:** Ensuring stability in distributed systems by preventing overloading of unstable services.
+**Downstream Service Protection:** Preventing an overwhelmed or failing API from 
+cascading failures to other parts of your system.
+**Database Fallback:** Avoiding overloading a database experiencing temporary 
+instability.
+**Microservices:** Ensuring stability in distributed systems by preventing overloading 
+of unstable services.
  
-**Example:** If a service is consistently unavailable, the circuit breaker "opens," blocking further requests until a timeout period elapses or a successful test call is made.
+**Example:** If a service is consistently unavailable, the circuit breaker "opens", 
+blocking further requests until a timeout period elapses or a successful test call is made.
 
 ## Timeout
 
-**Long-Running Operations:** Preventing operations (e.g., API calls, database queries) from hanging indefinitely.
-**Service-Level Agreements (SLAs):** Enforcing time limits for responses from third-party services.
+**Long-Running Operations:** Preventing operations (e.g., API calls, database queries) 
+from hanging indefinitely.
+**Service-Level Agreements (SLAs):** Enforcing time limits for responses from third-party 
+services.
 **User Experience:** Ensuring UI responsiveness by cancelling long-running tasks.
 
-**Example:** Setting a timeout for a long-running operation ensures that the application doesn't wait forever for a response.  
+**Example:** Setting a timeout for a long-running operation ensures that the application 
+doesn't wait forever for a response.  
 
 ## Fallback
 
-**Graceful Degradation:** Providing a default value or alternative response when an operation fails.
-**Failover Logic:** Redirecting requests to a secondary service when the primary service is down.
-**User Notifications:** Showing a meaningful error message or default content to users.
+**Graceful Degradation:** Providing a default value or alternative response when 
+an operation fails.
+**Failover Logic:** Redirecting requests to a secondary service when the primary 
+service is down.
+**User Notifications:** Showing a meaningful error message or default content to 
+users.
  
-**Example:** If a primary data source is unavailable, a fallback mechanism can retrieve data from a secondary source or provide default values.
+**Example:** If a primary data source is unavailable, a fallback mechanism can retrieve 
+data from a secondary source or provide default values.
 
 ## Rate Limiter
 
-**Shared Resources Protection:** Limiting the number of concurrent requests to a service or resource (e.g., database, file system).
-**System Stability:** Isolating failures in one subsystem to prevent cascading effects across the application.
+**Shared Resources Protection:** Limiting the number of concurrent requests to a 
+service or resource (e.g., database, file system).
+**System Stability:** Isolating failures in one subsystem to prevent cascading effects 
+across the application.
   
-**Example:** Limiting the number of requests to an external API within a specific time window can prevent your application from being throttled.   
+**Example:** Limiting the number of requests to an external API within a specific 
+time window can prevent your application from being throttled.   
 
 ## Hedging
 
-**High-Availability Systems:** Running redundant tasks in parallel to reduce latency (e.g., querying multiple replicas of a database).
-**Critical Services:** Ensuring a response is returned quickly by hedging requests to multiple endpoints.
-**Geographically Distributed APIs:** Sending requests to different regions and accepting the first successful response.
+**High-Availability Systems:** Running redundant tasks in parallel to reduce latency 
+(e.g., querying multiple replicas of a database).
+**Critical Services:** Ensuring a response is returned quickly by hedging requests 
+to multiple endpoints.
+**Geographically Distributed APIs:** Sending requests to different regions and accepting 
+the first successful response.
 
-**Example:** If one part of a service fails, it won't impact other parts due to resource limitations.
+**Example:** If one part of a service fails, it won't impact other parts due to 
+resource limitations.
