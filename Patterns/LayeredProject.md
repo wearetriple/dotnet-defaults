@@ -65,13 +65,15 @@ the name `{External API}.{External API project}.csproj` can be used.
 - Contoso.CalendarHub.sln
   - Contoso.CalendarHub.Api.csproj
     - `Controllers`
+  - Contoso.CalendarHub.Api.Tests.csproj
+    - `LoginControllerTests`
+    - `UserControllerTests`
+  - Contoso.CalendarHub.Contracts.csproj
+    - `Enums`
     - `JsonConverters`
     - `Models`
         - `Request`
         - `Response`
-  - Contoso.CalendarHub.Api.Tests.csproj
-    - `LoginControllerTests`
-    - `UserControllerTests`
   - Contoso.CalendarHub.Domain.csproj
     - `Abstractions`
         - `Calendars`
@@ -127,6 +129,7 @@ own use.
 - An API always has its own Request- and ResponseModels. These models describe the 
 exact shape of requests it expects and responses it generates.
   - `UpdateUserRequestModel`, `UserDetailsResponseModel`
+  - These models can be put in a shared contracts library so they can be used by consumers. 
 - The Common projects contains domain objects, commands, responses, and other types 
 which facilitate communication between parts of the application.
   - `AddUserCommand`, `UserDetails`

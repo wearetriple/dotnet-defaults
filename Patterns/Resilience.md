@@ -1,8 +1,21 @@
 # Resilience
 
+## TL;DR
 
+While Polly can be used for adding policies to everything, our projects primarily
+use these policies for making HttpClients more fault-tolerant. Microsoft provides
+an opinionated configuration of Polly for HttpClients via 
+[Microsoft.Extensions.Http.Resilience](https://www.nuget.org/packages/Microsoft.Extensions.Http.Resilience)
+([related docs](https://learn.microsoft.com/en-us/dotnet/core/resilience/http-resilience)).
 
-## [Polly.NET](https://www.pollydocs.org/)
+The standard resilience handler should be configured on all HttpClients should be 
+added to all HttpClients using `httpClientBuilder.AddStandardResilienceHandler();`
+in the DI container setup. Make sure to apply these adaptations:
+
+- [Retry of POST and DELETE calls should be prevented](https://learn.microsoft.com/en-us/dotnet/core/resilience/http-resilience?tabs=dotnet-cli#disable-retries-for-a-given-list-of-http-methods)
+- [Dynamic reload based on config](https://learn.microsoft.com/en-us/dotnet/core/resilience/http-resilience?tabs=dotnet-cli#dynamic-reload)
+
+# [Polly.NET](https://www.pollydocs.org/)
 
 Polly is a powerful library for .NET that helps you handle transient faults and
 improve the resilience of your applications in a fluent and thread-safe way. Polly 
@@ -23,7 +36,7 @@ experience and keep the program working.
 * **Hedging**: Do more than one thing at the same time and take the fastest one.
 This can make your program faster and more responsive.
 
-# [Resilience strategies](https://www.pollydocs.org/strategies/index.html)
+## [Resilience strategies](https://www.pollydocs.org/strategies/index.html)
 Resilience strategies are essential components of Polly, designed to execute user-defined 
 callbacks while adding an extra layer of resilience. These strategies can't be executed 
 directly; they must be run through a resilience pipeline. Polly provides an API 

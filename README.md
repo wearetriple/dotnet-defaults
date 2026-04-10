@@ -4,7 +4,8 @@ Common boilerplate, practices, and guidelines for Triple .NET projects.
 
 ## Required standardizations
 
-Our [Standardization](./Standards/README.md) overview
+Our [Standardization](./Standards/README.md) overview. All projects must follow
+these standards.
 
 - [Configuration](./Standards/Configuration/README.md)
 - [CSharpier](./Standards/CSharpier/README.md)
@@ -14,6 +15,8 @@ Our [Standardization](./Standards/README.md) overview
 - [Azure DevOps service connections via Terraform](./Standards/AzureDevOpsTerraform/README.service-connections.md)
 
 ## Required patterns
+
+Our [Patterns](./Patterns/README.md) overview. All projects should follow these.
 
 ### Base setup
 
@@ -47,8 +50,3 @@ Our [Standardization](./Standards/README.md) overview
 
 - [Logging with `ILogger<>` using Serilog to Seq](./Patterns/Serilog.md)
 - [Web App health check and application warmup](./Patterns/HealthCheck+WarmUp.md)
-
-
-
-## Good practices
-

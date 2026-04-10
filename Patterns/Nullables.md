@@ -33,6 +33,7 @@ or use our default [Directory.Build.Props](DirectoryBuildProps.md).
     - Use `if (value is ExpectedType expectedTypeValue)`
     - Use `if (value is not null)` 
     - Use `if (value is {})`
+    - Use `if (value is {} theThing)`
 - Safe navigation operator: 
     - Avoid `.FirstOrDefault().Name`
     - Use `.FirstOrDefault()?.Name`
