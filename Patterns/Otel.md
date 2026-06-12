@@ -22,7 +22,7 @@ builder.Logging.AddOpenTelemetry(options =>
     {
         // example logs ingest url for local seq
         options.Endpoint = new Uri("http://127.0.0.1:5341/ingest/otlp/v1/logs");
-        // local seq does not need an api key; for hosted Seq, set options.Headers (see below)
+        // local seq does not need an api key; for others, set options.Headers (see below)
         options.Headers = null;
         options.Protocol = OtlpExportProtocol.HttpProtobuf;
     });
@@ -45,7 +45,7 @@ builder.Services.AddOpenTelemetry()
         {
             // example traces ingest url for local seq
             options.Endpoint = new Uri("http://127.0.0.1:5341/ingest/otlp/v1/traces");
-            // local seq does not need an api key; for hosted Seq, set options.Headers (see below)
+            // local seq does not need an api key; for others, set options.Headers (see below)
             options.Headers = null;
             options.Protocol = OtlpExportProtocol.HttpProtobuf;
         }));
