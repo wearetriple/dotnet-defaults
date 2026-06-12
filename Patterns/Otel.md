@@ -22,7 +22,7 @@ builder.Logging.AddOpenTelemetry(options =>
     {
         // example logs ingest url for local seq
         options.Endpoint = new Uri("http://127.0.0.1:5341/ingest/otlp/v1/logs");
-        // local seq does not need an api key, but via Headers is how you normally provide it
+        // local seq does not need an api key; for hosted Seq, set options.Headers (see below)
         options.Headers = null;
         options.Protocol = OtlpExportProtocol.HttpProtobuf;
     });
@@ -45,11 +45,19 @@ builder.Services.AddOpenTelemetry()
         {
             // example traces ingest url for local seq
             options.Endpoint = new Uri("http://127.0.0.1:5341/ingest/otlp/v1/traces");
-            // local seq does not need an api key, but via Headers is how you normally provide it
+            // local seq does not need an api key; for hosted Seq, set options.Headers (see below)
             options.Headers = null;
             options.Protocol = OtlpExportProtocol.HttpProtobuf;
         }));
 ```
+
+When exporting to a hosted Seq instance, set the API key via `options.Headers` in both OTLP exporters:
+
+```c#
+options.Headers = $"X-Seq-ApiKey={Uri.EscapeDataString(seqApiKey)}";
+```
+
+Use `Uri.EscapeDataString` on the key so special characters are encoded correctly.
 
 Both coding examples require an `applicationResourceBuilder`. This builder provides
 some metadata about your application, which is added to all the logs and traces
