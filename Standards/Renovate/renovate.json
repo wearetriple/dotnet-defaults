@@ -1,11 +1,12 @@
-﻿{
+{
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     // Renovate works via a config inheritance scheme with community built recommended defaults.
     // This is the recommended config, contains a lot of rules you usually want.
     "config:recommended"
   ],
-  "enabledManagers": [ // Package managers to enable
+  "enabledManagers": [
+    // Package managers to enable
     "nuget",
     "npm" // NPM is used for Renovate
   ],
@@ -31,21 +32,15 @@
     },
     {
       "groupName": "EF Core Packages",
-      "matchSourceUrlPrefixes": [
-        "https://github.com/dotnet/efcore"
-      ]
+      "matchSourceUrlPrefixes": ["https://github.com/dotnet/efcore"]
     },
     {
       "groupName": "ASP .NET Core Packages",
-      "matchSourceUrlPrefixes": [
-        "https://github.com/dotnet/aspnetcore"
-      ]
+      "matchSourceUrlPrefixes": ["https://github.com/dotnet/aspnetcore"]
     },
     {
       "groupName": ".NET Runtime Packages",
-      "matchSourceUrlPrefixes": [
-        "https://github.com/dotnet/runtime"
-      ]
+      "matchSourceUrlPrefixes": ["https://github.com/dotnet/runtime"]
     }
   ]
 }
