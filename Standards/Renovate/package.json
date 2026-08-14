@@ -2,6 +2,6 @@
   "$schema": "https://json.schemastore.org/package.json",
   "name": "beautiful-project",
   "devDependencies": {
-    "renovate": "39.171.2"
+    "renovate": "44.29.5"
   }
 }
