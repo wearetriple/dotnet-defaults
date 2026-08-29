@@ -1,17 +1,19 @@
 # Configuration
 
-Configuration in dotnet applications in generally handled through the `IConfiguration` implementation, 
-which allows multiple providers to supply key,value data to use in the application. [KeyVault](./KeyVault.md) 
-is one such a provider, next to JSON and environment variable configuration providers.
+Configuration in dotnet applications in generally handled through the `IConfiguration` 
+implementation, which allows multiple providers to supply key,value data to use in 
+the application. [KeyVault](./KeyVault.md) is one such a provider, next to JSON 
+and environment variable configuration providers.
 
 Using configuration throughout the application is done using the [Options pattern](./Options.md).
 
 ## Bootstrap problem
 
-The challenge with configuration, and especially with the more advanced providers like KeyVault, is that
-configuration is needed before it has been set up, making it a bit awkward to get right. To solve
-this, first build a small configuration provider that reads JSON and or environment variables, and use that
-provider to build the configuration provider for the application.
+The challenge with configuration, and especially with the more advanced providers 
+like KeyVault, is that configuration is needed before it has been set up, making 
+it a bit awkward to get right. To solve this, first build a small configuration 
+provider that reads JSON and or environment variables, and use that provider to 
+build the configuration provider for the application.
 
 ```csharp
 var host = new HostBuilder()
@@ -44,27 +46,32 @@ var host = new HostBuilder()
     .Build();
 ```
 
-Be aware of the defaults applied to the configuration builder, sometimes some configuration is already added
-in an order that's undesirable. In that case, use `builder.Remove[..]Source()` to remove a configuration provider, or
-reapply a provider again so it's always at the desired position. Generally we use this order:
+Be aware of the defaults applied to the configuration builder, sometimes some configuration 
+is already added in an order that's undesirable. In that case, use 
+`builder.Remove[..]Source()` to remove a configuration provider, or reapply a provider 
+again so it's always at the desired position. Generally we use this order:
 
 1. Base configuration - e.g `appsettings.json`.
 2. Environment specific base configuration - e.g `application.prod.json`.
 3. Environment specific external configuration - e.g KeyVault.
 4. Resource specific configuration - e.g. Environment Variables.
 
-This way base configuration can be overwritten by environment specific configuration, which in turn can
-be overwritten by resource specific configuration. By allowing environment variables to overwrite any other
-config, some issues can be fixed or debugged by temporarily by adding an environment variable by hand, which 
-can come in handy when in a pickle. 
+This way base configuration can be overwritten by environment specific configuration, 
+which in turn can be overwritten by resource specific configuration. By allowing 
+environment variables to overwrite any other config, some issues can be fixed or 
+debugged by temporarily by adding an environment variable by hand, which can come 
+in handy when in a pickle. 
 
 ## Configuration providers
 
 ### Azure KeyVault
 
-Using KeyVault for secrets (and feature flags / switches / config in small quantities) is highly advised, as it moves
-secrets into a secure place. Using a KeyVault for secrets during local development can be very practical, as no exchange
-of secrets between developers is required during onboarding. 
+See also [KeyVault](./KeyVault.md).
+
+Using KeyVault for secrets (and feature flags / switches / config in small quantities) 
+is highly advised, as it moves secrets into a secure place. Using a KeyVault for 
+secrets during local development can be very practical, as no exchange of secrets 
+between developers is required during onboarding. 
 
 ```csharp
 var credential = new DefaultAzureCredential(new DefaultAzureCredentialOptions
@@ -94,26 +101,32 @@ configurationBuilder.AddAzureKeyVault(
     });
 ```
 
-Multiple KeyVaults are allowed to be used in a single application, so common secrets can be configured in a common
-KeyVault, while application specific secrets can be configured in a separate KeyVault. 
-Use [Vaultr](https://github.com/ThomasBleijendaal/Vaultr) to manage secrets in multiple KeyVaults more easily.
+Multiple KeyVaults are allowed to be used in a single application, so common secrets 
+can be configured in a common KeyVault, while application specific secrets can be 
+configured in a separate KeyVault. 
+
+Use [Vaultr](https://github.com/ThomasBleijendaal/Vaultr) to manage secrets in multiple 
+KeyVaults more easily.
 
 ### Azure App Configuration
 
 Avoid Azure App Configuration, because:
 
-- The service is very expensive, costing at least $36 per month for what's a simple JSON API.
-- When request quota is exhausted, the service will return 429s, which will prevent new instances
-of your application to start. Avoiding this quota requires spending $288 per month.
+- The service is very expensive, costing at least $36 per month for what's a simple 
+JSON API.
+- When request quota is exhausted, the service will return 429s, which will prevent 
+new instances of your application to start. Avoiding this quota requires spending 
+$288 per month.
 - Background refresh is unreliable and hard to trigger consistently.
 - Giving customers access to this configuration still requires Azure Portal access.
 - Feature flags are implemented in a clunky way, which makes them hard to use.
-- The built-in CICD tooling overwrite custom config, resetting any runtime customization during deploy.
+- The built-in CICD tooling overwrite custom config, resetting any runtime customization 
+during deploy.
 
 ### Command line switches
 
-If the application accepts command line switches provider via the command line arguments, use the command line
-configuration provider to parse and provide these switches.
+If the application accepts command line switches provider via the command line arguments, 
+use the command line configuration provider to parse and provide these switches.
 
 ```csharp
 var switchMap = new Dictionary<string, string>
@@ -178,8 +191,9 @@ or
 
 ### Environment variables
 
-Environment variables are primarily used in Azure, where application configuration in services like
-App Services or Container Apps is made available for your application via environment variables.
+Environment variables are primarily used in Azure, where application configuration 
+in services like App Services or Container Apps is made available for your application 
+via environment variables.
 
 ```csharp
 configurationBuilder.AddEnvironmentVariables();
@@ -205,6 +219,7 @@ Which minimally looks like this:
 }
 ```
 
-This file helps local developers by setting all values in the `Values` dictionary as environment variables.
-To read these variables, `AddEnvironmentVariables()` must be used. `Values` is a flat dictionary 
-and should use `__` as separator when adding sections in the key.
+This file helps local developers by setting all values in the `Values` dictionary 
+as environment variables. To read these variables, `AddEnvironmentVariables()` must 
+be used. `Values` is a flat dictionary and should use `__` as separator when adding 
+sections in the key.

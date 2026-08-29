@@ -51,9 +51,19 @@ When using Data Annotation Validators please keep in mind:
 - Use `[Required]` to make an property required. `null` is a valid value for 
 `[MinLength(10)]` as it ignores `null`.
 - `[Required]` and `required` are two different things. Making properties not `required`
-allows these properties to be validated by `[Required]`.
+allows these properties to be validated by `[Required]`. If you make properties
+`required`, they will trigger `JsonExceptions` during deserialization before any
+validation can be applied. This will also prevent the correct problem details from
+being returned to the client, which prevents them from debugging the requires issues.
+Avoid using `required` properties in request models.
 - Nested objects (like `Parent`) and arrays (like `Children`) are not validated
 out of the box (see below).
+
+### OpenApi docs
+
+When using Data Annotation Validators, most validation attributes applied to properties 
+will automatically be picked up by the OpenApi docs generator. See [OpenApi](./OpenApi.md)
+for more info on setting up the OpenApi docs correctly.
 
 ### Validate entire objects
 
@@ -306,12 +316,19 @@ var results = validator.Validate(data);
 [Fluent Validation also supports dependency injection](https://docs.fluentvalidation.net/en/latest/di.html), 
 which can help with setting up validation in generic contexts.
 
+### OpenApi docs
+
+When using Fluent Validation, validation rules will not be picked up by the OpenApi 
+docs generator. See [OpenApi](./OpenApi.md) for more info on setting up the OpenApi 
+docs correctly.
+
 ## Returning validation results
 
 The APIs we build, whether they use Data Annotation Validation or Fluent Validation, 
 should return the validation errors back to the client, so the developers and applications
 using our APIs can see what they do wrong and what to fix. Few things we should do:
 
+- [Follow the problem details standard](https://www.rfc-editor.org/rfc/rfc7807.html).
 - Respond with HTTP status code `400 Bad Request` or `422 Unprocessable Entity`.
 - The response model must be an object containing the validation errors, and optionally
 some more data.
@@ -322,13 +339,15 @@ potentially breaking users of our API.
 to what the request model expected.
 - The mentioned member / property names should use JSON path when they describe
 nested properties.
+- The problem type should reference a specific problem ID and reference a documentation 
+page where developers can help themselves find solutions.
 
 Example:
 
 ```json
 {
-    "errorCode": "E0067",
-    "message": "Invalid request",
+    "type": "https://our-backend.example.com/problems/InvalidRequestBody",
+    "title": "Invalid Request Body",
     "validationErrors" : [
         {
             "errorMessage": "'startDate' must be less than 'endMonth'.",
