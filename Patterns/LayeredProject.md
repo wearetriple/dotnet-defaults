@@ -27,6 +27,15 @@ A .NET solution must follow the following guidelines:
 
 Singular and plural names for projects can both be used. Project that contain gateways or applications usually are singular (`CMS`, `AdminDashboard`, `Gateway.Contentful`) and project that are libraries are usually plural (`Repositories`, `Services`). Plural names for projects will prevent issues concerning namespace confusion; you cannot create the object `User` if the project name is `xx.User`. Keeping the names of projects plural will easily deal with those issues.
 
+### Abbreviations vs full names
+
+Solution, project, and namespace names use `{Customer}.{Project}`. Write `{Project}` out in full unless the abbreviation is a common term inside the company or project — everyone already calls it that.
+
+- Use the abbreviation when it is everyday language internally, for example `Hypersolid.Mdp.*` when everyone says MDP for `Machine Data Platform`.
+- Write the name out when the abbreviation is not universally used, for example `Hypersolid.GuestExperience.*` instead of `Hypersolid.Ge.*`.
+
+Do not invent abbreviations only to shorten namespaces. If you would have to explain the acronym to a teammate, use the full name.
+
 ### Additional folders
 
 Solution folders can be used to group specific projects together. If for example a gateway uses multiple project, group these projects in a solution folder describing the gateway. 
