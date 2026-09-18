@@ -13,6 +13,8 @@
   "updateLockFiles": false, // Try to use central package management without lockfiles in .NET, so there's no lockfiles to update.
   "prConcurrentLimit": 10,
   "prHourlyLimit": 2,
+  "minimumReleaseAge": "14 days",
+  "internalChecksFilter": "strict",
   "packageRules": [
     {
       "groupName": "Serilog Packages",
