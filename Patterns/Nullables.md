@@ -1,16 +1,17 @@
 # Nullable reference types and `required`
 
 [Nullable reference types](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#nullable-reference-types) 
-were introduced in [C# 8](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8) in an effort to reduce 
-the number of `NullReferenceException`s thrown by applications. The feature helps the developer spot possible `null` 
-values and deal with them during development instead of during testing / production. 
-The [required modifier](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/required) was introduced 
-in [C# 11](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11) to ensure properties are being set in 
-initializers.
+were introduced in [C# 8](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8) 
+in an effort to reduce the number of `NullReferenceException`s thrown by applications. 
+The feature helps the developer spot possible `null` values and deal with them during 
+development instead of during testing / production. The 
+[required modifier](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/required) 
+was introduced in [C# 11](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-11) 
+to ensure properties are being set in initializers.
 
-The .net team has a general consensus that these features improves code quality and reduces faults, so turn it on 
-if possible. The [Directory.Build.props](DirectoryBuildProps.md) enables nullable reference types and promotes the
-corresponding warnings to errors.
+The .net team has a general consensus that these features improves code quality and 
+reduces faults, so turn it on. The [Directory.Build.props](DirectoryBuildProps.md) 
+enables nullable reference types and promotes the corresponding warnings to errors.
 
 When a reference type property or variable is not-nullable, you as developer promise that:
 
@@ -22,24 +23,32 @@ If you cannot promise that: mark it as nullable.
 
 ## To enable the feature
 
-- Under the `<TargetFramework>` node in `.csproj` add: `<Nullable>enable</Nullable>`, or use our default [Directory.Build.Props](DirectoryBuildProps.md).
-- Fix all possible null reference warnings.
+- Under the `<TargetFramework>` node in `.csproj` add: `<Nullable>enable</Nullable>`, 
+or use our default [Directory.Build.Props](DirectoryBuildProps.md).
+- Fix all possible null reference warnings / errors.
 
 ## Common strategies
 
-- Test for null using `if (value is ExpectedType expectedTypeValue)`, `if (value is not null)` 
-    or `if (value is {})`.
-- Add safe navigation operator: Instead of `.FirstOrDefault().Name` use `.FirstOrDefault()?.Name`.
-- Correctly annotate properties: Instead of `public string OptionalName { get; set; }` use
-    `public string? OptionalName { get; set; }`. Avoid using `public required string? OptionalName { get; set; }` 
-    to prevent having to set an optional property to `null`.
+- Test for null:
+    - Use `if (value is ExpectedType expectedTypeValue)`
+    - Use `if (value is not null)` 
+    - Use `if (value is {})`
+    - Use `if (value is {} theThing)`
+- Safe navigation operator: 
+    - Avoid `.FirstOrDefault().Name`
+    - Use `.FirstOrDefault()?.Name`
+- Correctly annotate properties:
+    - Avoid `public string OptionalName { get; set; }` 
+    - Use `public string? OptionalName { get; set; }`. 
+    - Avoid `public required string? OptionalName { get; set; }` to prevent having 
+    to set an optional property to `null`.
 - Make sure not-null properties are never null:
     - Mark required properties as `required` so these properties must be filled during object 
-        initialization or deserialization using `public required string Name { get; set; }`.
+    initialization or deserialization using `public required string Name { get; set; }`.
     - Initialize required properties via constructor: `public Person(string name) { Name = name }` 
-        although we prefer required properties.
+    although we prefer required properties.
     - Convert model to `record` using `public record Person(string Name);` although we prefer 
-        required properties.
+    required properties.
     - Mark the property as nullable when there is an off-change that it could be `null`.
 
 ### Pre-C#11 
@@ -54,7 +63,8 @@ it means that you have discovered a potential `NullReferenceException`.
 ## Common causes of null
 
 - The value originates from an external location (API / CMS). External data is always evil and, 
-    for example, even if a property is required in the CMS it's value can still be `null`.
+for example, even if a property is required in the CMS it's value can still be `null`.
+- The value originates from a request model. 
 - The value originates from a deserializer.
 - The value originates from an external package.
 - The value originates from code that was written by another developer.
@@ -86,5 +96,7 @@ reference. There are a few ways to fix this, depending on the situation.
 ## Takeaways
 
 - Don't be that developer that gets caught with their pants down because an uncaught 
-    `NullReferenceException` gets thrown from a piece of code that contains the `!`-operator.
+`NullReferenceException` gets thrown from a piece of code that contains the `!`-operator.
 - Check your pull request and fix all null reference warnings!
+- Make sure to configure your validation to work with these nulls correctly. See
+[Validation](./Validation.md).
